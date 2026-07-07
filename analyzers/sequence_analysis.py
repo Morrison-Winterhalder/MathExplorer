@@ -1,44 +1,16 @@
 from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.transformations import first_differences, nth_differences, first_ratios, subtract_sequences
-from analyzers.pipeline.evaluation import evaluate_geometric, evaluate_polynomial, geometric_sum
-from analyzers.core.utilities import pretty
-from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_geometric, is_increasing, is_unique, polynomial_degree
 from analyzers.pipeline.recovery import recover_arithmetic, recover_geometric, recover_polynomial
 from analyzers.pipeline.verification import verify_sequence
 from analyzers.pipeline.prediction import predict_terms
 from analyzers.pipeline.confidence import determine_confidence
 from analyzers.core.formatting import format_polynomial, clean_coefficients
+from analyzers.core.report import initialize_report
 
 def analyze_sequence(sequence):
     if sequence == []:
         return None
-    report = {
-        "Sequence Classification": {},
-
-        "Verification" : {},
-
-        "Predictions": {},
-
-        "Basic Information": {
-            "Length": len(sequence),
-            "Minimum": min(sequence),
-            "Maximum": max(sequence)
-        },
-        "Properties": {
-            "Is Constant?": is_constant(sequence),
-            "Is Increasing?": is_increasing(sequence),
-            "Is Decreasing?": is_decreasing(sequence),
-            "Is Each Term Unique?": is_unique(sequence),
-            "Is Arithmetic?": is_arithmetic(sequence),
-            "Is Geometric?": is_geometric(sequence),
-            "Polynomial Degree": polynomial_degree(sequence),
-        },
-        "Transformations": {
-            "First Differences": first_differences(sequence),
-            "First Ratios": first_ratios(sequence)
-        }
-        
-    }
+    report = initialize_report(sequence)
     report["Sequence Classification"] = classify_sequence(sequence,report)
     classification = report["Sequence Classification"]
     sequence_type = classification["Type"]

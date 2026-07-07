@@ -1,5 +1,5 @@
 # from analyzers.objects.sequences import prime_numbers, fibonacci, square_numbers
-from analyzers.sequence_analysis import analyze_sequence, classify_sequence, recover_polynomial, format_polynomial, evaluate_polynomial, subtract_sequences, recover_arithmetic
+from analyzers.sequence_analysis import analyze_sequence
 from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.formatting import print_report
 

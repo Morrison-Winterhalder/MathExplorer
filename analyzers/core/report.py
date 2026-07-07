@@ -1,0 +1,31 @@
+from analyzers.core.transformations import first_differences, first_ratios
+from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_increasing, is_geometric, is_unique, polynomial_degree
+
+def initialize_report(sequence):
+    return {
+        "Sequence Classification": {},
+
+        "Verification" : {},
+
+        "Predictions": {},
+
+        "Basic Information": {
+            "Length": len(sequence),
+            "Minimum": min(sequence),
+            "Maximum": max(sequence)
+        },
+        "Properties": {
+            "Is Constant?": is_constant(sequence),
+            "Is Increasing?": is_increasing(sequence),
+            "Is Decreasing?": is_decreasing(sequence),
+            "Is Each Term Unique?": is_unique(sequence),
+            "Is Arithmetic?": is_arithmetic(sequence),
+            "Is Geometric?": is_geometric(sequence),
+            "Polynomial Degree": polynomial_degree(sequence),
+        },
+        "Transformations": {
+            "First Differences": first_differences(sequence),
+            "First Ratios": first_ratios(sequence)
+        }
+        
+    }
