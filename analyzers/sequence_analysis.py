@@ -1,21 +1,8 @@
-from math import factorial, isclose
+from math import isclose
 from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.transformations import first_differences, nth_differences, first_ratios, subtract_sequences
 from analyzers.pipeline.evaluation import evaluate_geometric, evaluate_polynomial, geometric_sum
-
-def pretty(value):
-    if isinstance(value, float):
-        if value.is_integer():
-            return int(value)
-        return value
-
-    elif isinstance(value, list):
-        return [pretty(v) for v in value]
-
-    elif isinstance(value, dict):
-        return {k: pretty(v) for k, v in value.items()}
-
-    return value
+from analyzers.core.utilities import pretty
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [
@@ -30,22 +17,6 @@ def is_constant(sequence):
         if value != sequence[0]:
             return False
     return True
-
-def polynomial_degree(sequence):
-    if len(sequence) < 2:
-        return None
-    degree = 0
-    while True:
-        print("Degree:",degree,"Sequence:",sequence)
-        status = is_constant(sequence)
-        if status is False:
-            sequence = first_differences(sequence)
-            degree += 1
-        elif status is None:
-            return None
-        else:
-            break
-    return degree
 
 def is_arithmetic(sequence):
     if len(sequence) < 2:
@@ -110,36 +81,6 @@ def format_polynomial(coefficients):
     if not polyList:
         return "0"
     return polyString
-
-def recover_polynomial(sequence):
-    if len(sequence) < 2:
-        return None
-    degree = polynomial_degree(sequence)
-    coefficients = [0] * (degree + 1)
-    remaining = sequence.copy()
-    while degree >= 0:
-        index = len(coefficients) - degree - 1
-        constant_difference = nth_differences(remaining,degree)[0]
-        leading = constant_difference / factorial(degree)
-        temp_coefficients = [0] * len(coefficients)
-        coefficients[index] = leading
-        temp_coefficients[index] = leading
-        generated = []
-        for n in range(1, len(sequence) + 1):
-            generated.append(evaluate_polynomial(temp_coefficients, n))
-        remaining = subtract_sequences(remaining,generated)
-        degree -= 1
-    return coefficients
-
-def recover_arithmetic(sequence):
-    if len(sequence) < 2:
-        return []
-    return [first_differences(sequence)[0],(sequence[0]-first_differences(sequence)[0])]
-
-def recover_geometric(sequence):
-    if len(sequence) < 2:
-        return None
-    return f"{pretty(sequence[0])} · {pretty(first_ratios(sequence)[0])}^(n-1)"
 
 def determine_confidence(sequence, report):
     if len(sequence) == 1:
