@@ -1,5 +1,6 @@
 from math import factorial, isclose
 from analyzers.pipeline.classify import classify_sequence
+from analyzers.core.transformations import first_differences, nth_differences, first_ratios, subtract_sequences
 
 def pretty(value):
     if isinstance(value, float):
