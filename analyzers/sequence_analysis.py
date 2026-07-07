@@ -1,10 +1,10 @@
-from math import isclose
 from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.transformations import first_differences, nth_differences, first_ratios, subtract_sequences
 from analyzers.pipeline.evaluation import evaluate_geometric, evaluate_polynomial, geometric_sum
 from analyzers.core.utilities import pretty
 from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_geometric, is_increasing, is_unique, polynomial_degree
 from analyzers.pipeline.recovery import recover_arithmetic, recover_geometric, recover_polynomial
+from analyzers.pipeline.verification import verify_sequence
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [
@@ -67,38 +67,6 @@ def determine_confidence(sequence, report):
         return "Low"
     else:
         return "Very Low"
-
-def verify_sequence(sequence,report):
-    classification = report["Sequence Classification"]
-    sequence_type = classification["Type"]
-    parameters = classification.get("Parameters")
-
-    if parameters is None:
-        return {
-            "Verified": None,
-            "Generated": None
-        }
-
-    if sequence_type == "Arithmetic":
-        generated = []
-        for n in range(1,len(sequence)+1):
-            generated.append(evaluate_polynomial(parameters, n))
-    elif sequence_type == "Polynomial":
-        generated = []
-        for n in range(1,len(sequence)+1):
-            generated.append(evaluate_polynomial(parameters, n))
-    elif sequence_type == "Geometric":
-        generated = []
-        for n in range(1,len(sequence)+1):
-            generated.append(evaluate_geometric(parameters, n))
-    elif sequence_type == "Constant":
-        generated = [parameters] * len(sequence)
-    else:
-        return {"Verified": False, "Generated": None}
-    
-    verified = all(isclose(a,b,rel_tol=1e-9, abs_tol=1e-9) for a, b in zip(generated,sequence))
-
-    return {"Verified": verified,"Generated": generated}
 
 def predict_terms(sequence,report,number_of_terms=5):
     n = len(sequence) + 1
