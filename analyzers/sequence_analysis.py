@@ -3,55 +3,14 @@ from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.transformations import first_differences, nth_differences, first_ratios, subtract_sequences
 from analyzers.pipeline.evaluation import evaluate_geometric, evaluate_polynomial, geometric_sum
 from analyzers.core.utilities import pretty
+from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_geometric, is_increasing, is_unique, polynomial_degree
+from analyzers.pipeline.recovery import recover_arithmetic, recover_geometric, recover_polynomial
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [
         0 if abs(c) < tol else c
         for c in coefficients
     ]
-
-def is_constant(sequence):
-    if len(sequence) == 0:
-        return None
-    for value in sequence[1:]:
-        if value != sequence[0]:
-            return False
-    return True
-
-def is_arithmetic(sequence):
-    if len(sequence) < 2:
-        return None
-    return is_constant(first_differences(sequence))
-
-def is_geometric(sequence):
-    if len(sequence) < 2:
-        return None
-    ratios = first_ratios(sequence)
-    if None not in ratios:
-        return is_constant(ratios)
-    else:
-        return None
-    
-def is_increasing(sequence):
-    if len(sequence) < 2:
-        return None
-    for i in range(len(sequence)-1):
-        if sequence[i] >= sequence[i+1]:
-            return False
-    return True
-
-def is_decreasing(sequence):
-    if len(sequence) < 2:
-        return None
-    for i in range(len(sequence)-1):
-        if sequence[i] <= sequence[i+1]:
-            return False
-    return True
-
-def is_unique(sequence):
-    if len(sequence) < 2:
-        return None
-    return (len(sequence) == len(set(sequence)))
 
 def format_polynomial(coefficients):
     polyList = []
