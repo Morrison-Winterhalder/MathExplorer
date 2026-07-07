@@ -62,6 +62,18 @@ def classify_pentagonal(sequence, report):
         "Reason": "All terms are pentagonal numbers."
     }
 
+def classify_fibonacci(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Fibonacci?"]:
+        return None
+
+    return {
+        "Type": "Fibonacci",
+        "Degree": None,
+        "Reason": "Each term is the sum of the previous two."
+    }
+
 def classify_polynomial(sequence, report):
     properties = report["Properties"]
     degree = properties["Polynomial Degree"]
@@ -81,6 +93,7 @@ CLASSIFICATION_HANDLERS = (
     classify_geometric,
     classify_triangular,
     classify_pentagonal,
+    classify_fibonacci,
     classify_polynomial
 )
 

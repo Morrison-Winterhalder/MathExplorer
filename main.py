@@ -2,12 +2,12 @@
 from analyzers.sequence_analysis import analyze_sequence
 from analyzers.core.formatting import print_report
 
-sequence = [1, 3, 6, 10, 15, 21]
+sequence = [1,1,2,3,5,8,13,21,34,55]
 
 report = analyze_sequence(sequence)
 
 print_report(report)
 
 
-# sequence = [2*n**6 - 5*n**4 + n**2 + 3 for n in range(1, 8)]
+# sequence = [0.5*(n)**2 + 0.5*n for n in range(1, 8)]
 # print(sequence)

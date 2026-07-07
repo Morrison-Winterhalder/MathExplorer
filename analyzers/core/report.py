@@ -2,6 +2,7 @@ from analyzers.core.transformations import first_differences, first_ratios
 from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_increasing, is_geometric, is_unique, polynomial_degree
 from families.triangles import is_triangular
 from families.pentagonal import is_pentagonal
+from families.fibonacci import is_fibonacci
 
 def initialize_report(sequence):
     return {
@@ -25,7 +26,8 @@ def initialize_report(sequence):
             "Is Geometric?": is_geometric(sequence),
             "Polynomial Degree": polynomial_degree(sequence),
             "Is Triangular?": is_triangular(sequence),
-            "Is Pentagonal?": is_pentagonal(sequence)
+            "Is Pentagonal?": is_pentagonal(sequence),
+            "Is Fibonacci?": is_fibonacci(sequence)
         },
         "Transformations": {
             "First Differences": first_differences(sequence),

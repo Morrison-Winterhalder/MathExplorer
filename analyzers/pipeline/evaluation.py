@@ -27,11 +27,26 @@ def evaluate_pentagonal(_, n):
 def evaluate_constant(constant, n):
     return constant
 
+def evaluate_fibonacci(parameters, n):
+    a = parameters["First"]
+    b = parameters["Second"]
+
+    if n == 1:
+        return a
+    if n == 2:
+        return b
+
+    for _ in range(3, n + 1):
+        a, b = b, a + b
+
+    return b
+
 EVALUATION_HANDLERS = {
     "Constant": evaluate_constant,
     "Arithmetic": evaluate_polynomial,
     "Polynomial": evaluate_polynomial,
     "Geometric": evaluate_geometric,
     "Triangular": evaluate_triangular,
-    "Pentagonal": evaluate_pentagonal
+    "Pentagonal": evaluate_pentagonal,
+    "Fibonacci": evaluate_fibonacci
 }

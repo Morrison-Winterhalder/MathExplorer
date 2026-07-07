@@ -46,5 +46,13 @@ TEST_SEQUENCES = [
         "formula": "a(n) = n(3n-1)/2",
         "prediction": [51, 70, 92],
         "verified": True,
+    },
+    {
+        "name": "Fibonacci",
+        "sequence": [1, 1, 2, 3, 5, 8],
+        "type": "Fibonacci",
+        "formula": "a(n) = a(n-1) + a(n-2)",
+        "prediction": [13, 21, 34],
+        "verified": True,
     }
 ]

@@ -74,13 +74,24 @@ def recover_pentagonal_formula(sequence, report):
 
     report["Sequence Classification"]["Parameters"] = None
 
+def recover_fibonacci_formula(sequence, report):
+    report["Sequence Classification"]["Formula"] = (
+        "a(n) = a(n-1) + a(n-2)"
+    )
+
+    report["Sequence Classification"]["Parameters"] = {
+        "First": sequence[0],
+        "Second": sequence[1],
+    }
+
 RECOVERY_HANDLERS = {
     "Polynomial": recover_polynomial_formula,
     "Arithmetic": recover_arithmetic_formula,
     "Geometric": recover_geometric_formula,
     "Constant": recover_constant_formula,
     "Triangular": recover_triangular_formula,
-    "Pentagonal": recover_pentagonal_formula
+    "Pentagonal": recover_pentagonal_formula,
+    "Fibonacci": recover_fibonacci_formula
 }
 
 
