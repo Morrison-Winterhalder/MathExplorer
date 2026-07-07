@@ -74,6 +74,54 @@ def classify_fibonacci(sequence, report):
         "Reason": "Each term is the sum of the previous two."
     }
 
+def classify_lucas(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Lucas?"]:
+        return None
+
+    return {
+        "Type": "Lucas",
+        "Degree": None,
+        "Reason": "Each term is the sum of the previous two, beginning with 2 and 1."
+    }
+
+def classify_pell(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Pell?"]:
+        return None
+
+    return {
+        "Type": "Pell",
+        "Degree": None,
+        "Reason": "Each term satisfies P(n)=2P(n-1)+P(n-2)."
+    }
+
+def classify_jacobsthal(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Jacobsthal?"]:
+        return None
+
+    return {
+        "Type": "Jacobsthal",
+        "Degree": None,
+        "Reason": "Each term satisfies J(n)=J(n-1)+2J(n-2)."
+    }
+
+def classify_factorial(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Factorial?"]:
+        return None
+
+    return {
+        "Type": "Factorial",
+        "Degree": None,
+        "Reason": "Terms equal n!."
+    }
+
 def classify_polynomial(sequence, report):
     properties = report["Properties"]
     degree = properties["Polynomial Degree"]
@@ -94,6 +142,10 @@ CLASSIFICATION_HANDLERS = (
     classify_triangular,
     classify_pentagonal,
     classify_fibonacci,
+    classify_lucas,
+    classify_pell,
+    classify_jacobsthal,
+    classify_factorial,
     classify_polynomial
 )
 

@@ -1,8 +1,8 @@
-def is_fibonacci(sequence):
+def is_lucas(sequence):
     if len(sequence) < 3:
         return False
 
-    if sequence[0] != 1 or sequence[1] != 1:
+    if sequence[0] != 2 or sequence[1] != 1:
         return False
 
     for i in range(2, len(sequence)):

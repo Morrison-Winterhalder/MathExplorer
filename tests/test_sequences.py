@@ -54,5 +54,37 @@ TEST_SEQUENCES = [
         "formula": "a(n) = a(n-1) + a(n-2)",
         "prediction": [13, 21, 34],
         "verified": True,
-    }
+    },
+    {
+        "name": "Lucas",
+        "sequence": [2, 1, 3, 4, 7, 11],
+        "type": "Lucas",
+        "formula": "a(n) = a(n-1) + a(n-2)",
+        "prediction": [18, 29, 47],
+        "verified": True,
+    },
+    {
+        "name": "Pell",
+        "sequence": [0, 1, 2, 5, 12, 29],
+        "type": "Pell",
+        "formula": "a(n) = 2a(n-1) + a(n-2)",
+        "prediction": [70, 169, 408],
+        "verified": True,
+    },
+    {
+        "name": "Jacobsthal",
+        "sequence": [0, 1, 1, 3, 5, 11],
+        "type": "Jacobsthal",
+        "formula": "a(n) = a(n-1) + 2a(n-2)",
+        "prediction": [21, 43, 85],
+        "verified": True,
+    },
+    {
+        "name": "Factorial",
+        "sequence": [1, 2, 6, 24, 120, 720],
+        "type": "Factorial",
+        "formula": "a(n) = n!",
+        "prediction": [5040, 40320, 362880],
+        "verified": True,
+    }  
 ]

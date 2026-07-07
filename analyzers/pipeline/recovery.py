@@ -80,9 +80,44 @@ def recover_fibonacci_formula(sequence, report):
     )
 
     report["Sequence Classification"]["Parameters"] = {
-        "First": sequence[0],
-        "Second": sequence[1],
+        "Seeds": [sequence[0],sequence[1]],
+        "RecurrenceCoefficients": [1,1]
     }
+
+def recover_lucas_formula(sequence, report):
+    report["Sequence Classification"]["Formula"] = (
+        "a(n) = a(n-1) + a(n-2)"
+    )
+
+    report["Sequence Classification"]["Parameters"] = {
+        "Seeds": [2, 1],
+        "RecurrenceCoefficients": [1, 1],
+    }
+
+def recover_pell_formula(sequence, report):
+    report["Sequence Classification"]["Formula"] = (
+        "a(n) = 2a(n-1) + a(n-2)"
+    )
+
+    report["Sequence Classification"]["Parameters"] = {
+        "Seeds": [0, 1],
+        "RecurrenceCoefficients": [2, 1],
+    }
+
+def recover_jacobsthal_formula(sequence, report):
+    report["Sequence Classification"]["Formula"] = (
+        "a(n) = a(n-1) + 2a(n-2)"
+    )
+
+    report["Sequence Classification"]["Parameters"] = {
+        "Seeds": [0, 1],
+        "RecurrenceCoefficients": [1, 2],
+    }
+
+def recover_factorial_formula(sequence, report):
+    report["Sequence Classification"]["Formula"] = "a(n) = n!"
+
+    report["Sequence Classification"]["Parameters"] = {}
 
 RECOVERY_HANDLERS = {
     "Polynomial": recover_polynomial_formula,
@@ -91,7 +126,11 @@ RECOVERY_HANDLERS = {
     "Constant": recover_constant_formula,
     "Triangular": recover_triangular_formula,
     "Pentagonal": recover_pentagonal_formula,
-    "Fibonacci": recover_fibonacci_formula
+    "Fibonacci": recover_fibonacci_formula,
+    "Lucas": recover_lucas_formula,
+    "Pell": recover_pell_formula,
+    "Jacobsthal": recover_jacobsthal_formula,
+    "Factorial": recover_factorial_formula
 }
 
 

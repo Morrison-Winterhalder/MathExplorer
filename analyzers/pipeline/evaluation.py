@@ -1,3 +1,6 @@
+from math import factorial
+
+# Explicit Formulas
 def evaluate_polynomial(coefficients,n):
     value = 0
     for i, coefficient in enumerate(coefficients):
@@ -27,20 +30,37 @@ def evaluate_pentagonal(_, n):
 def evaluate_constant(constant, n):
     return constant
 
-def evaluate_fibonacci(parameters, n):
-    a = parameters["First"]
-    b = parameters["Second"]
+def evaluate_factorial(parameters, n):
+    return factorial(n)
 
-    if n == 1:
-        return a
-    if n == 2:
-        return b
+# Recurrence Relations
+def evaluate_linear_recurrence(parameters, n):
 
-    for _ in range(3, n + 1):
-        a, b = b, a + b
+    seeds = parameters["Seeds"]
+    coefficients = parameters["RecurrenceCoefficients"]
 
-    return b
+    if n <= len(seeds):
+        return seeds[n-1]
 
+    terms = seeds.copy()
+
+    while len(terms) < n:
+
+        next_term = 0
+
+        # Combine the previous k terms
+        for coefficient, previous in zip(
+            coefficients,
+            reversed(terms[-len(coefficients):])
+        ):
+            next_term += coefficient * previous
+
+        terms.append(next_term)
+
+    return terms[-1]
+
+
+# Registry
 EVALUATION_HANDLERS = {
     "Constant": evaluate_constant,
     "Arithmetic": evaluate_polynomial,
@@ -48,5 +68,9 @@ EVALUATION_HANDLERS = {
     "Geometric": evaluate_geometric,
     "Triangular": evaluate_triangular,
     "Pentagonal": evaluate_pentagonal,
-    "Fibonacci": evaluate_fibonacci
+    "Fibonacci": evaluate_linear_recurrence,
+    "Lucas": evaluate_linear_recurrence,
+    "Pell": evaluate_linear_recurrence,
+    "Jacobsthal": evaluate_linear_recurrence,
+    "Factorial": evaluate_factorial
 }

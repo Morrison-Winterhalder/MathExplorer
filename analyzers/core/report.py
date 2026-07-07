@@ -3,6 +3,10 @@ from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing,
 from families.triangles import is_triangular
 from families.pentagonal import is_pentagonal
 from families.fibonacci import is_fibonacci
+from families.lucas import is_lucas
+from families.pell import is_pell
+from families.jacobsthal import is_jacobsthal
+from families.factorial import is_factorial
 
 def initialize_report(sequence):
     return {
@@ -27,7 +31,11 @@ def initialize_report(sequence):
             "Polynomial Degree": polynomial_degree(sequence),
             "Is Triangular?": is_triangular(sequence),
             "Is Pentagonal?": is_pentagonal(sequence),
-            "Is Fibonacci?": is_fibonacci(sequence)
+            "Is Fibonacci?": is_fibonacci(sequence),
+            "Is Lucas?": is_lucas(sequence),
+            "Is Pell?": is_pell(sequence),
+            "Is Jacobsthal?": is_jacobsthal(sequence),
+            "Is Factorial?": is_factorial(sequence)
         },
         "Transformations": {
             "First Differences": first_differences(sequence),
