@@ -6,6 +6,7 @@ from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing,
 from analyzers.pipeline.recovery import recover_arithmetic, recover_geometric, recover_polynomial
 from analyzers.pipeline.verification import verify_sequence
 from analyzers.pipeline.prediction import predict_terms
+from analyzers.pipeline.confidence import determine_confidence
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [
@@ -41,33 +42,6 @@ def format_polynomial(coefficients):
     if not polyList:
         return "0"
     return polyString
-
-def determine_confidence(sequence, report):
-    if len(sequence) == 1:
-        return "Very Low"
-    
-    if len(sequence) == 2:
-        return "Low"
-
-    confidence = 0
-    confidence += len(sequence)
-    if report["Verification"]["Verified"]:
-        confidence += 2
-    sequence_type = report["Sequence Classification"]["Type"]
-    if sequence_type in ("Polynomial","Arithmetic","Geometric"):
-        confidence += 2
-
-
-    if confidence >= 9:
-        return "Certain"
-    elif confidence >= 7:
-        return "High"
-    elif confidence >= 5:
-        return "Medium"
-    elif confidence >= 3:
-        return "Low"
-    else:
-        return "Very Low"
 
 def yes_no(value):
     if value is True:
