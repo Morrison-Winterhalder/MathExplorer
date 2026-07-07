@@ -3,6 +3,9 @@ from analyzers.core.transformations import nth_differences, subtract_sequences, 
 from analyzers.pipeline.evaluation import evaluate_polynomial
 from analyzers.core.properties import polynomial_degree
 from analyzers.core.utilities import pretty
+from analyzers.core.formatting import format_polynomial, clean_coefficients
+
+
 
 def recover_polynomial(sequence):
     if len(sequence) < 2:
@@ -33,3 +36,46 @@ def recover_geometric(sequence):
     if len(sequence) < 2:
         return None
     return f"{pretty(sequence[0])} · {pretty(first_ratios(sequence)[0])}^(n-1)"
+
+
+
+def recover_polynomial_formula(sequence, report):
+    coefficients = recover_polynomial(sequence)
+    coefficients = clean_coefficients(coefficients)
+
+    report["Sequence Classification"]["Parameters"] = coefficients
+    report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
+
+def recover_arithmetic_formula(sequence, report):
+    coefficients = recover_arithmetic(sequence)
+    coefficients = clean_coefficients(coefficients)
+
+    report["Sequence Classification"]["Parameters"] = coefficients
+    report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
+
+def recover_geometric_formula(sequence, report):
+    ratio = first_ratios(sequence)[0]
+
+    report["Sequence Classification"]["Parameters"] = {
+        "First Term": sequence[0],
+        "Ratio": ratio}
+    report["Sequence Classification"]["Formula"] = (f"a(n) = {recover_geometric(sequence)}")
+
+def recover_constant_formula(sequence, report):
+    report["Sequence Classification"]["Parameters"] = sequence[0]
+    report["Sequence Classification"]["Formula"] = f"a(n) = {sequence[0]}"
+
+RECOVERY_HANDLERS = {
+    "Polynomial": recover_polynomial_formula,
+    "Arithmetic": recover_arithmetic_formula,
+    "Geometric": recover_geometric_formula,
+    "Constant": recover_constant_formula,
+}
+
+
+
+def recover_formula(sequence, report):
+    sequence_type = report["Sequence Classification"]["Type"]
+    handler = RECOVERY_HANDLERS.get(sequence_type)
+    if handler is not None:
+        handler(sequence, report)
