@@ -38,5 +38,13 @@ TEST_SEQUENCES = [
         "formula": "a(n) = 5 · 3^(n-1)",
         "prediction": [1215, 3645, 10935],
         "verified": True,
+    },
+    {
+        "name": "Pentagonal",
+        "sequence": [1, 5, 12, 22, 35],
+        "type": "Pentagonal",
+        "formula": "a(n) = n(3n-1)/2",
+        "prediction": [51, 70, 92],
+        "verified": True,
     }
 ]

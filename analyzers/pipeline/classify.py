@@ -50,6 +50,18 @@ def classify_triangular(sequence, report):
         "Reason": "All terms are triangular numbers."
     }
 
+def classify_pentagonal(sequence, report):
+    properties = report["Properties"]
+
+    if not properties["Is Pentagonal?"]:
+        return None
+
+    return {
+        "Type": "Pentagonal",
+        "Degree": 2,
+        "Reason": "All terms are pentagonal numbers."
+    }
+
 def classify_polynomial(sequence, report):
     properties = report["Properties"]
     degree = properties["Polynomial Degree"]
@@ -68,6 +80,7 @@ CLASSIFICATION_HANDLERS = (
     classify_arithmetic,
     classify_geometric,
     classify_triangular,
+    classify_pentagonal,
     classify_polynomial
 )
 

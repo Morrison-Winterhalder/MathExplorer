@@ -1,11 +1,8 @@
 """
-Recognizers for specific mathematical sequence families.
+Recognizers for triangular numbers.
 
 Examples:
-    - Triangular numbers
-    - Fibonacci
-    - Factorials
-    - Figurate numbers
+    - Identify triangular numbers
 """
 
 from math import isqrt

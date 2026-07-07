@@ -18,8 +18,11 @@ def evaluate_geometric(parameters,n):
     ratio = parameters["Ratio"]
     return first_term * (ratio ** (n - 1))
 
-def evaluate_triangular(parameters,n):
+def evaluate_triangular(_,n):
     return n * (n + 1) // 2
+
+def evaluate_pentagonal(_, n):
+    return n * (3 * n - 1) // 2
 
 def evaluate_constant(constant, n):
     return constant
@@ -30,4 +33,5 @@ EVALUATION_HANDLERS = {
     "Polynomial": evaluate_polynomial,
     "Geometric": evaluate_geometric,
     "Triangular": evaluate_triangular,
+    "Pentagonal": evaluate_pentagonal
 }
