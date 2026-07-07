@@ -37,8 +37,6 @@ def recover_geometric(sequence):
         return None
     return f"{pretty(sequence[0])} · {pretty(first_ratios(sequence)[0])}^(n-1)"
 
-
-
 def recover_polynomial_formula(sequence, report):
     coefficients = recover_polynomial(sequence)
     coefficients = clean_coefficients(coefficients)
@@ -65,11 +63,16 @@ def recover_constant_formula(sequence, report):
     report["Sequence Classification"]["Parameters"] = sequence[0]
     report["Sequence Classification"]["Formula"] = f"a(n) = {sequence[0]}"
 
+def recover_triangular_formula(sequence, report):
+    report["Sequence Classification"]["Parameters"] = None
+    report["Sequence Classification"]["Formula"] = "a(n) = n(n+1)/2"
+
 RECOVERY_HANDLERS = {
     "Polynomial": recover_polynomial_formula,
     "Arithmetic": recover_arithmetic_formula,
     "Geometric": recover_geometric_formula,
     "Constant": recover_constant_formula,
+    "Triangular": recover_triangular_formula
 }
 
 

@@ -35,6 +35,21 @@ def classify_geometric(sequence, report):
         "Reason": "First ratios are constant."
     }
 
+def classify_triangular(sequence, report):
+    properties = report["Properties"]
+    transformations = report["Transformations"]
+
+    if not properties["Is Triangular?"]:
+        return None
+
+    return {
+        "Type": "Triangular",
+        "Degree": 2,
+        "Common Difference": None,
+        "Common Ratio": None,
+        "Reason": "All terms are triangular numbers."
+    }
+
 def classify_polynomial(sequence, report):
     properties = report["Properties"]
     degree = properties["Polynomial Degree"]
@@ -52,6 +67,7 @@ CLASSIFICATION_HANDLERS = (
     classify_constant,
     classify_arithmetic,
     classify_geometric,
+    classify_triangular,
     classify_polynomial
 )
 

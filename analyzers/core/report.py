@@ -1,5 +1,6 @@
 from analyzers.core.transformations import first_differences, first_ratios
 from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_increasing, is_geometric, is_unique, polynomial_degree
+from families import is_triangular
 
 def initialize_report(sequence):
     return {
@@ -22,6 +23,7 @@ def initialize_report(sequence):
             "Is Arithmetic?": is_arithmetic(sequence),
             "Is Geometric?": is_geometric(sequence),
             "Polynomial Degree": polynomial_degree(sequence),
+            "Is Triangular?": is_triangular(sequence)
         },
         "Transformations": {
             "First Differences": first_differences(sequence),
