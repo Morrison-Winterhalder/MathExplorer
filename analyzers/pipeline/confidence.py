@@ -24,3 +24,6 @@ def determine_confidence(sequence, report):
         return "Low"
     else:
         return "Very Low"
+    
+def update_confidence(sequence,report):
+    report["Sequence Classification"]["Confidence"] = determine_confidence(sequence, report)

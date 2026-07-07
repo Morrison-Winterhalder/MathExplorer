@@ -1,13 +1,13 @@
 # from analyzers.objects.sequences import prime_numbers, fibonacci, square_numbers
 from analyzers.sequence_analysis import analyze_sequence
-from analyzers.pipeline.classify import classify_sequence
 from analyzers.core.formatting import print_report
 
-sequence = [-7, 5, 161, 833, 2753, 7133, 15785]
+sequence = [1, 55, 1065, 6931, 28153, 86871, 223345]
 
 report = analyze_sequence(sequence)
 
-sequence = [n**5 - 3*n**3 + 2*n - 7 for n in range(1, 8)]
-print(sequence)
-
 print_report(report)
+
+
+# sequence = [2*n**6 - 5*n**4 + n**2 + 3 for n in range(1, 8)]
+# print(sequence)
