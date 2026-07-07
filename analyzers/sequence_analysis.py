@@ -1,34 +1,56 @@
-from math import factorial
+from math import factorial, isclose
 from objects.classifiers import classify_sequence
 
-def pretty_number(x): # FOR LATER
-    if isinstance(x, float) and x.is_integer():
-        return int(x)
-    return x
+def pretty(value):
+    if isinstance(value, float):
+        if value.is_integer():
+            return int(value)
+        return value
+
+    elif isinstance(value, list):
+        return [pretty(v) for v in value]
+
+    elif isinstance(value, dict):
+        return {k: pretty(v) for k, v in value.items()}
+
+    return value
+
+def clean_coefficients(coefficients, tol=1e-10):
+    return [
+        0 if abs(c) < tol else c
+        for c in coefficients
+    ]
 
 def first_differences(sequence):
+    if len(sequence) < 2:
+        return []
     first_difference_sequence = []
     for i in range(0,len(sequence)-1):
         first_difference_sequence.append(sequence[i+1]-sequence[i])
     return first_difference_sequence
 
 def nth_differences(sequence,n):
+    if len(sequence) < 2:
+        return []
     changing_sequence = sequence
     for _ in range(n):
         changing_sequence = first_differences(changing_sequence)
     return changing_sequence
 
 def is_constant(sequence):
-    if len(sequence) < 2:
+    if len(sequence) == 0:
         return None
-    for i in range(1,len(sequence)):
-        if sequence[i] != sequence[0]:
+    for value in sequence[1:]:
+        if value != sequence[0]:
             return False
     return True
 
 def polynomial_degree(sequence):
+    if len(sequence) < 2:
+        return None
     degree = 0
     while True:
+        print("Degree:",degree,"Sequence:",sequence)
         status = is_constant(sequence)
         if status is False:
             sequence = first_differences(sequence)
@@ -51,9 +73,13 @@ def first_ratios(sequence):
     return ratios
 
 def is_arithmetic(sequence):
+    if len(sequence) < 2:
+        return None
     return is_constant(first_differences(sequence))
 
 def is_geometric(sequence):
+    if len(sequence) < 2:
+        return None
     ratios = first_ratios(sequence)
     if None not in ratios:
         return is_constant(ratios)
@@ -77,6 +103,8 @@ def is_decreasing(sequence):
     return True
 
 def is_unique(sequence):
+    if len(sequence) < 2:
+        return None
     return (len(sequence) == len(set(sequence)))
 
 def format_polynomial(coefficients):
@@ -86,21 +114,22 @@ def format_polynomial(coefficients):
         if coefficient == 0:
             continue
         elif power == 0:
-            polyList.append(str(coefficient))
+            polyList.append(str(pretty(coefficient)))
         elif power == 1:
             if coefficient == 1:
                 polyList.append("n")
             elif coefficient == -1:
                 polyList.append("-n")
             else:
-                polyList.append(f"{coefficient}n")
+                polyList.append(f"{pretty(coefficient)}n")
         else:
             if coefficient == 1:
-                polyList.append(f"n^{power}")
+                polyList.append(f"n^{pretty(power)}")
             elif coefficient == -1:
-                polyList.append(f"-n^{power}")
+                polyList.append(f"-n^{pretty(power)}")
             else:
-                polyList.append(f"{coefficient}n^{power}")
+                polyList.append(f"{pretty(coefficient)}n^{pretty(power)}")
+    polyList = pretty(polyList)
     polyString = " + ".join(polyList)
     polyString = polyString.replace("+ -", "- ")
     if not polyList:
@@ -135,6 +164,8 @@ def subtract_sequences(Seq1,Seq2):
 
 
 def recover_polynomial(sequence):
+    if len(sequence) < 2:
+        return None
     degree = polynomial_degree(sequence)
     coefficients = [0] * (degree + 1)
     remaining = sequence.copy()
@@ -153,15 +184,53 @@ def recover_polynomial(sequence):
     return coefficients
 
 def recover_arithmetic(sequence):
+    if len(sequence) < 2:
+        return []
     return [first_differences(sequence)[0],(sequence[0]-first_differences(sequence)[0])]
 
 def recover_geometric(sequence):
-    return f"{sequence[0]} · {first_ratios(sequence)[0]}^(n-1)"
+    if len(sequence) < 2:
+        return None
+    return f"{pretty(sequence[0])} · {pretty(first_ratios(sequence)[0])}^(n-1)"
+
+def determine_confidence(sequence, report):
+    if len(sequence) == 1:
+        return "Very Low"
+    
+    if len(sequence) == 2:
+        return "Low"
+
+    confidence = 0
+    confidence += len(sequence)
+    if report["Verification"]["Verified"]:
+        confidence += 2
+    sequence_type = report["Sequence Classification"]["Type"]
+    if sequence_type in ("Polynomial","Arithmetic","Geometric"):
+        confidence += 2
+
+
+    if confidence >= 9:
+        return "Certain"
+    elif confidence >= 7:
+        return "High"
+    elif confidence >= 5:
+        return "Medium"
+    elif confidence >= 3:
+        return "Low"
+    else:
+        return "Very Low"
 
 def verify_sequence(sequence,report):
     classification = report["Sequence Classification"]
     sequence_type = classification["Type"]
-    parameters = classification["Parameters"]
+    parameters = classification.get("Parameters")
+
+    if parameters is None:
+        return {
+            "Verified": None,
+            "Generated": None
+        }
+
     if sequence_type == "Arithmetic":
         generated = []
         for n in range(1,len(sequence)+1):
@@ -178,7 +247,10 @@ def verify_sequence(sequence,report):
         generated = [parameters] * len(sequence)
     else:
         return {"Verified": False, "Generated": None}
-    return {"Verified":generated == sequence,"Generated": generated}
+    
+    verified = all(isclose(a,b,rel_tol=1e-9, abs_tol=1e-9) for a, b in zip(generated,sequence))
+
+    return {"Verified": verified,"Generated": generated}
 
 def predict_terms(sequence,report,number_of_terms=5):
     n = len(sequence) + 1
@@ -206,6 +278,8 @@ def yes_no(value):
         return "Unknown"
 
 def analyze_sequence(sequence):
+    if sequence == []:
+        return None
     report = {
         "Sequence Classification": {},
 
@@ -234,42 +308,60 @@ def analyze_sequence(sequence):
         
     }
     report["Sequence Classification"] = classify_sequence(sequence,report)
+    classification = report["Sequence Classification"]
+    sequence_type = classification["Type"]
     if report["Sequence Classification"]["Type"] == "Polynomial":
         coefficients = recover_polynomial(sequence)
+        print(coefficients)
+        coefficients = clean_coefficients(coefficients)
+        print(coefficients)
         report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
         report["Sequence Classification"]["Parameters"] = coefficients
-    if report["Sequence Classification"]["Type"] == "Arithmetic":
+    elif report["Sequence Classification"]["Type"] == "Arithmetic":
         coefficients = recover_arithmetic(sequence)
-        report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
         report["Sequence Classification"]["Parameters"] = coefficients
-    if report["Sequence Classification"]["Type"] == "Geometric":
+        coefficients = clean_coefficients(coefficients)
+        report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
+    elif report["Sequence Classification"]["Type"] == "Geometric":
         report["Sequence Classification"]["Formula"] = (f"a(n) = {recover_geometric(sequence)}")
         report["Sequence Classification"]["Parameters"] = {"First Term":sequence[0],"Ratio":first_ratios(sequence)[0]}
-    if report["Sequence Classification"]["Type"] == "Constant":
+    elif report["Sequence Classification"]["Type"] == "Constant":
         report["Sequence Classification"]["Formula"] = (f"a(n) = {sequence[0]}")
         report["Sequence Classification"]["Parameters"] = sequence[0]
 
-    report["Verification"]["Verified"] = verify_sequence(sequence,report)["Verified"]
+    if "Parameters" in classification:
+        verification = verify_sequence(sequence, report)
+        report["Verification"]["Verified"] = verification["Verified"]
+        report["Predictions"]["Next Terms"] = predict_terms(
+            sequence,
+            report,
+            number_of_terms=5)
+    else:
+        report["Verification"]["Verified"] = None
+        report["Predictions"]["Next Terms"] = None
 
-    report["Predictions"]["Next Terms"] = predict_terms(sequence,report,number_of_terms=5)
+    report["Sequence Classification"]["Confidence"] = determine_confidence(sequence,report)
     return report
 
 def print_report(report):
     print("""========================================
            MathExplorer Report 
 ========================================""")
+    print()
+    if report == None:
+        print("Error: Cannot analyze an empty sequence")
+        return
     for section, values in report.items():
         print(section.title())
         print("-" * len(section))
         for key, value in values.items():
             if key == "Parameters":
                 continue
-
             if isinstance(value,bool):
                 print(f"{key:<20}: {yes_no(value)}")
             elif value is None:
                 continue
             else:
-                print(f"{key:<20}: {value}")
+                print(f"{key:<20}: {pretty(value)}")
         print()
     
