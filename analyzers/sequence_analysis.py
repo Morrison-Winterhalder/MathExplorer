@@ -5,6 +5,7 @@ from analyzers.core.utilities import pretty
 from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_geometric, is_increasing, is_unique, polynomial_degree
 from analyzers.pipeline.recovery import recover_arithmetic, recover_geometric, recover_polynomial
 from analyzers.pipeline.verification import verify_sequence
+from analyzers.pipeline.prediction import predict_terms
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [
@@ -67,23 +68,6 @@ def determine_confidence(sequence, report):
         return "Low"
     else:
         return "Very Low"
-
-def predict_terms(sequence,report,number_of_terms=5):
-    n = len(sequence) + 1
-    predictions = []
-    classification = report["Sequence Classification"]
-    sequence_type = classification["Type"]
-    parameters = classification["Parameters"]
-    for n in range(len(sequence)+1,len(sequence)+number_of_terms+1):
-        if sequence_type == "Arithmetic":
-            predictions.append(evaluate_polynomial(parameters,n))
-        elif sequence_type == "Polynomial":
-           predictions.append(evaluate_polynomial(parameters,n))
-        elif sequence_type == "Constant":
-            predictions.append(parameters)
-        elif sequence_type == "Geometric":
-           predictions.append(evaluate_geometric(parameters,n))
-    return predictions
 
 def yes_no(value):
     if value is True:
