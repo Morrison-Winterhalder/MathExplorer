@@ -23,4 +23,20 @@ TEST_SEQUENCES = [
         "prediction": [21, 28, 36],
         "verified": True
     },
+    {
+        "name": "Polynomial (Cubic)",
+        "sequence": [0, 11, 46, 117, 236],
+        "type": "Polynomial",
+        "formula": "a(n) = 2n^3 - 3n + 1",
+        "prediction": [415, 666, 1001],
+        "verified": True,
+    },
+    {
+        "name": "Geometric (Ratio 3)",
+        "sequence": [5, 15, 45, 135, 405],
+        "type": "Geometric",
+        "formula": "a(n) = 5 · 3^(n-1)",
+        "prediction": [1215, 3645, 10935],
+        "verified": True,
+    }
 ]
