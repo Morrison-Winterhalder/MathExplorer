@@ -20,11 +20,38 @@
 
 ---
 
-## v1.5 - In Development
+# Changelog
 
-### Planned
-- Triangular numbers
-- Figurate numbers
-- Fibonacci sequences
-- Improved confidence scoring
-- Additional sequence families
+## Version 1.5
+
+### Added
+
+- Triangular sequence recognition
+- Pentagonal sequence recognition
+- Fibonacci sequence recognition
+- Lucas sequence recognition
+- Pell sequence recognition
+- Jacobsthal sequence recognition
+- Factorial sequence recognition
+
+### Improved
+
+- Refactored classification into handler architecture
+- Refactored recovery into handler architecture
+- Refactored prediction into handler architecture
+- Refactored verification into handler architecture
+- Added generic linear recurrence evaluator
+- Improved report formatting
+- Improved project modularity
+
+### Testing
+
+- Added automated regression test suite
+- Added classification tests
+- Added recovery tests
+- Added verification tests
+- Added prediction tests
+
+### Result
+
+MathExplorer v1.5 now supports **11 mathematical sequence families** through a modular analysis pipeline capable of classification, formula recovery, verification, and prediction.

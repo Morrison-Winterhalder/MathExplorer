@@ -2,7 +2,7 @@
 from analyzers.sequence_analysis import analyze_sequence
 from analyzers.core.formatting import print_report
 
-sequence = [1,1,2,3,5,8,13,21,34,55]
+sequence = [1,1,2,3,5]
 
 report = analyze_sequence(sequence)
 

@@ -12,6 +12,8 @@ def initialize_report(sequence):
     return {
         "Sequence Classification": {},
 
+        "Recognition Scores": {},
+
         "Verification" : {},
 
         "Predictions": {},
