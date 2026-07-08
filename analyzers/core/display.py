@@ -1,18 +1,5 @@
 from analyzers.core.formatting import yes_no, pretty
 
-def confidence_label(score):
-    if score >= 95:
-        return "Certain"
-    if score >= 85:
-        return "Very High"
-    if score >= 70:
-        return "High"
-    if score >= 50:
-        return "Moderate"
-    if score >= 30:
-        return "Low"
-    return "Very Low"
-
 def print_sequence_classification(report):
     classification = report["Sequence Classification"]
 
@@ -20,7 +7,13 @@ def print_sequence_classification(report):
     print("-----------------------")
 
     family = classification.get("Family")
-    print(f"Family{'':<10}: {family.NAME if family else 'Unknown'}")
+    tied_families = classification.get("Tied Families", [])
+
+    family = classification.get("Family")
+
+    family_name = family.NAME if family else "Unknown"
+
+    print(f"Family{'':<10}: {family_name}")
 
     formula = classification.get("Formula")
     if formula is not None:
@@ -28,8 +21,11 @@ def print_sequence_classification(report):
 
     confidence = classification.get("Confidence")
     if confidence is not None:
-        score = confidence["Confidence"]
-        label = confidence_label(score)
+        score = confidence["Score"]
+        if confidence.get("Tied"):
+            label = "Ambiguous"
+        else:
+            label = confidence["Label"]
         print(f"{'Confidence':<16}: {score:.1f}% ({label})")
 
     parameters = classification.get("Parameters")
@@ -63,11 +59,13 @@ def print_recognition_scores(report):
     print(row.format("Rank", "Family", "RRN", "NRMSE", "R²"))
     print("-" * len(row.format("Rank", "Family", "RRN", "NRMSE", "R²")))
 
-    for rank, (family, score) in enumerate(ranking, start=1):
+    for rank, score in enumerate(ranking, start=1):
+        family = score["Family"]
+
         print(
             row.format(
                 rank,
-                family,
+                family.NAME,
                 f"{score['RRN']:.4f}",
                 f"{score['NRMSE']:.4f}",
                 f"{score['R2']:.4f}",
@@ -76,15 +74,19 @@ def print_recognition_scores(report):
 
     print()
     print()
-    print(f"{'Winner':<12}: {best_fit['Winner']}")
+    winner_names = ", ".join(
+        winner["Family"].NAME
+        for winner in best_fit["Winners"]
+    )
+
+    print(f"{'Winner(s)':<12}: {winner_names}")
 
     runner_up = best_fit.get("Runner Up")
+
     if runner_up is None:
         print(f"{'Runner-Up':<12}: None")
-        print(f"{'Separation':<12}: 1.000")
     else:
-        print(f"{'Runner-Up':<12}: {runner_up}")
-        print(f"{'Separation':<12}: {best_fit['Separation']:.3f}")
+        print(f"{'Runner-Up':<12}: {runner_up.NAME}")
 
     print()
 

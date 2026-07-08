@@ -1,16 +1,19 @@
-from math import sqrt
+from math import isqrt
 
 NAME = "Pentagonal"
+DESCRIPTION = "Terms are pentagonal numbers."
+REPRESENTATION = "Explicit"
 
-def is_pentagonal(sequence):
+
+def recognize(sequence):
     if len(sequence) == 0:
         return None
 
     for value in sequence:
         discriminant = 1 + 24 * value
-        root = sqrt(discriminant)
+        root = isqrt(discriminant)
 
-        if not root.is_integer():
+        if root * root != discriminant:
             return False
 
         n = (1 + root) / 6
@@ -20,18 +23,21 @@ def is_pentagonal(sequence):
 
     return True
 
-def fit_pentagonal(sequence):
-    if is_pentagonal(sequence) is not True:
+
+def fit(sequence):
+    if recognize(sequence) is not True:
         return None
 
     return {}
 
-def evaluate_pentagonal(_, n):
+
+def evaluate(_, n):
     return n * (3 * n - 1) // 2
+
+
+def formula(_):
+    return "a(n) = n(3n - 1)/2"
+
 
 def complexity(_):
     return 2
-
-fit = fit_pentagonal
-evaluate = evaluate_pentagonal
-recognize = is_pentagonal

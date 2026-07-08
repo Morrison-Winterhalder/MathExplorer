@@ -1,37 +1,52 @@
 from analyzers.core.transformations import first_differences
-from families.constant import is_constant
-from families.polynomial import evaluate_polynomial
+from families import constant
+from families import polynomial
 
 NAME = "Arithmetic"
+DESCRIPTION = "Constant first differences."
+REPRESENTATION = "Explicit"
 
-def is_arithmetic(sequence):
+def recognize(sequence):
     if len(sequence) < 2:
         return None
-    return is_constant(first_differences(sequence))
+    return constant.recognize(first_differences(sequence))
 
-def fit_arithmetic(sequence):
-    if not is_arithmetic(sequence):
+def fit(sequence):
+    if len(sequence) < 2:
         return None
 
     differences = first_differences(sequence)
-    difference = first_differences(sequence)[0]
+
+    if not constant.recognize(differences):
+        return None
+
+    difference = differences[0]
 
     return {
         "Difference": difference,
-        "Intercept": sequence[0]-difference
+        "Intercept": sequence[0] - difference
     }
 
-def evaluate_arithmetic(parameters, n):
-    coefficients = [
-        parameters["Difference"],
-        parameters["Intercept"]
-    ]
+def evaluate(parameters, n):
+    return polynomial.evaluate(
+        [
+            parameters["Difference"],
+            parameters["Intercept"]
+        ],
+        n
+    )
 
-    return evaluate_polynomial(coefficients, n)
+def formula(parameters):
+    d = parameters["Difference"]
+    b = parameters["Intercept"]
+
+    if b == 0:
+        return f"a(n) = {d}n"
+
+    if b > 0:
+        return f"a(n) = {d}n + {b}"
+
+    return f"a(n) = {d}n - {abs(b)}"
 
 def complexity(_):
     return 1
-
-fit = fit_arithmetic
-evaluate = evaluate_arithmetic
-recognize = is_arithmetic

@@ -1,6 +1,8 @@
 NAME = "Constant"
+DESCRIPTION = "All terms are equal."
+REPRESENTATION = "Explicit"
 
-def is_constant(sequence):
+def recognize(sequence):
     if len(sequence) == 0:
         return None
 
@@ -11,8 +13,8 @@ def is_constant(sequence):
     return True
 
 
-def fit_constant(sequence):
-    if is_constant(sequence) is not True:
+def fit(sequence):
+    if recognize(sequence) is not True:
         return None
 
     return {
@@ -20,12 +22,11 @@ def fit_constant(sequence):
     }
 
 
-def evaluate_constant(parameters, n):
+def evaluate(parameters, n):
     return parameters["Value"]
+
+def formula(parameters):
+    return f"a(n) = {parameters['Value']}"
 
 def complexity(_):
     return 0
-
-fit = fit_constant
-evaluate = evaluate_constant
-recognize = is_constant

@@ -1,35 +1,54 @@
-from families.constant import is_constant
+from families import constant
 from analyzers.core.transformations import first_ratios
 
 NAME = "Geometric"
+DESCRIPTION = "Constant ratios between consecutive terms."
+REPRESENTATION = "Explicit"
 
-def is_geometric(sequence):
+
+def recognize(sequence):
     if len(sequence) < 2:
         return None
+
     ratios = first_ratios(sequence)
+
     if None in ratios:
         return None
-    return is_constant(ratios)
-    
-def fit_geometric(sequence):
-    if is_geometric(sequence) is not True:
+
+    return constant.recognize(ratios)
+
+
+def fit(sequence):
+    if len(sequence) < 2:
         return None
 
-    ratio = first_ratios(sequence)[0]
+    ratios = first_ratios(sequence)
+
+    if None in ratios:
+        return None
+
+    if constant.recognize(ratios) is not True:
+        return None
 
     return {
         "First Term": sequence[0],
-        "Ratio": ratio
+        "Ratio": ratios[0]
     }
 
-def evaluate_geometric(parameters,n):
-    first_term = parameters["First Term"]
-    ratio = parameters["Ratio"]
-    return first_term * (ratio ** (n - 1))
+
+def evaluate(parameters, n):
+    return (
+        parameters["First Term"]
+        * parameters["Ratio"] ** (n - 1)
+    )
+
+
+def formula(parameters):
+    a = parameters["First Term"]
+    r = parameters["Ratio"]
+
+    return f"a(n) = {a}({r})^(n-1)"
+
 
 def complexity(_):
     return 1
-
-fit = fit_geometric
-evaluate = evaluate_geometric
-recognize = is_geometric

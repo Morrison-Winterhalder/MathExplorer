@@ -1,8 +1,10 @@
 from math import factorial
 
 NAME = "Factorial"
+DESCRIPTION = "Terms equal successive factorials."
+REPRESENTATION = "Explicit"
 
-def is_factorial(sequence):
+def recognize(sequence):
     if len(sequence) == 0:
         return None
 
@@ -12,19 +14,21 @@ def is_factorial(sequence):
 
     return True
 
-def fit_factorial(sequence):
-    if not is_factorial(sequence):
+
+def fit(sequence):
+    if recognize(sequence) is not True:
         return None
 
     return {}
 
-def evaluate_factorial(_, n):
+
+def evaluate(_, n):
     return factorial(n)
+
+
+def formula(_):
+    return "a(n) = n!"
+
 
 def complexity(_):
     return 2
-
-
-fit = fit_factorial
-evaluate = evaluate_factorial
-recognize = is_factorial

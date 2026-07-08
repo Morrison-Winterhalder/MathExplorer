@@ -1,7 +1,5 @@
-from math import isqrt
-
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Hexagonal"
+DESCRIPTION = "Hexagonal numbers."
 REPRESENTATION = "Explicit"
 
 
@@ -9,14 +7,8 @@ def recognize(sequence):
     if len(sequence) == 0:
         return None
 
-    for term in sequence:
-        if term < 0:
-            return False
-
-        value = 8 * term + 1
-        root = isqrt(value)
-
-        if root * root != value:
+    for n, value in enumerate(sequence, start=1):
+        if value != evaluate({}, n):
             return False
 
     return True
@@ -30,11 +22,11 @@ def fit(sequence):
 
 
 def evaluate(_, n):
-    return n * (n + 1) // 2
+    return n * (2 * n - 1)
 
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
+    return "a(n) = n(2n - 1)"
 
 
 def complexity(_):

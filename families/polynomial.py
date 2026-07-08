@@ -1,15 +1,17 @@
-from families.constant import is_constant
+from families import constant
 from analyzers.core.transformations import first_differences, nth_differences, subtract_sequences
 from math import factorial
 
 NAME = "Polynomial"
+DESCRIPTION = "Finite constant differences."
+REPRESENTATION = "Explicit"
 
-def polynomial_degree(sequence):
+def compute_degree(sequence):
     if len(sequence) < 2:
         return None
     degree = 0
     while True:
-        status = is_constant(sequence)
+        status = constant.recognize(sequence)
         if status is False:
             sequence = first_differences(sequence)
             degree += 1
@@ -19,11 +21,15 @@ def polynomial_degree(sequence):
             break
     return degree
 
-def is_polynomial(sequence):
-    return polynomial_degree(sequence) is not None
 
-def fit_polynomial(sequence):
-    degree = polynomial_degree(sequence)
+
+def recognize(sequence):
+    if len(sequence) < 2:
+        return None
+    return compute_degree(sequence) is not None
+
+def fit(sequence):
+    degree = compute_degree(sequence)
 
     if degree is None:
         return None
@@ -38,7 +44,7 @@ def fit_polynomial(sequence):
         coefficients[index] = leading_coefficient
         basis_coefficients[index] = leading_coefficient
         generated = [
-            evaluate_polynomial(basis_coefficients, n)
+            evaluate(basis_coefficients, n)
             for n in range(1, len(sequence) + 1)
         ]
         residual = subtract_sequences(residual, generated)
@@ -46,17 +52,36 @@ def fit_polynomial(sequence):
 
     return coefficients
 
-def evaluate_polynomial(coefficients,n):
+def evaluate(coefficients, n):
     value = 0
     for i, coefficient in enumerate(coefficients):
         power = len(coefficients) - 1 - i
-        value += (coefficient) * ((n) ** power)
+        value += coefficient * n**power
     return value
+
+def formula(coefficients):
+    terms = []
+
+    degree = len(coefficients) - 1
+
+    for i, coefficient in enumerate(coefficients):
+        power = degree - i
+
+        if abs(coefficient) < 1e-12:
+            continue
+
+        if power == 0:
+            terms.append(f"{coefficient:g}")
+        elif power == 1:
+            terms.append(f"{coefficient:g}n")
+        else:
+            terms.append(f"{coefficient:g}n^{power}")
+
+    if not terms:
+        return "a(n) = 0"
+
+    return "a(n) = " + " + ".join(terms).replace("+ -", "- ")
 
 def complexity(parameters):
     degree = max(0, len(parameters) - 1)
     return degree + 2
-
-recognize = is_polynomial
-fit = fit_polynomial
-evaluate = evaluate_polynomial

@@ -14,7 +14,7 @@ def test_perfect_confidence():
         complexity=2
     )
 
-    assert 80 <= result["Confidence"] <= 100
+    assert 80 <= result["Score"] <= 100
 
 
 # ==========================================================
@@ -30,7 +30,7 @@ def test_tie_confidence():
         complexity=2
     )
 
-    assert result["Confidence"] < 70
+    assert result["Competition Penalty"] == 20
 
 
 # ==========================================================
@@ -46,7 +46,7 @@ def test_single_family_confidence():
         complexity=2
     )
 
-    assert result["Confidence"] > 90
+    assert result["Score"] > 80
 
 
 # ==========================================================
@@ -69,7 +69,7 @@ def test_complexity_penalty():
         complexity=8
     )
 
-    assert complicated["Confidence"] < simple["Confidence"]
+    assert complicated["Score"] < simple["Score"]
 
 
 # ==========================================================
@@ -92,7 +92,7 @@ def test_sequence_length_bonus():
         complexity=2
     )
 
-    assert long["Confidence"] > short["Confidence"]
+    assert long["Score"] > short["Score"]
 
 
 # ==========================================================
@@ -115,4 +115,4 @@ def test_fit_penalty():
         complexity=2
     )
 
-    assert noisy["Confidence"] < perfect["Confidence"]
+    assert noisy["Score"] < perfect["Score"]

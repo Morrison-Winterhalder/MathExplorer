@@ -7,12 +7,12 @@ def calculate_confidence(
     complexity
 ):
 
-    confidence = 85
+    confidence = 60
 
     # -------------------------
     # 1. Fit Penalty
     # -------------------------
-    fit_penalty = 100 * (1 - math.exp(-5 * winner_error))
+    fit_penalty = 80 * (1 - math.exp(-8 * winner_error))
 
     # -------------------------
     # 2. Competition Penalty
@@ -28,12 +28,12 @@ def calculate_confidence(
             min(1.0, 1 - winner_error / runner_up_error)
     )
 
-    competition_penalty = 40 * (1 - separation)
+    competition_penalty = 20 * (1 - separation)
 
     # -------------------------
-    # 3. Evidence Penalty
+    # 3. Sample Size Bonus
     # -------------------------
-    evidence_bonus = 20 * (1 - math.exp(-sequence_length / 20))       
+    sample_size_bonus = 35 * (1 - math.exp(-sequence_length / 10))       
 
     # -------------------------
     # 4. Complexity Penalty
@@ -42,18 +42,30 @@ def calculate_confidence(
 
     confidence -= fit_penalty
     confidence -= competition_penalty
-    confidence += evidence_bonus
+    confidence += sample_size_bonus
     confidence -= complexity_penalty
 
     confidence = max(0, min(100, confidence))
 
+    if confidence >= 90:
+        label = "Very High"
+    elif confidence >= 75:
+        label = "High"
+    elif confidence >= 60:
+        label = "Moderate"
+    elif confidence >= 40:
+        label = "Low"
+    else:
+        label = "Very Low"
+
     return {
         "Fit Penalty": fit_penalty,
         "Competition Penalty": competition_penalty,
-        "Evidence Bonus": evidence_bonus,
+        "Evidence Bonus": sample_size_bonus,
         "Complexity Penalty": complexity_penalty,
         "Separation": separation,
-        "Confidence": confidence
+        "Score": confidence,
+        "Label": label
     }
 
 def update_confidence(sequence, report):
@@ -64,7 +76,9 @@ def update_confidence(sequence, report):
         report["Sequence Classification"]["Confidence"] = None
         return
     
-    winner = best_fit["Winner Score"]
+    winner = best_fit["Winners"][0]
+
+    tied = len(best_fit["Winners"]) > 1
 
     if winner is None:
         report["Sequence Classification"]["Confidence"] = None
@@ -83,9 +97,29 @@ def update_confidence(sequence, report):
         winner["Parameters"]
     )
 
-    report["Sequence Classification"]["Confidence"] = calculate_confidence(
+    confidence = calculate_confidence(
         winner_error,
         runner_error,
         len(sequence),
         family_complexity
     )
+
+    if tied:
+        confidence["Score"] = max(0, confidence["Score"] - 15)
+
+    score = confidence["Score"]
+
+    if score >= 90:
+        confidence["Label"] = "Very High"
+    elif score >= 75:
+        confidence["Label"] = "High"
+    elif score >= 60:
+        confidence["Label"] = "Moderate"
+    elif score >= 40:
+        confidence["Label"] = "Low"
+    else:
+        confidence["Label"] = "Very Low"
+
+    confidence["Tied"] = tied
+
+    report["Sequence Classification"]["Confidence"] = confidence

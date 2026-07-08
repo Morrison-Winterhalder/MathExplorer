@@ -1,16 +1,14 @@
 from families.recurrence import evaluate_linear_recurrence
 
 NAME = "Fibonacci"
+DESCRIPTION = "Each term is the sum of the previous two."
+REPRESENTATION = "Recurrence"
 
-def is_fibonacci(sequence):
+def recognize(sequence):
     if len(sequence) < 3:
         return False
 
-    if sequence[:2] == [0, 1]:
-        pass
-    elif sequence[:2] == [1, 1]:
-        pass
-    else:
+    if sequence[:2] not in ([0, 1], [1, 1]):
         return False
 
     for i in range(2, len(sequence)):
@@ -19,8 +17,9 @@ def is_fibonacci(sequence):
 
     return True
 
-def fit_fibonacci(sequence):
-    if not is_fibonacci(sequence):
+
+def fit(sequence):
+    if recognize(sequence) is not True:
         return None
 
     return {
@@ -28,10 +27,14 @@ def fit_fibonacci(sequence):
         "RecurrenceCoefficients": [1, 1]
     }
 
-evaluate = evaluate_linear_recurrence
+
+def evaluate(parameters, n):
+    return evaluate_linear_recurrence(parameters, n)
+
+
+def formula(_):
+    return "a(n) = a(n-1) + a(n-2)"
+
 
 def complexity(_):
     return 2
-
-fit = fit_fibonacci
-recognize = is_fibonacci

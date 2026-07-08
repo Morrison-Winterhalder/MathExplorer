@@ -1,8 +1,13 @@
-from analyzers.core.statistics import r_squared, relative_residual_norm, normalized_rmse
+from analyzers.core.statistics import (
+    r_squared,
+    relative_residual_norm,
+    normalized_rmse,
+)
 from families.registry import FAMILIES
 from analyzers.core.best_fit import best_fit
 
 COMPLEXITY_WEIGHT = 1e-3
+
 
 def score_family(sequence, family):
 
@@ -20,40 +25,43 @@ def score_family(sequence, family):
         "Residuals": fit["Residuals"],
         "NRMSE": normalized_rmse(sequence, predicted),
         "RRN": relative_residual_norm(sequence, predicted),
-        "R2": r_squared(sequence, predicted)
+        "R2": r_squared(sequence, predicted),
     }
+
 
 def update_scores(sequence, report):
 
-    scores = {}
+    scores = []
 
     for family in FAMILIES:
+
         result = score_family(sequence, family)
 
-        if result is None:
-            continue
+        if result is not None:
+            scores.append(result)
 
-        scores[family.NAME] = result
+    selection = choose_best_fit(scores)
 
-    best_fit = choose_best_fit(scores)
-
-    if best_fit is None:
+    if selection is None:
         report["Recognition Scores"] = {
             "Scores": scores,
             "Ranking": [],
-            "Best Fit": None
+            "Best Fit": None,
         }
         return
 
     report["Recognition Scores"] = {
         "Scores": scores,
-        "Ranking": best_fit["Ranking"],
-        "Best Fit": best_fit["Best Fit"]
+        "Ranking": selection["Ranking"],
+        "Best Fit": selection["Best Fit"],
     }
+
 
 def choose_best_fit(scores):
 
-    for score in scores.values():
+    TIE_TOLERANCE = 1e-6
+
+    for score in scores:
         complexity = score["Family"].complexity(score["Parameters"])
         score["Complexity"] = complexity
         score["Ranking Score"] = (
@@ -61,45 +69,54 @@ def choose_best_fit(scores):
         )
 
     ordered = sorted(
-        scores.items(),
-        key=lambda item: item[1]["Ranking Score"]
+        scores,
+        key=lambda score: score["Ranking Score"],
     )
 
-    if len(ordered) == 0:
+    if not ordered:
         return None
 
-    winner_family, winner = ordered[0]
+    best_rrn = ordered[0]["RRN"]
+
+    winners = []
+
+    for score in ordered:
+        if abs(score["RRN"] - best_rrn) <= TIE_TOLERANCE:
+            winners.append(score)
+        else:
+            break
 
     if len(ordered) == 1:
         return {
             "Ranking": ordered,
             "Best Fit": {
-                "Winner": winner_family,
-                "Winner Score": winner,
+                "Winners": winners,
                 "Runner Up": None,
                 "Runner Up Score": None,
-                "Separation": 1.0
-            }
+                "Separation": 1.0,
+            },
         }
 
-    runner_family, runner = ordered[1]
+    runner_index = len(winners)
 
-    winner_rrn = winner["RRN"]
-    runner_rrn = runner["RRN"]
+    if runner_index >= len(ordered):
+        runner = None
+        separation = 0.0
+    else:
+        runner = ordered[runner_index]
 
-    separation = (
-        runner_rrn - winner_rrn
-    ) / (
-        runner_rrn + winner_rrn + 1e-12
-    )
+        separation = (
+            runner["RRN"] - ordered[0]["RRN"]
+        ) / (
+            runner["RRN"] + ordered[0]["RRN"] + 1e-12
+        )
 
     return {
         "Ranking": ordered,
         "Best Fit": {
-            "Winner": winner_family,
-            "Winner Score": winner,
-            "Runner Up": runner_family,
+            "Winners": winners,
+            "Runner Up": None if runner is None else runner["Family"],
             "Runner Up Score": runner,
-            "Separation": separation
-        }
+            "Separation": separation,
+        },
     }
