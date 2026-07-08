@@ -1,6 +1,10 @@
+from families.recurrence import evaluate_linear_recurrence
+
+NAME = "Pell"
+
 def is_pell(sequence):
     if len(sequence) < 3:
-        return False
+        return None
 
     if sequence[0] != 0 or sequence[1] != 1:
         return False
@@ -10,3 +14,20 @@ def is_pell(sequence):
             return False
 
     return True
+
+def fit_pell(sequence):
+    if is_pell(sequence) is not True:
+        return None
+    
+    return {
+        "Seeds": [0,1],
+        "RecurrenceCoefficients": [2,1]
+    }
+
+evaluate = evaluate_linear_recurrence
+
+def complexity(_):
+    return 2
+
+fit = fit_pell
+recognize = is_pell

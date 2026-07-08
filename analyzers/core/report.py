@@ -1,12 +1,16 @@
 from analyzers.core.transformations import first_differences, first_ratios
-from analyzers.core.properties import is_arithmetic, is_constant, is_decreasing, is_increasing, is_geometric, is_unique, polynomial_degree
-from families.triangles import is_triangular
+from analyzers.core.properties import is_decreasing, is_increasing, is_unique
+from families.triangular import is_triangular
 from families.pentagonal import is_pentagonal
 from families.fibonacci import is_fibonacci
 from families.lucas import is_lucas
 from families.pell import is_pell
 from families.jacobsthal import is_jacobsthal
 from families.factorial import is_factorial
+from families.constant import is_constant
+from families.arithmetic import is_arithmetic
+from families.geometric import is_geometric
+from families.polynomial import polynomial_degree
 
 def initialize_report(sequence):
     return {

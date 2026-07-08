@@ -1,63 +1,36 @@
-from math import factorial
-from analyzers.core.transformations import nth_differences, subtract_sequences, first_differences, first_ratios
-from analyzers.pipeline.evaluation import evaluate_polynomial
-from analyzers.core.properties import polynomial_degree
-from analyzers.core.utilities import pretty
+from analyzers.core.transformations import first_ratios
 from analyzers.core.formatting import format_polynomial, clean_coefficients
-
-
-
-def recover_polynomial(sequence):
-    if len(sequence) < 2:
-        return None
-    degree = polynomial_degree(sequence)
-    coefficients = [0] * (degree + 1)
-    remaining = sequence.copy()
-    while degree >= 0:
-        index = len(coefficients) - degree - 1
-        constant_difference = nth_differences(remaining,degree)[0]
-        leading = constant_difference / factorial(degree)
-        temp_coefficients = [0] * len(coefficients)
-        coefficients[index] = leading
-        temp_coefficients[index] = leading
-        generated = []
-        for n in range(1, len(sequence) + 1):
-            generated.append(evaluate_polynomial(temp_coefficients, n))
-        remaining = subtract_sequences(remaining,generated)
-        degree -= 1
-    return coefficients
-
-def recover_arithmetic(sequence):
-    if len(sequence) < 2:
-        return []
-    return [first_differences(sequence)[0],(sequence[0]-first_differences(sequence)[0])]
-
-def recover_geometric(sequence):
-    if len(sequence) < 2:
-        return None
-    return f"{pretty(sequence[0])} · {pretty(first_ratios(sequence)[0])}^(n-1)"
+from families.polynomial import fit_polynomial
+from families.arithmetic import fit_arithmetic
+from families.geometric import fit_geometric
 
 def recover_polynomial_formula(sequence, report):
-    coefficients = recover_polynomial(sequence)
+    coefficients = fit_polynomial(sequence)
     coefficients = clean_coefficients(coefficients)
 
     report["Sequence Classification"]["Parameters"] = coefficients
     report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
 
 def recover_arithmetic_formula(sequence, report):
-    coefficients = recover_arithmetic(sequence)
+    parameters = fit_arithmetic(sequence)
+    coefficients = [
+        parameters["Difference"],
+        parameters["Intercept"]
+    ]
     coefficients = clean_coefficients(coefficients)
 
     report["Sequence Classification"]["Parameters"] = coefficients
     report["Sequence Classification"]["Formula"] = (f"a(n) = {format_polynomial(coefficients)}")
 
 def recover_geometric_formula(sequence, report):
-    ratio = first_ratios(sequence)[0]
+    parameters = fit_geometric(sequence)
 
-    report["Sequence Classification"]["Parameters"] = {
-        "First Term": sequence[0],
-        "Ratio": ratio}
-    report["Sequence Classification"]["Formula"] = (f"a(n) = {recover_geometric(sequence)}")
+    report["Sequence Classification"]["Parameters"] = parameters
+
+    report["Sequence Classification"]["Formula"] = (
+        f"a(n) = {parameters['First Term']} · "
+        f"{parameters['Ratio']}^(n-1)"
+    )
 
 def recover_constant_formula(sequence, report):
     report["Sequence Classification"]["Parameters"] = sequence[0]

@@ -1,29 +1,81 @@
-def determine_confidence(sequence, report):
-    if len(sequence) == 1:
-        return "Very Low"
-    
-    if len(sequence) == 2:
-        return "Low"
+import math
 
-    confidence = 0
-    confidence += len(sequence)
-    if report["Verification"]["Verified"]:
-        confidence += 2
-    sequence_type = report["Sequence Classification"]["Type"]
-    if sequence_type in ("Polynomial","Arithmetic","Geometric"):
-        confidence += 2
+def confidence_engine(
+    winner_error,
+    runner_up_error,
+    sequence_length,
+    complexity
+):
 
+    confidence = 85
 
-    if confidence >= 9:
-        return "Certain"
-    elif confidence >= 7:
-        return "High"
-    elif confidence >= 5:
-        return "Medium"
-    elif confidence >= 3:
-        return "Low"
+    # -------------------------
+    # 1. Fit Penalty
+    # -------------------------
+    fit_penalty = 100 * (1 - math.exp(-5 * winner_error))
+
+    # -------------------------
+    # 2. Competition Penalty
+    # -------------------------
+    margin = runner_up_error / max(winner_error, 1e-12)
+
+    competition_penalty = 40 / margin
+
+    # -------------------------
+    # 3. Evidence Penalty
+    # -------------------------
+    evidence_bonus = 20 * (1 - math.exp(-sequence_length / 20))       
+
+    # -------------------------
+    # 4. Complexity Penalty
+    # -------------------------
+    complexity_penalty = max(0, complexity - 2) * 0.5
+
+    confidence -= fit_penalty
+    confidence -= competition_penalty
+    confidence += evidence_bonus
+    confidence -= complexity_penalty
+
+    confidence = max(0, min(100, confidence))
+
+    return {
+        "Fit Penalty": fit_penalty,
+        "Competition Penalty": competition_penalty,
+        "Evidence Bonus": evidence_bonus,
+        "Complexity Penalty": complexity_penalty,
+        "Confidence": confidence
+    }
+
+def update_confidence(sequence, report):
+
+    best_fit = report["Recognition Scores"]["Best Fit"]
+
+    if best_fit is None:
+        report["Confidence"] = None
+        return
+
+    winner = best_fit["Winner Score"]
+
+    runner = best_fit["Runner Up Score"]
+
+    winner_error = winner["RRN"]
+
+    if runner is None:
+        runner_error = winner_error * 100
     else:
-        return "Very Low"
-    
-def update_confidence(sequence,report):
-    report["Sequence Classification"]["Confidence"] = determine_confidence(sequence, report)
+        runner_error = runner["RRN"]
+
+    # complexity = (
+    #     winner["Family"].complexity(
+    #         winner["Parameters"]
+    #     )
+    # )
+
+    complexity = 2
+
+    report["Sequence Classification"]["Confidence"] = confidence_engine(
+        winner_error,
+        runner_error,
+        len(sequence),
+        complexity
+    )

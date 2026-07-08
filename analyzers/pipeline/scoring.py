@@ -1,142 +1,76 @@
-def normalize_error(error,scale=1.0):
-    return 1 / (1+ error / scale)
+from analyzers.core.statistics import r_squared, relative_residual_norm, normalized_rmse
+from families.registry import FAMILIES
+from analyzers.core.best_fit import best_fit
 
-def score_constant(sequence, report):
-    if report["Properties"]["Is Constant?"]:
-        score = 1.0
-    else:
-        score = 0.0
+def score_family(sequence, family):
 
-    return {
-        "Type": "Constant",
-        "Score": score
-    }
+    fit = best_fit(sequence, family)
 
-def score_arithmetic(sequence, report):
-    pass
+    if fit is None:
+        return None
 
-def score_geometric(sequence, report):
-    if report["Properties"]["Is Geometric?"]:
-        score = 1.0
-    else:
-        score = 0.0
+    predicted = fit["Predicted"]
 
     return {
-        "Type": "Geometric",
-        "Score": score
+        "Family": family,
+        "Parameters": fit["Parameters"],
+        "Predicted": predicted,
+        "Residuals": fit["Residuals"],
+        "NRMSE": normalized_rmse(sequence, predicted),
+        "RRN": relative_residual_norm(sequence, predicted),
+        "R2": r_squared(sequence, predicted)
     }
-
-def score_polynomial(sequence, report):
-    properties = report["Properties"]
-    degree = properties["Polynomial Degree"]
-    if degree is None:
-        score = 0.0
-    else:
-        score = 1.0
-
-    return {
-        "Type": "Polynomial",
-        "Score": score
-    }
-
-def score_triangular(sequence, report):
-    if report["Properties"]["Is Triangular?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Triangular",
-        "Score": score
-    }
-
-def score_pentagonal(sequence, report):
-    if report["Properties"]["Is Pentagonal?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Pentagonal",
-        "Score": score
-    }
-
-def score_pell(sequence, report):
-    if report["Properties"]["Is Pell?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Pell",
-        "Score": score
-    }
-
-def score_lucas(sequence, report):
-    if report["Properties"]["Is Lucas?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Lucas",
-        "Score": score
-    }
-
-def score_jacobsthal(sequence, report):
-    if report["Properties"]["Is Jacobsthal?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Jacobsthal",
-        "Score": score
-    }
-
-def score_fibonacci(sequence, report):
-    if report["Properties"]["Is Fibonacci?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Fibonacci",
-        "Score": score
-    }
-
-def score_factorial(sequence, report):
-    if report["Properties"]["Is Factorial?"]:
-        score = 1.0
-    else:
-        score = 0.0
-
-    return {
-        "Type": "Factorial",
-        "Score": score
-    }
-
-SCORE_HANDLERS = [
-    score_constant,
-    score_arithmetic,
-    score_geometric,
-    score_polynomial,
-    score_triangular,
-    score_pentagonal,
-    score_pell,
-    score_lucas,
-    score_jacobsthal,
-    score_fibonacci,
-    score_factorial
-]
-
-
 
 def score_sequence(sequence, report):
+
     scores = {}
 
-    for scorer in SCORE_HANDLERS:
-        result = scorer(sequence, report)
-        scores[result["Type"]] = result["Score"]
+    for family in FAMILIES:
+
+        result = score_family(sequence, family)
+
+        if result is None:
+            continue
+
+        scores[family.NAME] = result
 
     return scores
+
+def choose_best_fit(scores):
+    ordered = sorted(
+        scores.items(),
+        key=lambda item: item[1]["RRN"]
+    )
+
+    if len(ordered) == 0:
+        return None
+
+    winner_name, winner = ordered[0]
+
+    if len(ordered) == 1:
+        return {
+            "Winner": winner_name,
+            "Winner Score": winner,
+            "Runner Up": None,
+            "Runner Up Score": None,
+            "Separation": 1.0
+        }
+
+    runner_name, runner = ordered[1]
+
+    winner_rrn = winner["RRN"]
+    runner_rrn = runner["RRN"]
+
+    separation = (
+        runner_rrn - winner_rrn
+    ) / (
+        runner_rrn + winner_rrn + 1e-12
+    )
+
+    return {
+        "Winner": winner_name,
+        "Winner Score": winner,
+        "Runner Up": runner_name,
+        "Runner Up Score": runner,
+        "Separation": separation
+    }

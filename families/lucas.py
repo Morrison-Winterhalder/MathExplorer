@@ -1,6 +1,10 @@
+from families.recurrence import evaluate_linear_recurrence
+
+NAME = "Lucas"
+
 def is_lucas(sequence):
     if len(sequence) < 3:
-        return False
+        return None
 
     if sequence[0] != 2 or sequence[1] != 1:
         return False
@@ -10,3 +14,20 @@ def is_lucas(sequence):
             return False
 
     return True
+
+def fit_lucas(sequence):
+    if is_lucas(sequence) is not True:
+        return None
+    
+    return {
+        "Seeds": [2,1], 
+        "RecurrenceCoefficients": [1,1]
+    }
+
+evaluate = evaluate_linear_recurrence
+
+def complexity(_):
+    return 2
+
+fit = fit_lucas
+recognize = is_lucas
