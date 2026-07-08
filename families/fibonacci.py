@@ -4,13 +4,17 @@ NAME = "Fibonacci"
 
 def is_fibonacci(sequence):
     if len(sequence) < 3:
-        return None
+        return False
 
-    if sequence[0] != 0 or sequence[1] != 1:
+    if sequence[:2] == [0, 1]:
+        pass
+    elif sequence[:2] == [1, 1]:
+        pass
+    else:
         return False
 
     for i in range(2, len(sequence)):
-        if sequence[i] != sequence[i-1] + sequence[i-2]:
+        if sequence[i] != sequence[i - 1] + sequence[i - 2]:
             return False
 
     return True
@@ -20,7 +24,7 @@ def fit_fibonacci(sequence):
         return None
 
     return {
-        "Seeds": [0, 1],
+        "Seeds": sequence[:2],
         "RecurrenceCoefficients": [1, 1]
     }
 

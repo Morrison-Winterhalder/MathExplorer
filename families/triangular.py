@@ -1,10 +1,3 @@
-"""
-Recognizers for triangular numbers.
-
-Examples:
-    - Identify triangular numbers
-"""
-
 from math import isqrt
 
 NAME = "Triangular"

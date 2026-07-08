@@ -1,6 +1,6 @@
 import math
 
-def confidence_engine(
+def calculate_confidence(
     winner_error,
     runner_up_error,
     sequence_length,
@@ -17,9 +17,18 @@ def confidence_engine(
     # -------------------------
     # 2. Competition Penalty
     # -------------------------
-    margin = runner_up_error / max(winner_error, 1e-12)
 
-    competition_penalty = 40 / margin
+    if math.isinf(runner_up_error):
+        separation = 1.0
+    elif runner_up_error == 0:
+        separation = 0.0
+    else:
+        separation = max(
+            0.0,
+            min(1.0, 1 - winner_error / runner_up_error)
+    )
+
+    competition_penalty = 40 * (1 - separation)
 
     # -------------------------
     # 3. Evidence Penalty
@@ -43,6 +52,7 @@ def confidence_engine(
         "Competition Penalty": competition_penalty,
         "Evidence Bonus": evidence_bonus,
         "Complexity Penalty": complexity_penalty,
+        "Separation": separation,
         "Confidence": confidence
     }
 
@@ -51,31 +61,31 @@ def update_confidence(sequence, report):
     best_fit = report["Recognition Scores"]["Best Fit"]
 
     if best_fit is None:
-        report["Confidence"] = None
+        report["Sequence Classification"]["Confidence"] = None
         return
-
+    
     winner = best_fit["Winner Score"]
+
+    if winner is None:
+        report["Sequence Classification"]["Confidence"] = None
+        return
 
     runner = best_fit["Runner Up Score"]
 
     winner_error = winner["RRN"]
 
     if runner is None:
-        runner_error = winner_error * 100
+        runner_error = float("inf")
     else:
         runner_error = runner["RRN"]
 
-    # complexity = (
-    #     winner["Family"].complexity(
-    #         winner["Parameters"]
-    #     )
-    # )
+    family_complexity = winner["Family"].complexity(
+        winner["Parameters"]
+    )
 
-    complexity = 2
-
-    report["Sequence Classification"]["Confidence"] = confidence_engine(
+    report["Sequence Classification"]["Confidence"] = calculate_confidence(
         winner_error,
         runner_error,
         len(sequence),
-        complexity
+        family_complexity
     )

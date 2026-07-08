@@ -54,7 +54,8 @@ def evaluate_polynomial(coefficients,n):
     return value
 
 def complexity(parameters):
-    return max(0, len(parameters) - 1)
+    degree = max(0, len(parameters) - 1)
+    return degree + 2
 
 recognize = is_polynomial
 fit = fit_polynomial

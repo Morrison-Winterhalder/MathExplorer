@@ -1,13 +1,12 @@
 def pretty(value):
+
     if isinstance(value, float):
-        if value.is_integer():
-            return int(value)
-        return value
+        return f"{value:.4f}"
 
-    elif isinstance(value, list):
-        return [pretty(v) for v in value]
+    if isinstance(value, list):
+        return "[" + ", ".join(pretty(x) for x in value) + "]"
 
-    elif isinstance(value, dict):
-        return {k: pretty(v) for k, v in value.items()}
+    if isinstance(value, tuple):
+        return "(" + ", ".join(pretty(x) for x in value) + ")"
 
-    return value
+    return str(value)

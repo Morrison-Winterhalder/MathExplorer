@@ -1,7 +1,7 @@
-def residuals(sequence, generated):
+def residuals(sequence, predicted):
     return [
         actual - predicted
-        for actual, predicted in zip(sequence, generated)
+        for actual, predicted in zip(sequence, predicted)
     ]
 
 def best_fit(sequence, family):
@@ -17,6 +17,6 @@ def best_fit(sequence, family):
 
     return {
         "Parameters": parameters,
-        "Generated": predicted,
+        "Predicted": predicted,
         "Residuals": residuals(sequence,predicted)
     }

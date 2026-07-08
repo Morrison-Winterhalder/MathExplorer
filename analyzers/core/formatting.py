@@ -22,7 +22,6 @@ def format_polynomial(coefficients):
                 polyList.append(f"-n^{pretty(power)}")
             else:
                 polyList.append(f"{pretty(coefficient)}n^{pretty(power)}")
-    polyList = pretty(polyList)
     polyString = " + ".join(polyList)
     polyString = polyString.replace("+ -", "- ")
     if not polyList:
@@ -42,25 +41,3 @@ def yes_no(value):
         return "No"
     else:
         return "Unknown"
-    
-def print_report(report):
-    print("""========================================
-           MathExplorer Report 
-========================================""")
-    print()
-    if report == None:
-        print("Error: Cannot analyze an empty sequence")
-        return
-    for section, values in report.items():
-        print(section.title())
-        print("-" * len(section))
-        for key, value in values.items():
-            if key == "Parameters":
-                continue
-            if isinstance(value,bool):
-                print(f"{key:<20}: {yes_no(value)}")
-            elif value is None:
-                continue
-            else:
-                print(f"{key:<20}: {pretty(value)}")
-        print()
