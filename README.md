@@ -54,6 +54,7 @@ The long-term goal of MathExplorer is to become a modular framework for mathemat
 
 * Triangular
 * Pentagonal
+* Hexagonal
 
 ### Recursive
 
@@ -111,6 +112,39 @@ Predictions
 -----------
 Next Terms      : [11, 13, 15, 17, 19]
 ```
+
+---
+
+## Adding a New Sequence Family
+
+MathExplorer automatically discovers sequence families placed inside
+`families/`.
+
+Every family must define:
+
+```python
+NAME
+DESCRIPTION
+REPRESENTATION
+
+recognize(sequence)
+fit(sequence)
+evaluate(parameters, n)
+formula(parameters)
+complexity(parameters)
+```
+
+Once the file is added, the registry will automatically:
+
+- discover the family
+- validate its interface
+- include it in recognition
+- include it in scoring
+- include it in prediction
+
+Please read the `families/creating_families.md` file for more information.
+
+No additional registration is required.
 
 ---
 
