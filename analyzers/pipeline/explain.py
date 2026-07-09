@@ -1,4 +1,5 @@
 from families import registry
+from analyzers.core.trace import first_event
 
 
 def update_explanation(sequence, report):
@@ -10,10 +11,6 @@ def update_explanation(sequence, report):
     if family is None:
         report["Explanation"] = None
         return
-
-    recognition = report["Recognition Scores"]["Best Fit"]
-
-    winners = recognition["Winners"]
 
     reasons = []
 
@@ -41,28 +38,18 @@ def update_explanation(sequence, report):
         if explanation is not None:
             reasons.extend(explanation)
 
-    runner = recognition["Runner Up"]
-
-    if runner is not None:
-
-        reasons.append(
-            f"{runner.NAME} also matched the sequence exactly."
-        )
-
-        reasons.append(
-            f"{family.NAME} was selected because it is more specific."
-        )
-
     # --------------------------------------------------
     # Specificity
     # --------------------------------------------------
 
-    if len(winners) > 1:
+    tie = first_event(report, event="tie_detected")
+    resolution = first_event(report, event="tie_resolved")
 
+    if tie is not None:
         tied = [
-            winner["Family"].NAME
-            for winner in winners
-            if winner["Family"] != family
+            name
+            for name in tie["families"]
+            if name != family.NAME
         ]
 
         if tied:
@@ -70,9 +57,10 @@ def update_explanation(sequence, report):
                 f"{', '.join(tied)} also matched exactly."
             )
 
-            reasons.append(
-                f"{family.NAME} was selected because it is the more specific family."
-            )
+    if resolution is not None:
+        reasons.append(
+            f"{family.NAME} was selected because it is the more specific family."
+        )
 
     report["Explanation"] = {
         "Summary": f"The sequence was classified as {family.NAME}.",

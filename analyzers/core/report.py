@@ -14,6 +14,8 @@ from families import polynomial
 
 def initialize_report(sequence):
     return {
+        "Analysis Trace": [],
+
         "Sequence Classification": {},
 
         "Recognition Scores": {},

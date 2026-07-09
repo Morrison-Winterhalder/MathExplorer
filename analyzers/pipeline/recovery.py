@@ -80,8 +80,51 @@ RECOVERY_HANDLERS = {
 
 def recover_formula(sequence, report):
     family = report["Sequence Classification"]["Family"]
+
     if family is None:
+
+        report["Analysis Trace"].append({
+            "stage": "recovery",
+            "event": "recovery_skipped",
+            "reason": "no_classification",
+        })
+
         return
+
+    report["Analysis Trace"].append({
+        "stage": "recovery",
+        "event": "recovery_started",
+        "family": family.NAME,
+    })
+
     handler = RECOVERY_HANDLERS.get(family.NAME)
-    if handler is not None:
-        handler(sequence, report)
+
+    if handler is None:
+
+        report["Analysis Trace"].append({
+            "stage": "recovery",
+            "event": "handler_not_found",
+            "family": family.NAME,
+        })
+
+        return
+
+    report["Analysis Trace"].append({
+        "stage": "recovery",
+        "event": "handler_selected",
+        "family": family.NAME,
+        "handler": handler.__name__,
+    })
+
+    handler(sequence, report)
+
+    report["Analysis Trace"].append({
+        "stage": "recovery",
+        "event": "formula_recovered",
+        "formula": report["Sequence Classification"]["Formula"],
+    })
+
+    report["Analysis Trace"].append({
+        "stage": "recovery",
+        "event": "recovery_finalized",
+    })

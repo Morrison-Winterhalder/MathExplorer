@@ -2,6 +2,11 @@ from families import registry
 
 def update_classification(sequence, report):
 
+    report["Analysis Trace"].append({
+        "stage": "classification",
+        "event": "classification_started",
+    })
+
     best_fit = report["Recognition Scores"]["Best Fit"]
 
     if best_fit is None:
@@ -14,6 +19,12 @@ def update_classification(sequence, report):
             "Confidence": None,
             "Reason": "No family successfully recognized the sequence."
         }
+
+        report["Analysis Trace"].append({
+            "stage": "classification",
+            "event": "classification_completed",
+            "family": None,
+        })
         return
 
     winners = best_fit["Winners"]
@@ -35,3 +46,13 @@ def update_classification(sequence, report):
         "Parameters": primary["Parameters"],
         "Confidence": None
     }
+
+    report["Analysis Trace"].append({
+        "stage": "classification",
+        "event": "classification_completed",
+        "family": primary["Family"].NAME,
+        "tied_families": [
+            winner["Family"].NAME
+            for winner in winners
+        ]
+    })

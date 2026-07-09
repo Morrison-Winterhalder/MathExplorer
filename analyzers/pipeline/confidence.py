@@ -96,24 +96,57 @@ def update_confidence(sequence, report):
     
     winner = best_fit["Winners"][0]
 
-    tied = len(best_fit["Winners"]) > 1
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "confidence_started",
+        "family": winner["Family"].NAME,
+    })
 
-    if winner is None:
-        report["Sequence Classification"]["Confidence"] = None
-        return
+    tied = len(best_fit["Winners"]) > 1
 
     runner = best_fit["Runner Up Score"]
 
     winner_error = winner["RRN"]
+
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "winner_assessed",
+        "family": winner["Family"].NAME,
+        "rrn": winner_error,
+    })
 
     if runner is None:
         runner_error = float("inf")
     else:
         runner_error = runner["RRN"]
 
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "competition_assessed",
+        "runner_up": (
+            None if runner is None
+            else runner["Family"].NAME
+        ),
+        "winner_rrn": winner_error,
+        "runner_up_rrn": runner_error,
+        "separation": best_fit["Separation"],
+    })
+
     family_complexity = winner["Family"].complexity(
         winner["Parameters"]
     )
+
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "complexity_assessed",
+        "complexity": family_complexity,
+    })
+
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "sample_size_assessed",
+        "sample_size": len(sequence),
+    })
 
     confidence = calculate_confidence(
         winner_error,
@@ -122,8 +155,26 @@ def update_confidence(sequence, report):
         family_complexity
     )
 
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "confidence_calculated",
+        "score": confidence["Score"],
+        "label": confidence["Label"],
+        "fit_penalty": confidence["Fit Penalty"],
+        "competition_penalty": confidence["Competition Penalty"],
+        "sample_size_bonus": confidence["Sample Size Bonus"],
+        "complexity_penalty": confidence["Complexity Penalty"],
+        "separation": confidence["Separation"],
+    })
+
     if tied:
         confidence["Score"] = max(0, confidence["Score"] - 15)
+
+        report["Analysis Trace"].append({
+            "stage": "confidence",
+            "event": "tie_adjustment",
+            "adjustment": -15,
+        })
 
     score = confidence["Score"]
 
@@ -139,5 +190,13 @@ def update_confidence(sequence, report):
         confidence["Label"] = "Very Low"
 
     confidence["Tied"] = tied
+
+    report["Analysis Trace"].append({
+        "stage": "confidence",
+        "event": "confidence_finalized",
+        "score": confidence["Score"],
+        "label": confidence["Label"],
+        "tied": tied,
+    })
 
     report["Sequence Classification"]["Confidence"] = confidence
