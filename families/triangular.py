@@ -4,6 +4,7 @@ NAME = "Triangular"
 DESCRIPTION = "Terms are triangular numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 40
 
 
 def recognize(sequence):

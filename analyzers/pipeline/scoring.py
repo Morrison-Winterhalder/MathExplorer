@@ -7,6 +7,7 @@ from families.registry import FAMILIES
 from analyzers.core.best_fit import best_fit
 
 COMPLEXITY_WEIGHT = 1e-3
+TIE_TOLERANCE = 1e-6
 
 
 def score_family(sequence, family):
@@ -59,8 +60,6 @@ def update_scores(sequence, report):
 
 def choose_best_fit(scores):
 
-    TIE_TOLERANCE = 1e-6
-
     for score in scores:
         complexity = score["Family"].complexity(score["Parameters"])
         score["Complexity"] = complexity
@@ -76,17 +75,30 @@ def choose_best_fit(scores):
     if not ordered:
         return None
 
-    best_rrn = ordered[0]["RRN"]
+    best_score = ordered[0]["Ranking Score"]
 
     winners = []
 
     for score in ordered:
-        if abs(score["RRN"] - best_rrn) <= TIE_TOLERANCE:
+        if abs(score["Ranking Score"] - best_score) <= TIE_TOLERANCE:
             winners.append(score)
         else:
             break
 
-    if len(ordered) == 1:
+    initial_winner_count = len(winners)
+
+    max_specificity = max(
+        winner["Family"].SPECIFICITY
+        for winner in winners
+    )
+
+    winners = [
+        winner
+        for winner in winners
+        if winner["Family"].SPECIFICITY == max_specificity
+    ]
+
+    if initial_winner_count == len(ordered):
         return {
             "Ranking": ordered,
             "Best Fit": {
@@ -97,7 +109,7 @@ def choose_best_fit(scores):
             },
         }
 
-    runner_index = len(winners)
+    runner_index = initial_winner_count
 
     if runner_index >= len(ordered):
         runner = None
@@ -106,9 +118,9 @@ def choose_best_fit(scores):
         runner = ordered[runner_index]
 
         separation = (
-            runner["RRN"] - ordered[0]["RRN"]
+            runner["Ranking Score"] - ordered[0]["Ranking Score"]
         ) / (
-            runner["RRN"] + ordered[0]["RRN"] + 1e-12
+            runner["Ranking Score"] + ordered[0]["Ranking Score"] + 1e-12
         )
 
     return {

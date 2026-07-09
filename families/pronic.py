@@ -4,6 +4,7 @@ NAME = "Pronic"
 DESCRIPTION = "Pronic (oblong) numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 50
 
 def recognize(sequence):
     if len(sequence) == 0:

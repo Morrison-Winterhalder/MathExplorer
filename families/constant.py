@@ -2,6 +2,7 @@ NAME = "Constant"
 DESCRIPTION = "All terms are equal."
 REPRESENTATION = "Explicit"
 CATEGORY = "Constant"
+SPECIFICITY = 20
 
 def recognize(sequence):
     if len(sequence) == 0:

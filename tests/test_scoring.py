@@ -15,9 +15,8 @@ def test_arithmetic_scoring():
 
     best = report["Recognition Scores"]["Best Fit"]
 
-    assert len(best["Winners"]) == 2
+    assert len(best["Winners"]) == 1
     assert best["Winners"][0]["Family"].NAME == "Arithmetic"
-    assert best["Winners"][1]["Family"].NAME == "Polynomial"
 
     assert best["Winners"][0]["RRN"] == 0
     assert best["Winners"][0]["R2"] == 1
@@ -55,7 +54,7 @@ def test_polynomial_scoring():
     best = report["Recognition Scores"]["Best Fit"]
 
     assert len(best["Winners"]) == 1
-    assert best["Winners"][0]["Family"].NAME == "Polynomial"
+    assert best["Winners"][0]["Family"].NAME == "Squares"
 
 
 # ==========================================================
@@ -97,7 +96,7 @@ def test_ranking_exists():
 # Runner-Up Exists
 # ==========================================================
 
-def test_tie_has_no_runner_up():
+def test_specific_family_beats_polynomial():
 
     sequence = [2,6,18,54,162]
 
@@ -106,8 +105,8 @@ def test_tie_has_no_runner_up():
 
     best = report["Recognition Scores"]["Best Fit"]
 
-    assert len(best["Winners"]) > 1
-    assert best["Runner Up"] is None
+    assert len(best["Winners"]) == 1
+    assert best["Winners"][0]["Family"].NAME == "Geometric"
 
 
 # ==========================================================
@@ -124,6 +123,24 @@ def test_separation():
     separation = report["Recognition Scores"]["Best Fit"]["Separation"]
 
     assert 0 <= separation <= 1
+
+
+# ==========================================================
+# Specificity
+# ==========================================================
+
+def test_specificity_breaks_polynomial_tie():
+    sequence = [1, 4, 9, 16, 25]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    assert len(best["Winners"]) == 1
+    assert best["Winners"][0]["Family"].NAME == "Squares"
+
+    assert best["Runner Up"].NAME == "Polynomial"
 
 
 # ==========================================================

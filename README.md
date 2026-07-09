@@ -148,6 +148,14 @@ No additional registration is required.
 
 ---
 
+## Creating Plugins
+
+Drop a file into /families
+
+Restart MathExplorer
+
+---
+
 ## Recognition Pipeline
 
 MathExplorer analyzes sequences using several stages:

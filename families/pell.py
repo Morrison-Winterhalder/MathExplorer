@@ -4,6 +4,7 @@ NAME = "Pell"
 DESCRIPTION = "Each term equals twice the previous term plus the one before."
 REPRESENTATION = "Recurrence"
 CATEGORY = "Recurrence"
+SPECIFICITY = 50
 
 
 def recognize(sequence):

@@ -1,4 +1,4 @@
-from families.registry import FAMILIES
+from families.registry import FAMILIES, FAMILY_MAP, get_family
 
 def test_every_family_has_metadata():
     for family in FAMILIES:
@@ -14,3 +14,8 @@ def test_every_family_has_required_functions():
         assert callable(family.evaluate)
         assert callable(family.formula)
         assert callable(family.complexity)
+
+def test_plugins():
+    assert len(FAMILIES) == len(FAMILY_MAP)
+    for family in FAMILIES:
+        assert get_family(family.NAME) is family

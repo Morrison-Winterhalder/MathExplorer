@@ -4,6 +4,7 @@ NAME = "Centered Triangular"
 DESCRIPTION = "Centered triangular numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 45
 
 def recognize(sequence):
     if len(sequence) == 0:

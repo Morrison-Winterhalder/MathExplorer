@@ -4,6 +4,7 @@ NAME = "Octagonal"
 DESCRIPTION = "Octagonal figurate numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 40
 
 def recognize(sequence):
     if len(sequence) == 0:

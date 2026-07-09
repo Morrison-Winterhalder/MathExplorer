@@ -4,6 +4,7 @@ NAME = "Fibonacci"
 DESCRIPTION = "Each term is the sum of the previous two."
 REPRESENTATION = "Recurrence"
 CATEGORY = "Recurrence"
+SPECIFICITY = 50
 
 def recognize(sequence):
     if len(sequence) < 3:

@@ -6,6 +6,7 @@ NAME = "Arithmetic"
 DESCRIPTION = "Constant first differences."
 REPRESENTATION = "Explicit"
 CATEGORY = "Arithmetic"
+SPECIFICITY = 20
 
 def recognize(sequence):
     if len(sequence) < 2:

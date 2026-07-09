@@ -4,6 +4,7 @@ NAME = "Centered Hexagonal"
 DESCRIPTION = "Centered hexagonal numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 45
 
 def recognize(sequence):
     if len(sequence) == 0:

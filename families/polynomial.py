@@ -6,6 +6,7 @@ NAME = "Polynomial"
 DESCRIPTION = "Finite constant differences."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
+SPECIFICITY = 10
 
 def compute_degree(sequence):
     if len(sequence) < 2:

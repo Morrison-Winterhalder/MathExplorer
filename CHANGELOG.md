@@ -73,3 +73,40 @@ MathExplorer v1.5 now supports **11 mathematical sequence families** through a m
 
 ### Quality
 - 83 automated tests passing
+
+---
+
+## v2.2.0
+
+### New Features
+------------
+- Automatic plugin discovery
+- Plugin validation
+- New CATEGORY metadata
+- New SPECIFICITY metadata
+- Recognition now prefers more specific families
+- Added figurate-number plugin category
+
+### New Families
+------------
+- Squares
+- Cubes
+- Fourth Powers
+- Fifth Powers
+- Hexagonal
+- Centered Triangular
+- Centered Square
+- Centered Pentagonal
+- Centered Hexagonal
+
+### Improvements
+------------
+- Cleaner recognition ranking
+- Improved runner-up logic
+- Improved plugin architecture
+
+### Bug Fixes
+---------
+- Runner-up determination after specificity
+- Registry validation
+- Display fixes

@@ -4,6 +4,7 @@ NAME = "Nonagonal"
 DESCRIPTION = "Nonagonal figurate numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
+SPECIFICITY = 40
 
 def recognize(sequence):
     if len(sequence) == 0:

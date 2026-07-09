@@ -2,6 +2,7 @@ NAME = "Fourth Powers"
 DESCRIPTION = "Fourth powers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
+SPECIFICITY = 40
 
 def recognize(sequence):
     if len(sequence) == 0:
