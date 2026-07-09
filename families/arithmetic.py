@@ -7,6 +7,7 @@ DESCRIPTION = "Constant first differences."
 REPRESENTATION = "Explicit"
 CATEGORY = "Arithmetic"
 SPECIFICITY = 20
+PARENT = "Polynomial"
 
 def recognize(sequence):
     if len(sequence) < 2:

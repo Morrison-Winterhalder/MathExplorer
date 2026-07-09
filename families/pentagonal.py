@@ -5,6 +5,7 @@ DESCRIPTION = "Terms are pentagonal numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
+PARENT = "Polygonal"
 
 
 def recognize(sequence):

@@ -1,3 +1,5 @@
+from families import registry
+
 def update_classification(sequence, report):
 
     best_fit = report["Recognition Scores"]["Best Fit"]
@@ -6,6 +8,7 @@ def update_classification(sequence, report):
         report["Sequence Classification"] = {
             "Type": "Unknown",
             "Family": None,
+            "Hierarchy": None,
             "Tied Families": [],
             "Parameters": None,
             "Confidence": None,
@@ -25,6 +28,9 @@ def update_classification(sequence, report):
     report["Sequence Classification"] = {
         "Type": primary["Family"].NAME,
         "Family": primary["Family"],
+        "Hierarchy": registry.build_family_tree(
+            primary["Family"]
+        ),
         "Tied Families": [winner["Family"] for winner in winners],
         "Parameters": primary["Parameters"],
         "Confidence": None

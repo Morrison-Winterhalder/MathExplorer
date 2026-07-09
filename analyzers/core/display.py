@@ -13,7 +13,18 @@ def print_sequence_classification(report):
 
     family_name = family.NAME if family else "Unknown"
 
-    print(f"Family{'':<10}: {family_name}")
+    tree = classification.get("Hierarchy")
+    
+    print()
+    print("Family")
+    print("------")
+
+    if tree is None:
+        print("Unknown")
+    else:
+        print(tree)
+
+    print()
 
     formula = classification.get("Formula")
     if formula is not None:

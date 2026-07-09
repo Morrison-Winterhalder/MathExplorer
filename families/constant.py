@@ -3,6 +3,7 @@ DESCRIPTION = "All terms are equal."
 REPRESENTATION = "Explicit"
 CATEGORY = "Constant"
 SPECIFICITY = 20
+PARENT = "Arithmetic"
 
 def recognize(sequence):
     if len(sequence) == 0:

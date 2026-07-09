@@ -3,6 +3,7 @@ DESCRIPTION = "Perfect cube numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 40
+PARENT = "Polynomial"
 
 def recognize(sequence):
     if len(sequence) == 0:

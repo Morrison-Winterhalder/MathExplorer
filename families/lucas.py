@@ -5,6 +5,7 @@ DESCRIPTION = "Each term is the sum of the previous two, beginning with 2 and 1.
 REPRESENTATION = "Recurrence"
 CATEGORY = "Recurrence"
 SPECIFICITY = 50
+PARENT = "Linear Recurrence"
 
 
 def recognize(sequence):

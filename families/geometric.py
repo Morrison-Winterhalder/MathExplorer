@@ -6,6 +6,7 @@ DESCRIPTION = "Constant ratios between consecutive terms."
 REPRESENTATION = "Explicit"
 CATEGORY = "Geometric"
 SPECIFICITY = 20
+PARENT = None
 
 
 def recognize(sequence):

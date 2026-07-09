@@ -5,6 +5,7 @@ DESCRIPTION = "Pronic (oblong) numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 50
+PARENT = "Polygonal"
 
 def recognize(sequence):
     if len(sequence) == 0:

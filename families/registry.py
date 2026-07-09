@@ -28,6 +28,7 @@ REQUIRED_ATTRIBUTES = {
     "REPRESENTATION",
     "CATEGORY",
     "SPECIFICITY",
+    "PARENT",
     "recognize",
     "fit",
     "evaluate",
@@ -88,5 +89,66 @@ FAMILY_MAP = {
 }
 
 
-def get_family(name):
-    return FAMILY_MAP.get(name)
+def get_parent(family):
+
+    if family.PARENT is None:
+        return None
+
+    return FAMILY_MAP.get(family.PARENT)
+
+
+
+def get_lineage(family):
+
+    lineage = []
+
+    current = family
+
+    while current.PARENT is not None:
+
+        parent = get_parent(current)
+
+        if parent is None:
+            break
+
+        lineage.append(parent)
+
+        current = parent
+
+    return lineage
+
+def get_lineage(family):
+
+    lineage = []
+
+    current = family
+
+    while current.PARENT is not None:
+
+        parent = get_parent(current)
+
+        if parent is None:
+            break
+
+        lineage.append(parent)
+
+        current = parent
+
+    return lineage
+
+def build_family_tree(family):
+
+    if family is None:
+        return ""
+
+    lineage = get_lineage(family)
+
+    lines = [family.NAME]
+
+    indent = ""
+
+    for parent in lineage:
+        lines.append(f"{indent}└── {parent.NAME}")
+        indent += "    "
+
+    return "\n".join(lines)

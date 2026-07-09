@@ -5,6 +5,7 @@ DESCRIPTION = "Terms equal successive factorials."
 REPRESENTATION = "Explicit"
 CATEGORY = "Combinatorial"
 SPECIFICITY = 50
+PARENT = None
 
 def recognize(sequence):
     if len(sequence) == 0:

@@ -5,6 +5,7 @@ DESCRIPTION = "Centered pentagonal numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 45
+PARENT = "Centered Polygonal"
 
 def recognize(sequence):
     if len(sequence) == 0:
