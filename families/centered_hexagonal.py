@@ -36,3 +36,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a centered hexagonal number.",
+        "The sequence matches the centered hexagonal number formula exactly."
+    ]

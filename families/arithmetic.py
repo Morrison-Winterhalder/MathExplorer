@@ -53,3 +53,9 @@ def formula(parameters):
 
 def complexity(_):
     return 1
+
+def explain(parameters):
+
+    return [
+        f"The sequence has a constant difference of {parameters['Difference']}."
+    ]

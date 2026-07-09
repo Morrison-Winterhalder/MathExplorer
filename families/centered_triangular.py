@@ -38,3 +38,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a centered triangular number.",
+        "The sequence matches the centered triangular number formula exactly."
+    ]

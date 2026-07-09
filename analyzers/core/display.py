@@ -14,7 +14,7 @@ def print_sequence_classification(report):
     family_name = family.NAME if family else "Unknown"
 
     tree = classification.get("Hierarchy")
-    
+
     print()
     print("Family")
     print("------")
@@ -38,7 +38,8 @@ def print_sequence_classification(report):
         else:
             label = confidence["Label"]
         print(f"{'Confidence':<16}: {score:.1f}% ({label})")
-
+    print()
+    
     parameters = classification.get("Parameters")
     if parameters:
         print()
@@ -50,6 +51,24 @@ def print_sequence_classification(report):
                 print(f"{key:<16}: {pretty(value)}")
         else:
             print(pretty(parameters))
+
+    print()
+
+def print_explanation(report):
+
+    explanation = report.get("Explanation")
+
+    if explanation is None:
+        return
+
+    print("Explanation")
+    print("-----------")
+
+    print(explanation["Summary"])
+    print()
+
+    for reason in explanation["Reasons"]:
+        print(f"• {reason}")
 
     print()
 
@@ -203,6 +222,7 @@ def print_report(report):
         print("Error: Cannot analyze an empty sequence")
         return
     print_sequence_classification(report)
+    print_explanation(report)
     print_recognition_scores(report)
     print_predictions(report)
     print_verification(report)

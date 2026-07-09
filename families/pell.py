@@ -42,3 +42,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "The sequence follows the Pell recurrence relation.",
+        "Each term is generated from the previous two Pell numbers."
+    ]

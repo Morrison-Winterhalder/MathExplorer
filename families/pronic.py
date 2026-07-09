@@ -33,3 +33,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is the product of two consecutive integers.",
+        "The sequence matches the pronic number formula n(n + 1)."
+    ]

@@ -34,3 +34,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a hexagonal number.",
+        "The sequence matches the hexagonal number formula exactly."
+    ]

@@ -88,6 +88,8 @@ FAMILY_MAP = {
     for family in FAMILIES
 }
 
+def get_family(name):
+    return FAMILY_MAP.get(name)
 
 def get_parent(family):
 
@@ -97,25 +99,6 @@ def get_parent(family):
     return FAMILY_MAP.get(family.PARENT)
 
 
-
-def get_lineage(family):
-
-    lineage = []
-
-    current = family
-
-    while current.PARENT is not None:
-
-        parent = get_parent(current)
-
-        if parent is None:
-            break
-
-        lineage.append(parent)
-
-        current = parent
-
-    return lineage
 
 def get_lineage(family):
 

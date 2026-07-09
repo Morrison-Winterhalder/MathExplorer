@@ -39,3 +39,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a centered square number.",
+        "The sequence matches the centered square number formula exactly."
+    ]

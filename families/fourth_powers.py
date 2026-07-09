@@ -30,3 +30,9 @@ def formula(_):
 
 def complexity(_):
     return 4
+
+def explain(_):
+    return [
+        "Every term is a perfect fourth power.",
+        "The sequence matches the formula n⁴ exactly."
+    ]

@@ -42,3 +42,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "The sequence follows the Lucas recurrence relation.",
+        "Each term equals the sum of the previous two terms."
+    ]

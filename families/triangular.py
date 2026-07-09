@@ -42,3 +42,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a triangular number.",
+        "The sequence matches the triangular number formula exactly."
+    ]

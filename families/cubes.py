@@ -30,3 +30,9 @@ def formula(_):
 
 def complexity(_):
     return 3
+
+def explain(_):
+    return [
+        "Every term is a perfect cube.",
+        "The sequence matches the formula n³ exactly."
+    ]

@@ -41,3 +41,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+
+    return [
+        "Each term is the sum of the two preceding terms."
+    ]

@@ -33,3 +33,9 @@ def formula(parameters):
 
 def complexity(_):
     return 0
+
+def explain(parameters):
+    return [
+        f"Every term is equal to {parameters['Value']}.",
+        "The sequence has zero first differences."
+    ]

@@ -38,3 +38,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a nonagonal number.",
+        "The sequence matches the nonagonal number formula exactly."
+    ]

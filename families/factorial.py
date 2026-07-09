@@ -35,3 +35,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Each term is the factorial of a consecutive integer.",
+        "The sequence grows by repeated multiplication."
+    ]

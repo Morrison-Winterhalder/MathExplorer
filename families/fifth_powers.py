@@ -30,3 +30,9 @@ def formula(_):
 
 def complexity(_):
     return 5
+
+def explain(_):
+    return [
+        "Every term is a perfect fifth power.",
+        "The sequence matches the formula n⁵ exactly."
+    ]

@@ -44,3 +44,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a pentagonal number.",
+        "The sequence matches the pentagonal number formula exactly."
+    ]

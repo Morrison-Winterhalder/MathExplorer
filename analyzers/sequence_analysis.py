@@ -4,6 +4,7 @@ from analyzers.pipeline.verification import finalize_report
 from analyzers.pipeline.confidence import update_confidence
 from analyzers.core.report import initialize_report
 from analyzers.pipeline.scoring import update_scores
+from analyzers.pipeline.explain import update_explanation
 
 def analyze_sequence(sequence):
     if not sequence:
@@ -11,6 +12,7 @@ def analyze_sequence(sequence):
     report = initialize_report(sequence)
     update_scores(sequence, report)
     update_classification(sequence, report)
+    update_explanation(sequence, report)
     update_confidence(sequence, report)
     recover_formula(sequence, report)
     finalize_report(sequence, report)

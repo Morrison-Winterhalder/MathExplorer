@@ -42,3 +42,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "The sequence follows the Jacobsthal recurrence relation.",
+        "Each term is determined by the previous two terms."
+    ]

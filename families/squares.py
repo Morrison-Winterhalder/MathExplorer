@@ -35,3 +35,10 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+
+    return [
+        "Every term is a perfect square.",
+        "The sequence matches the formula n² exactly."
+    ]

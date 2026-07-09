@@ -38,3 +38,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is a heptagonal number.",
+        "The sequence matches the heptagonal number formula exactly."
+    ]

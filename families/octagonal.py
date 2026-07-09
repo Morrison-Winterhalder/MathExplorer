@@ -36,3 +36,9 @@ def formula(_):
 
 def complexity(_):
     return 2
+
+def explain(_):
+    return [
+        "Every term is an octagonal number.",
+        "The sequence matches the octagonal number formula exactly."
+    ]
