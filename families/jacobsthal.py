@@ -3,6 +3,7 @@ from families.recurrence import evaluate_linear_recurrence
 NAME = "Jacobsthal"
 DESCRIPTION = "Each term equals the previous term plus twice the term before."
 REPRESENTATION = "Recurrence"
+CATEGORY = "Recurrence"
 
 
 def recognize(sequence):

@@ -20,8 +20,6 @@
 
 ---
 
-# Changelog
-
 ## Version 1.5
 
 ### Added
@@ -55,3 +53,23 @@
 ### Result
 
 MathExplorer v1.5 now supports **11 mathematical sequence families** through a modular analysis pipeline capable of classification, formula recovery, verification, and prediction.
+
+---
+
+## v2.1.0 — Plugin Foundation
+
+### Added
+- Automatic plugin discovery
+- Plugin validation
+- Family metadata
+- Formula interface
+- Hexagonal numbers
+
+### Changed
+- Refactored all sequence families
+- Simplified recognition engine
+- Improved confidence scoring
+- Improved reporting
+
+### Quality
+- 83 automated tests passing

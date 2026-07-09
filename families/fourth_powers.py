@@ -1,35 +1,30 @@
-from math import factorial
-
-NAME = "Factorial"
-DESCRIPTION = "Terms equal successive factorials."
+NAME = "Fourth Powers"
+DESCRIPTION = "Fourth powers."
 REPRESENTATION = "Explicit"
-CATEGORY = "Combinatorial"
+CATEGORY = "Polynomial"
 
 def recognize(sequence):
     if len(sequence) == 0:
         return None
 
-    for i, value in enumerate(sequence, start=1):
-        if value != factorial(i):
+    for term in sequence:
+        root = round(term ** 0.25)
+
+        if root**4 != term:
             return False
 
     return True
 
-
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return factorial(n)
-
+    return n**4
 
 def formula(_):
-    return "a(n) = n!"
-
+    return "a(n)=n⁴"
 
 def complexity(_):
-    return 2
+    return 4

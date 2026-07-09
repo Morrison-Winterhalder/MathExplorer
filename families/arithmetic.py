@@ -5,6 +5,7 @@ from families import polynomial
 NAME = "Arithmetic"
 DESCRIPTION = "Constant first differences."
 REPRESENTATION = "Explicit"
+CATEGORY = "Arithmetic"
 
 def recognize(sequence):
     if len(sequence) < 2:

@@ -1,10 +1,9 @@
 from math import isqrt
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Squares"
+DESCRIPTION = "Perfect square numbers."
 REPRESENTATION = "Explicit"
-CATEGORY = "Figurate"
-
+CATEGORY = "Polynomial"
 
 def recognize(sequence):
     if len(sequence) == 0:
@@ -14,29 +13,23 @@ def recognize(sequence):
         if term < 0:
             return False
 
-        value = 8 * term + 1
-        root = isqrt(value)
+        root = isqrt(term)
 
-        if root * root != value:
+        if root * root != term:
             return False
 
     return True
 
-
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return n * (n + 1) // 2
-
+    return n*n
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
-
+    return "a(n)=n²"
 
 def complexity(_):
     return 2

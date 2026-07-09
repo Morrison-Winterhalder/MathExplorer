@@ -1,20 +1,16 @@
 from math import isqrt
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Pronic"
+DESCRIPTION = "Pronic (oblong) numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
-
 
 def recognize(sequence):
     if len(sequence) == 0:
         return None
 
     for term in sequence:
-        if term < 0:
-            return False
-
-        value = 8 * term + 1
+        value = 4 * term + 1
         root = isqrt(value)
 
         if root * root != value:
@@ -22,21 +18,16 @@ def recognize(sequence):
 
     return True
 
-
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return n * (n + 1) // 2
-
+    return n * (n + 1)
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
-
+    return "a(n) = n(n + 1)"
 
 def complexity(_):
     return 2

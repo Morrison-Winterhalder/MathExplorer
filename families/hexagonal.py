@@ -1,6 +1,7 @@
 NAME = "Hexagonal"
 DESCRIPTION = "Hexagonal numbers."
 REPRESENTATION = "Explicit"
+CATEGORY = "Figurate"
 
 
 def recognize(sequence):

@@ -1,42 +1,38 @@
-from math import isqrt
+from math import sqrt
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Centered Pentagonal"
+DESCRIPTION = "Centered pentagonal numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
-
 
 def recognize(sequence):
     if len(sequence) == 0:
         return None
 
     for term in sequence:
-        if term < 0:
+        d = 25 + 40 * (term - 1)
+        root = sqrt(d)
+
+        if not root.is_integer():
             return False
 
-        value = 8 * term + 1
-        root = isqrt(value)
+        n = (5 + root) / 10
 
-        if root * root != value:
+        if not n.is_integer():
             return False
 
     return True
 
-
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return n * (n + 1) // 2
-
+    return (5 * n * (n - 1)) // 2 + 1
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
-
+    return "a(n) = 5n(n-1)/2 + 1"
 
 def complexity(_):
     return 2

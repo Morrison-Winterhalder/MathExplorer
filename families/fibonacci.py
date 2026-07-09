@@ -3,6 +3,7 @@ from families.recurrence import evaluate_linear_recurrence
 NAME = "Fibonacci"
 DESCRIPTION = "Each term is the sum of the previous two."
 REPRESENTATION = "Recurrence"
+CATEGORY = "Recurrence"
 
 def recognize(sequence):
     if len(sequence) < 3:

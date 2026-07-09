@@ -1,42 +1,36 @@
 from math import isqrt
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Centered Hexagonal"
+DESCRIPTION = "Centered hexagonal numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
-
 
 def recognize(sequence):
     if len(sequence) == 0:
         return None
 
     for term in sequence:
-        if term < 0:
+        d = 12 * (term - 1) + 1
+        root = isqrt(d)
+
+        if root * root != d:
             return False
 
-        value = 8 * term + 1
-        root = isqrt(value)
-
-        if root * root != value:
+        if (1 + root) % 6 != 0:
             return False
 
     return True
 
-
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return n * (n + 1) // 2
-
+    return 3*n*(n-1)+1
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
-
+    return "a(n) = 3n(n-1)+1"
 
 def complexity(_):
     return 2

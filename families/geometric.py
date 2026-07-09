@@ -4,6 +4,7 @@ from analyzers.core.transformations import first_ratios
 NAME = "Geometric"
 DESCRIPTION = "Constant ratios between consecutive terms."
 REPRESENTATION = "Explicit"
+CATEGORY = "Geometric"
 
 
 def recognize(sequence):

@@ -5,6 +5,7 @@ from math import factorial
 NAME = "Polynomial"
 DESCRIPTION = "Finite constant differences."
 REPRESENTATION = "Explicit"
+CATEGORY = "Polynomial"
 
 def compute_degree(sequence):
     if len(sequence) < 2:

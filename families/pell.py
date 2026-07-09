@@ -3,6 +3,7 @@ from families.recurrence import evaluate_linear_recurrence
 NAME = "Pell"
 DESCRIPTION = "Each term equals twice the previous term plus the one before."
 REPRESENTATION = "Recurrence"
+CATEGORY = "Recurrence"
 
 
 def recognize(sequence):

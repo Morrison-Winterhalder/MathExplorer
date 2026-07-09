@@ -3,6 +3,7 @@ from families.recurrence import evaluate_linear_recurrence
 NAME = "Lucas"
 DESCRIPTION = "Each term is the sum of the previous two, beginning with 2 and 1."
 REPRESENTATION = "Recurrence"
+CATEGORY = "Recurrence"
 
 
 def recognize(sequence):

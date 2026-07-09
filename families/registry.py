@@ -26,6 +26,8 @@ REQUIRED_ATTRIBUTES = {
     "NAME",
     "DESCRIPTION",
     "REPRESENTATION",
+    "CATEGORY",
+    "SPECIFICITY",
     "recognize",
     "fit",
     "evaluate",

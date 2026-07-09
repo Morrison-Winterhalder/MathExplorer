@@ -7,12 +7,25 @@ def calculate_confidence(
     complexity
 ):
 
-    confidence = 60
+    BASE_CONFIDENCE = 60
+
+    FIT_WEIGHT = 80
+    FIT_CURVE = 8
+
+    COMPETITION_WEIGHT = 20
+    SAMPLE_SIZE_WEIGHT = 35
+
+    COMPLEXITY_WEIGHT = 0.5
+
+    confidence = BASE_CONFIDENCE
 
     # -------------------------
     # 1. Fit Penalty
     # -------------------------
-    fit_penalty = 80 * (1 - math.exp(-8 * winner_error))
+
+    fit_penalty = FIT_WEIGHT * (
+        1 - math.exp(-FIT_CURVE * winner_error)
+    )
 
     # -------------------------
     # 2. Competition Penalty
@@ -28,17 +41,22 @@ def calculate_confidence(
             min(1.0, 1 - winner_error / runner_up_error)
     )
 
-    competition_penalty = 20 * (1 - separation)
+    competition_penalty = COMPETITION_WEIGHT * (1 - separation)
 
     # -------------------------
     # 3. Sample Size Bonus
     # -------------------------
-    sample_size_bonus = 35 * (1 - math.exp(-sequence_length / 10))       
+    sample_size_bonus = SAMPLE_SIZE_WEIGHT * (
+        1 - math.exp(-sequence_length / 10)
+    )       
 
     # -------------------------
     # 4. Complexity Penalty
     # -------------------------
-    complexity_penalty = max(0, complexity - 2) * 0.5
+    complexity_penalty = (
+        max(0, complexity - 2)
+        * COMPLEXITY_WEIGHT
+    )
 
     confidence -= fit_penalty
     confidence -= competition_penalty
@@ -61,7 +79,7 @@ def calculate_confidence(
     return {
         "Fit Penalty": fit_penalty,
         "Competition Penalty": competition_penalty,
-        "Evidence Bonus": sample_size_bonus,
+        "Sample Size Bonus": sample_size_bonus,
         "Complexity Penalty": complexity_penalty,
         "Separation": separation,
         "Score": confidence,

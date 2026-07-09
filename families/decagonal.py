@@ -1,42 +1,36 @@
 from math import isqrt
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Decagonal"
+DESCRIPTION = "Decagonal figurate numbers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
-
 
 def recognize(sequence):
     if len(sequence) == 0:
         return None
 
     for term in sequence:
-        if term < 0:
-            return False
-
-        value = 8 * term + 1
+        value = 4 * term + 4
         root = isqrt(value)
 
         if root * root != value:
             return False
 
-    return True
+        if (2 + root) % 4 != 0:
+            return False
 
+    return True
 
 def fit(sequence):
     if recognize(sequence) is not True:
         return None
-
     return {}
 
-
 def evaluate(_, n):
-    return n * (n + 1) // 2
-
+    return n * (4 * n - 3)
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
-
+    return "a(n) = n(4n - 3)"
 
 def complexity(_):
     return 2

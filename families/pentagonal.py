@@ -3,6 +3,7 @@ from math import isqrt
 NAME = "Pentagonal"
 DESCRIPTION = "Terms are pentagonal numbers."
 REPRESENTATION = "Explicit"
+CATEGORY = "Figurate"
 
 
 def recognize(sequence):
