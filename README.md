@@ -1,15 +1,34 @@
 # MathExplorer
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![Version](https://img.shields.io/badge/version-v2.0-green)
-![Tests](https://img.shields.io/badge/tests-83%20passed-brightgreen)
+![Version](https://img.shields.io/badge/version-v2.3-green)
+![Tests](https://img.shields.io/badge/tests-112%20passed-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 MathExplorer is a Python library for recognizing, verifying, and predicting mathematical sequences.
 
 Given a sequence of numbers, MathExplorer attempts to determine the most likely generating family, recover its parameters, verify the result, predict future terms, and report its findings with a confidence score.
 
-Current Release: **v2.0**
+Current Release: **v2.3**
+
+---
+
+## What's New in v2.3
+
+MathExplorer v2.3 introduces a redesigned internal architecture centered around an event-driven analysis pipeline.
+
+Highlights include:
+
+* Event-based **Analysis Trace** for every analysis.
+* Fully modular Developer Mind-Model rendering.
+* Improved confidence reporting.
+* Enhanced symbolic formula recovery.
+* Clearer prediction and verification output.
+* Reasoning Summary describing the overall decision process.
+* Expanded automated test coverage (112 passing tests).
+
+This release lays the architectural foundation for future explanation and reasoning features planned for the v3.x series.
+
 
 ---
 

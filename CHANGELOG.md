@@ -18,7 +18,7 @@
 - Modular pipeline design
 - Modular recovery and classification systems
 
----
+------------------------
 
 ## Version 1.5
 
@@ -54,7 +54,7 @@
 
 MathExplorer v1.5 now supports **11 mathematical sequence families** through a modular analysis pipeline capable of classification, formula recovery, verification, and prediction.
 
----
+------------------------
 
 ## v2.1.0 — Plugin Foundation
 
@@ -74,7 +74,7 @@ MathExplorer v1.5 now supports **11 mathematical sequence families** through a m
 ### Quality
 - 83 automated tests passing
 
----
+------------------------
 
 ## v2.2.0
 
@@ -110,3 +110,38 @@ MathExplorer v1.5 now supports **11 mathematical sequence families** through a m
 - Runner-up determination after specificity
 - Registry validation
 - Display fixes
+
+------------------------
+
+## v2.3 — Event-Driven Analysis Pipeline
+
+### Added
+
+* Introduced the **Analysis Trace**, providing a complete event log of the analysis pipeline.
+* Added modular **event renderers** for developer output.
+* Added **Reasoning Summary** to the Developer Mind-Model.
+* Added **Analysis Complete** section to indicate successful pipeline execution.
+* Added detailed prediction rendering with indexed generated terms.
+* Added verification events documenting sequence regeneration.
+
+### Changed
+
+* Refactored the Developer Mind-Model to render entirely from the Analysis Trace.
+* Separated execution logic from presentation logic through dedicated renderer modules.
+* Improved confidence reporting with clearer breakdowns of scoring components.
+* Improved formula recovery presentation.
+* Improved prediction and verification output formatting.
+* Simplified classification presentation while preserving hierarchy information.
+
+### Fixed
+
+* Corrected polynomial formula formatting (e.g. `n²` instead of `1n²`).
+* Standardized symbolic formatting across recovered formulas.
+* Fixed verification pipeline integration with prediction generation.
+* Updated the test suite to reflect the event-driven architecture.
+
+### Testing
+
+* 112 automated tests passing.
+* Full Developer Mind-Model rendering verified.
+* End-to-end pipeline validation completed.
