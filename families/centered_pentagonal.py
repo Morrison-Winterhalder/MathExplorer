@@ -13,6 +13,8 @@ def recognize(sequence):
 
     for term in sequence:
         d = 25 + 40 * (term - 1)
+        if d < 0:
+            return False
         root = sqrt(d)
 
         if not root.is_integer():

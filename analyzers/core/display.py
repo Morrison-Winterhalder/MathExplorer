@@ -1,4 +1,4 @@
-from analyzers.core.formatting import yes_no, pretty
+from analyzers.core.formatter import yes_no, pretty
 
 def print_sequence_classification(report):
     classification = report["Sequence Classification"]

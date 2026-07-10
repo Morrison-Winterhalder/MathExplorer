@@ -14,6 +14,8 @@ def recognize(sequence):
 
     for value in sequence:
         discriminant = 1 + 24 * value
+        if discriminant < 0:
+            return False
         root = isqrt(discriminant)
 
         if root * root != discriminant:

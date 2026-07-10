@@ -13,6 +13,8 @@ def recognize(sequence):
 
     for term in sequence:
         discriminant = 49 + 56 * term
+        if discriminant < 0:
+            return False
         root = sqrt(discriminant)
 
         if not root.is_integer():

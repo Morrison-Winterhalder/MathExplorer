@@ -17,6 +17,8 @@ def recognize(sequence):
             return False
 
         value = 8 * term + 1
+        if value < 0:
+            return False
         root = isqrt(value)
 
         if root * root != value:

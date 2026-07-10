@@ -13,6 +13,8 @@ def recognize(sequence):
 
     for term in sequence:
         d = 12 * (term - 1) + 1
+        if d < 0:
+            return False
         root = isqrt(d)
 
         if root * root != d:

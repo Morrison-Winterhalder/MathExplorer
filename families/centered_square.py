@@ -12,6 +12,9 @@ def recognize(sequence):
         return None
 
     for term in sequence:
+        if term < 0:
+            return False
+
         found = False
 
         root = isqrt(term)

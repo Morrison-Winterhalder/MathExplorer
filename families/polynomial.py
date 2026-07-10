@@ -1,7 +1,7 @@
 from families import constant
 from analyzers.core.transformations import first_differences, nth_differences, subtract_sequences
 from math import factorial
-from analyzers.core.formatting import format_polynomial
+from analyzers.core.formatter import build_polynomial_expression, format_formula
 
 NAME = "Polynomial"
 DESCRIPTION = "Finite constant differences."
@@ -64,7 +64,10 @@ def evaluate(coefficients, n):
     return value
 
 def formula(coefficients):
-    return f"a(n) = {format_polynomial(coefficients)}"
+
+    expression = build_polynomial_expression(coefficients)
+
+    return f"a(n) = {format_formula(expression)}"
 
 def complexity(parameters):
     degree = max(0, len(parameters) - 1)
