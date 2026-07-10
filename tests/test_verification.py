@@ -20,6 +20,7 @@ from families import (
 
 def test_arithmetic_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": arithmetic,
             "Parameters": {"Difference": 2, "Intercept": -1}
@@ -35,6 +36,7 @@ def test_arithmetic_verification():
 
 def test_geometric_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": geometric,
             "Parameters": {"First Term": 2, "Ratio": 3}
@@ -50,6 +52,7 @@ def test_geometric_verification():
 
 def test_polynomial_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": polynomial,
             "Parameters": [1,0,0]
@@ -65,6 +68,7 @@ def test_polynomial_verification():
 
 def test_constant_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": constant,
             "Parameters": {"Value": 7}
@@ -80,6 +84,7 @@ def test_constant_verification():
 
 def test_triangular_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": triangular,
             "Parameters": {}
@@ -95,6 +100,7 @@ def test_triangular_verification():
 
 def test_pentagonal_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pentagonal,
             "Parameters": {}
@@ -110,6 +116,7 @@ def test_pentagonal_verification():
 
 def test_fibonacci_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": fibonacci,
             "Parameters": {
@@ -128,6 +135,7 @@ def test_fibonacci_verification():
 
 def test_lucas_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": lucas,
             "Parameters": {
@@ -146,6 +154,7 @@ def test_lucas_verification():
 
 def test_pell_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pell,
             "Parameters": {
@@ -164,6 +173,7 @@ def test_pell_verification():
 
 def test_jacobsthal_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": jacobsthal,
             "Parameters": {
@@ -182,6 +192,7 @@ def test_jacobsthal_verification():
 
 def test_factorial_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": factorial,
             "Parameters": {}
@@ -197,6 +208,7 @@ def test_factorial_verification():
 
 def test_failed_verification():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": arithmetic,
             "Parameters": {"Difference": 3, "Intercept": -2}

@@ -1,32 +1,45 @@
 from analyzers.core.utilities import pretty
 
 def format_polynomial(coefficients):
-    polyList = []
+    terms = []
+
     for i, coefficient in enumerate(coefficients):
         power = len(coefficients) - 1 - i
+
         if coefficient == 0:
             continue
-        elif power == 0:
-            polyList.append(str(pretty(coefficient)))
+
+        # Constant
+        if power == 0:
+            terms.append(str(pretty(coefficient)))
+
+        # Linear
         elif power == 1:
             if coefficient == 1:
-                polyList.append("n")
+                terms.append("n")
             elif coefficient == -1:
-                polyList.append("-n")
+                terms.append("-n")
             else:
-                polyList.append(f"{pretty(coefficient)}n")
+                terms.append(f"{pretty(coefficient)}n")
+
+        # Higher powers
         else:
             if coefficient == 1:
-                polyList.append(f"n^{pretty(power)}")
+                terms.append(f"n^{pretty(power)}")
             elif coefficient == -1:
-                polyList.append(f"-n^{pretty(power)}")
+                terms.append(f"-n^{pretty(power)}")
             else:
-                polyList.append(f"{pretty(coefficient)}n^{pretty(power)}")
-    polyString = " + ".join(polyList)
-    polyString = polyString.replace("+ -", "- ")
-    if not polyList:
+                terms.append(
+                    f"{pretty(coefficient)}n^{pretty(power)}"
+                )
+
+    if not terms:
         return "0"
-    return polyString
+
+    polynomial = " + ".join(terms)
+    polynomial = polynomial.replace("+ -", "- ")
+
+    return polynomial
 
 def clean_coefficients(coefficients, tol=1e-10):
     return [

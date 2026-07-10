@@ -31,7 +31,7 @@ def evaluate(_, n):
     return n*n
 
 def formula(_):
-    return "a(n)=n²"
+    return "a(n) = n²"
 
 def complexity(_):
     return 2

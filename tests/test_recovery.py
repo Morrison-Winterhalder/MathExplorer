@@ -19,6 +19,7 @@ from families import (
 
 def test_arithmetic_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": arithmetic,
             "Parameters": {
@@ -39,6 +40,7 @@ def test_arithmetic_recovery():
 
 def test_geometric_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": geometric,
             "Parameters": {
@@ -59,6 +61,7 @@ def test_geometric_recovery():
 
 def test_polynomial_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": polynomial,
             "Parameters": [1,0,0]
@@ -76,6 +79,7 @@ def test_polynomial_recovery():
 
 def test_constant_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": constant,
             "Parameters": {
@@ -95,6 +99,7 @@ def test_constant_recovery():
 
 def test_triangular_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": triangular,
             "Parameters": {}
@@ -103,7 +108,7 @@ def test_triangular_recovery():
 
     recover_formula([1,3,6,10,15], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n(n+1)/2"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = n(n + 1)/2"
 
 
 # ==========================================================
@@ -112,6 +117,7 @@ def test_triangular_recovery():
 
 def test_pentagonal_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pentagonal,
             "Parameters": {}
@@ -120,7 +126,7 @@ def test_pentagonal_recovery():
 
     recover_formula([1,5,12,22,35], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n(3n-1)/2"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = n(3n - 1)/2"
 
 
 # ==========================================================
@@ -129,6 +135,7 @@ def test_pentagonal_recovery():
 
 def test_fibonacci_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": fibonacci,
             "Parameters": {}
@@ -146,6 +153,7 @@ def test_fibonacci_recovery():
 
 def test_lucas_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": lucas,
             "Parameters": {}
@@ -163,6 +171,7 @@ def test_lucas_recovery():
 
 def test_pell_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pell,
             "Parameters": {}
@@ -180,6 +189,7 @@ def test_pell_recovery():
 
 def test_jacobsthal_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": jacobsthal,
             "Parameters": {}
@@ -197,6 +207,7 @@ def test_jacobsthal_recovery():
 
 def test_factorial_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": factorial,
             "Parameters": {}
@@ -214,6 +225,7 @@ def test_factorial_recovery():
 
 def test_unknown_family_recovery():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": None,
             "Parameters": None

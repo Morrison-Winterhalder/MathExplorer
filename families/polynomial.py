@@ -1,6 +1,7 @@
 from families import constant
 from analyzers.core.transformations import first_differences, nth_differences, subtract_sequences
 from math import factorial
+from analyzers.core.formatting import format_polynomial
 
 NAME = "Polynomial"
 DESCRIPTION = "Finite constant differences."
@@ -63,27 +64,7 @@ def evaluate(coefficients, n):
     return value
 
 def formula(coefficients):
-    terms = []
-
-    degree = len(coefficients) - 1
-
-    for i, coefficient in enumerate(coefficients):
-        power = degree - i
-
-        if abs(coefficient) < 1e-12:
-            continue
-
-        if power == 0:
-            terms.append(f"{coefficient:g}")
-        elif power == 1:
-            terms.append(f"{coefficient:g}n")
-        else:
-            terms.append(f"{coefficient:g}n^{power}")
-
-    if not terms:
-        return "a(n) = 0"
-
-    return "a(n) = " + " + ".join(terms).replace("+ -", "- ")
+    return f"a(n) = {format_polynomial(coefficients)}"
 
 def complexity(parameters):
     degree = max(0, len(parameters) - 1)

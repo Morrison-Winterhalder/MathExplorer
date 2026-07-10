@@ -41,14 +41,14 @@ def update_scores(sequence, report):
 
         if result is None:
             report["Analysis Trace"].append({
-                "stage": "scoring",
+                "stage": "recognition",
                 "event": "family_tested",
                 "family": family.NAME,
                 "recognized": False,
             })
         else:
             report["Analysis Trace"].append({
-                "stage": "scoring",
+                "stage": "recognition",
                 "event": "family_tested",
                 "family": family.NAME,
                 "recognized": True,

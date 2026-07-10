@@ -213,7 +213,7 @@ def print_transformations(report):
 
     print()
 
-def print_report(report):
+def print_report(report, developer=False):
     print("""========================================
           MathExplorer Report
 ========================================""")
@@ -229,3 +229,6 @@ def print_report(report):
     print_basic_information(report)
     print_properties(report)
     print_transformations(report)
+    if developer:
+        print()
+        print(report["Developer Mind-Model"])

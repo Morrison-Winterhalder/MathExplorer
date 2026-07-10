@@ -6,7 +6,7 @@ sequence = [1, 4, 9, 16, 25]
 
 report = analyze_sequence(sequence)
 
-print_report(report)
+print_report(report, developer=True)
 
 
 # sequence = [0.5*(n)**2 + 0.5*n for n in range(1, 8)]

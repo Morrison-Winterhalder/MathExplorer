@@ -19,6 +19,7 @@ def predict_terms(sequence, report, number_of_terms=5):
         "event": "prediction_started",
         "family": family.NAME,
         "terms_requested": number_of_terms,
+        "starting_index": len(sequence) + 1,
     })
 
     report["Analysis Trace"].append({

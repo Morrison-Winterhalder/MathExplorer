@@ -50,7 +50,7 @@ def formula(parameters):
     a = parameters["First Term"]
     r = parameters["Ratio"]
 
-    return f"a(n) = {a}({r})^(n-1)"
+    return f"a(n) = {a} · {r}^(n-1)"
 
 
 def complexity(_):

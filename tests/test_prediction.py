@@ -20,6 +20,7 @@ from families import (
 
 def test_arithmetic_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": arithmetic,
             "Parameters": {
@@ -38,6 +39,7 @@ def test_arithmetic_prediction():
 
 def test_geometric_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": geometric,
             "Parameters": {
@@ -56,6 +58,7 @@ def test_geometric_prediction():
 
 def test_polynomial_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": polynomial,
             "Parameters": [1,0,0]
@@ -71,6 +74,7 @@ def test_polynomial_prediction():
 
 def test_constant_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": constant,
             "Parameters": {
@@ -88,6 +92,7 @@ def test_constant_prediction():
 
 def test_triangular_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": triangular,
             "Parameters": {}
@@ -103,6 +108,7 @@ def test_triangular_prediction():
 
 def test_pentagonal_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pentagonal,
             "Parameters": {}
@@ -118,6 +124,7 @@ def test_pentagonal_prediction():
 
 def test_fibonacci_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": fibonacci,
             "Parameters": {
@@ -136,6 +143,7 @@ def test_fibonacci_prediction():
 
 def test_lucas_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": lucas,
             "Parameters": {
@@ -154,6 +162,7 @@ def test_lucas_prediction():
 
 def test_pell_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": pell,
             "Parameters": {
@@ -172,6 +181,7 @@ def test_pell_prediction():
 
 def test_jacobsthal_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": jacobsthal,
             "Parameters": {
@@ -190,6 +200,7 @@ def test_jacobsthal_prediction():
 
 def test_factorial_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": factorial,
             "Parameters": {}
@@ -205,6 +216,7 @@ def test_factorial_prediction():
 
 def test_unknown_prediction():
     report = {
+        "Analysis Trace": [],
         "Sequence Classification": {
             "Family": None,
             "Parameters": None
