@@ -1,4 +1,5 @@
-from math import isqrt
+from analyzers.core.utilities import integer_nth_root
+from analyzers.core.formatter import format_formula
 
 NAME = "Squares"
 DESCRIPTION = "Perfect square numbers."
@@ -15,7 +16,7 @@ def recognize(sequence):
         if term < 0:
             return False
 
-        root = isqrt(term)
+        root = integer_nth_root(term,2)
 
         if root * root != term:
             return False
@@ -31,7 +32,8 @@ def evaluate(_, n):
     return n*n
 
 def formula(_):
-    return "a(n) = n²"
+    expression = "n^2"
+    return format_formula(expression)
 
 def complexity(_):
     return 2

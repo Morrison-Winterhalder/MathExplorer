@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Centered Hexagonal"
 DESCRIPTION = "Centered hexagonal numbers."
@@ -34,7 +35,7 @@ def evaluate(_, n):
     return 3*n*(n-1)+1
 
 def formula(_):
-    return "a(n) = 3n(n-1)+1"
+    return format_formula("3n(n-1)+1")
 
 def complexity(_):
     return 2

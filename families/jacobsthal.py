@@ -1,4 +1,5 @@
 from families.recurrence import evaluate_linear_recurrence
+from analyzers.core.formatter import format_recurrence
 
 NAME = "Jacobsthal"
 DESCRIPTION = "Each term equals the previous term plus twice the term before."
@@ -37,7 +38,7 @@ def evaluate(parameters, n):
 
 
 def formula(_):
-    return "a(n) = a(n-1) + 2a(n-2)"
+    return format_recurrence("a(n-1)+2a(n-2)")
 
 
 def complexity(_):

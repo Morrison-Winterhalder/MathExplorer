@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Pentagonal"
 DESCRIPTION = "Terms are pentagonal numbers."
@@ -41,7 +42,8 @@ def evaluate(_, n):
 
 
 def formula(_):
-    return "a(n) = n(3n - 1)/2"
+    expression = "n(3n-1)/2"
+    return format_formula(expression)
 
 
 def complexity(_):

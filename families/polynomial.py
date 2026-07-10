@@ -67,7 +67,7 @@ def formula(coefficients):
 
     expression = build_polynomial_expression(coefficients)
 
-    return f"a(n) = {format_formula(expression)}"
+    return format_formula(expression)
 
 def complexity(parameters):
     degree = max(0, len(parameters) - 1)

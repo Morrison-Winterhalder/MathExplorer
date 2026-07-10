@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Octagonal"
 DESCRIPTION = "Octagonal figurate numbers."
@@ -34,7 +35,7 @@ def evaluate(_, n):
     return n * (3 * n - 2)
 
 def formula(_):
-    return "a(n) = n(3n - 2)"
+    return format_formula("n(3n-2)")
 
 def complexity(_):
     return 2

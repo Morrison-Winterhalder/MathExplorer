@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Centered Square"
 DESCRIPTION = "Centered square numbers."
@@ -38,7 +39,7 @@ def evaluate(_, n):
     return n*n + (n-1)*(n-1)
 
 def formula(_):
-    return "a(n) = n² + (n-1)²"
+    return format_formula("n^2+(n-1)^2")
 
 def complexity(_):
     return 2

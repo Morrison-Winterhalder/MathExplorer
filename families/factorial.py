@@ -1,4 +1,5 @@
 from math import factorial
+from analyzers.core.formatter import format_formula
 
 NAME = "Factorial"
 DESCRIPTION = "Terms equal successive factorials."
@@ -30,7 +31,8 @@ def evaluate(_, n):
 
 
 def formula(_):
-    return "a(n) = n!"
+    expression = "n!"
+    return format_formula(expression)
 
 
 def complexity(_):

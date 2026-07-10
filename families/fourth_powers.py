@@ -1,3 +1,6 @@
+from analyzers.core.utilities import integer_nth_root
+from analyzers.core.formatter import format_formula
+
 NAME = "Fourth Powers"
 DESCRIPTION = "Fourth powers."
 REPRESENTATION = "Explicit"
@@ -10,9 +13,12 @@ def recognize(sequence):
         return None
 
     for term in sequence:
-        root = round(term ** 0.25)
+        root = integer_nth_root(term, 4)
 
-        if root**4 != term:
+        if root is None:
+            return False
+
+        if root ** 4 != term:
             return False
 
     return True
@@ -26,7 +32,8 @@ def evaluate(_, n):
     return n**4
 
 def formula(_):
-    return "a(n)=n⁴"
+    expression = "n^4"
+    return format_formula(expression)
 
 def complexity(_):
     return 4

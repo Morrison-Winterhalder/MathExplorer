@@ -1,3 +1,5 @@
+from analyzers.core.formatter import format_formula
+
 NAME = "Hexagonal"
 DESCRIPTION = "Hexagonal numbers."
 REPRESENTATION = "Explicit"
@@ -29,7 +31,8 @@ def evaluate(_, n):
 
 
 def formula(_):
-    return "a(n) = n(2n - 1)"
+    expression = "n(2n-1)"
+    return format_formula(expression)
 
 
 def complexity(_):

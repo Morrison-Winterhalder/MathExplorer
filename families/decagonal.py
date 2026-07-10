@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Decagonal"
 DESCRIPTION = "Decagonal figurate numbers."
@@ -34,7 +35,7 @@ def evaluate(_, n):
     return n * (4 * n - 3)
 
 def formula(_):
-    return "a(n) = n(4n - 3)"
+    return format_formula("n(4n-3)")
 
 def complexity(_):
     return 2

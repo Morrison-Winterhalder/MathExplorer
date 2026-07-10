@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_recurrence
 
 NAME = "Pronic"
 DESCRIPTION = "Pronic (oblong) numbers."

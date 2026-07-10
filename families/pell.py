@@ -1,4 +1,5 @@
 from families.recurrence import evaluate_linear_recurrence
+from analyzers.core.formatter import format_formula
 
 NAME = "Pell"
 DESCRIPTION = "Each term equals twice the previous term plus the one before."
@@ -37,7 +38,7 @@ def evaluate(parameters, n):
 
 
 def formula(_):
-    return "a(n) = 2a(n-1) + a(n-2)"
+    return format_formula("n(n+1)")
 
 
 def complexity(_):

@@ -1,4 +1,5 @@
 from analyzers.core.transformations import first_differences
+from analyzers.core.formatter import format_formula
 from families import constant
 from families import polynomial
 
@@ -40,16 +41,18 @@ def evaluate(parameters, n):
     )
 
 def formula(parameters):
+
     d = parameters["Difference"]
     b = parameters["Intercept"]
 
-    if b == 0:
-        return f"a(n) = {d}n"
+    expression = f"{d}n"
 
     if b > 0:
-        return f"a(n) = {d}n + {b}"
+        expression += f" + {b}"
+    elif b < 0:
+        expression += f" - {abs(b)}"
 
-    return f"a(n) = {d}n - {abs(b)}"
+    return format_formula(expression)
 
 def complexity(_):
     return 1

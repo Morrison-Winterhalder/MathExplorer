@@ -1,3 +1,5 @@
+from analyzers.core.formatter import format_formula
+
 NAME = "Constant"
 DESCRIPTION = "All terms are equal."
 REPRESENTATION = "Explicit"
@@ -29,7 +31,7 @@ def evaluate(parameters, n):
     return parameters["Value"]
 
 def formula(parameters):
-    return f"a(n) = {parameters['Value']}"
+    return format_formula(str(parameters["Value"]))
 
 def complexity(_):
     return 0

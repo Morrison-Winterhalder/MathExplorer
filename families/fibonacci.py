@@ -1,4 +1,5 @@
 from families.recurrence import evaluate_linear_recurrence
+from analyzers.core.formatter import format_recurrence
 
 NAME = "Fibonacci"
 DESCRIPTION = "Each term is the sum of the previous two."
@@ -36,7 +37,7 @@ def evaluate(parameters, n):
 
 
 def formula(_):
-    return "a(n) = a(n-1) + a(n-2)"
+    return format_recurrence("a(n-1)+a(n-2)")
 
 
 def complexity(_):

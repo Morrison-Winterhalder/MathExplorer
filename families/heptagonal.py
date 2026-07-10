@@ -1,4 +1,5 @@
 from math import sqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Heptagonal"
 DESCRIPTION = "Heptagonal figurate numbers."
@@ -36,7 +37,7 @@ def evaluate(_, n):
     return n * (5 * n - 3) // 2
 
 def formula(_):
-    return "a(n) = n(5n - 3)/2"
+    return format_formula("n(5n-3)/2")
 
 def complexity(_):
     return 2

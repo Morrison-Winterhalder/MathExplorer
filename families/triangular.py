@@ -1,4 +1,5 @@
 from math import isqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Triangular"
 DESCRIPTION = "Terms are triangular numbers."
@@ -39,7 +40,8 @@ def evaluate(_, n):
 
 
 def formula(_):
-    return "a(n) = n(n + 1)/2"
+    expression = "n(n+1)/2"
+    return format_formula(expression)
 
 
 def complexity(_):

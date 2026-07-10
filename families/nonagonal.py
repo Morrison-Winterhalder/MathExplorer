@@ -1,4 +1,5 @@
 from math import sqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Nonagonal"
 DESCRIPTION = "Nonagonal figurate numbers."
@@ -36,7 +37,7 @@ def evaluate(_, n):
     return n * (7 * n - 5) // 2
 
 def formula(_):
-    return "a(n) = n(7n - 5)/2"
+    return format_formula("n(7n-5)/2")
 
 def complexity(_):
     return 2

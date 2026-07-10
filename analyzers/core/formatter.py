@@ -1,6 +1,25 @@
 from analyzers.core.utilities import pretty
 import re
 
+SUPERSCRIPTS = str.maketrans({
+    "0": "⁰",
+    "1": "¹",
+    "2": "²",
+    "3": "³",
+    "4": "⁴",
+    "5": "⁵",
+    "6": "⁶",
+    "7": "⁷",
+    "8": "⁸",
+    "9": "⁹",
+    "+": "⁺",
+    "-": "⁻",
+    "=": "⁼",
+    "(": "⁽",
+    ")": "⁾",
+    "n": "ⁿ",
+})
+
 
 def build_polynomial_expression(coefficients):
     terms = []
@@ -40,17 +59,27 @@ def yes_no(value):
 # Formula Formatting
 # ==========================================================
 
-def format_formula(formula):
+def format_formula(expression):
     """
     Apply all formatting passes to a symbolic formula.
     """
 
-    formula = normalize_spacing(formula)
-    formula = normalize_coefficients(formula)
-    formula = normalize_signs(formula)
-    formula = normalize_zero_terms(formula)
+    expression = normalize_spacing(expression)
+    expression = normalize_zero_terms(expression)
+    expression = normalize_coefficients(expression)
+    expression = normalize_signs(expression)
+    expression = normalize_operator_spacing(expression)
+    expression = normalize_exponents(expression)
 
-    return formula
+    return f"a(n) = {expression}"
+
+def format_recurrence(recurrence):
+
+    recurrence = normalize_spacing(recurrence)
+    recurrence = normalize_operator_spacing(recurrence)
+    recurrence = normalize_exponents(recurrence)
+
+    return f"a(n) = {recurrence}"
 
 def normalize_spacing(formula):
 
@@ -99,3 +128,94 @@ def normalize_decimals(formula):
         r"\1",
         formula,
     )
+
+def normalize_exponents(expression):
+    """
+    Convert caret exponents into Unicode superscripts.
+
+    Examples:
+        n^2        -> n²
+        n^10       -> n¹⁰
+        3^(n-1)    -> 3⁽ⁿ⁻¹⁾
+    """
+
+    result = []
+    i = 0
+
+    while i < len(expression):
+
+        if expression[i] != "^":
+            result.append(expression[i])
+            i += 1
+            continue
+
+        # Skip the caret
+        i += 1
+
+        # Parenthesized exponent
+        if i < len(expression) and expression[i] == "(":
+
+            depth = 1
+            start = i
+            i += 1
+
+            while i < len(expression) and depth:
+
+                if expression[i] == "(":
+                    depth += 1
+                elif expression[i] == ")":
+                    depth -= 1
+
+                i += 1
+
+            
+            exponent = expression[start:i]
+            exponent = exponent.replace(" ", "")    
+            result.append(exponent.translate(SUPERSCRIPTS))
+
+        # Simple exponent
+        else:
+
+            start = i
+
+            while (
+                i < len(expression)
+                and expression[i].isalnum()
+            ):
+                i += 1
+
+            exponent = expression[start:i]
+            result.append(exponent.translate(SUPERSCRIPTS))
+
+    return "".join(result)
+
+def normalize_operator_spacing(expression):
+    """
+    Add spaces around binary + and - operators.
+
+    Examples:
+        n+1      -> n + 1
+        3n-1     -> 3n - 1
+        x+y-z    -> x + y - z
+
+    Leaves unary minus untouched:
+        -n
+        -3
+        3⁽ⁿ⁻¹⁾
+    """
+
+    # Binary +
+    expression = re.sub(
+        r'(?<=[\w\)])\+(?=[\w\(])',
+        ' + ',
+        expression
+    )
+
+    # Binary -
+    expression = re.sub(
+        r'(?<=[\w\)])-(?=[\w\(])',
+        ' - ',
+        expression
+    )
+
+    return expression

@@ -1,5 +1,7 @@
 from families import constant
 from analyzers.core.transformations import first_ratios
+from analyzers.core.utilities import pretty
+from analyzers.core.formatter import format_formula
 
 NAME = "Geometric"
 DESCRIPTION = "Constant ratios between consecutive terms."
@@ -47,10 +49,13 @@ def evaluate(parameters, n):
 
 
 def formula(parameters):
-    a = parameters["First Term"]
-    r = parameters["Ratio"]
 
-    return f"a(n) = {a} · {r}^(n-1)"
+    a = pretty(parameters["First Term"])
+    r = pretty(parameters["Ratio"])
+
+    expression = f"{a}·{r}^(n-1)"
+
+    return format_formula(expression)
 
 
 def complexity(_):

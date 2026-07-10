@@ -1,4 +1,5 @@
 from math import sqrt
+from analyzers.core.formatter import format_formula
 
 NAME = "Centered Pentagonal"
 DESCRIPTION = "Centered pentagonal numbers."
@@ -36,7 +37,7 @@ def evaluate(_, n):
     return (5 * n * (n - 1)) // 2 + 1
 
 def formula(_):
-    return "a(n) = 5n(n-1)/2 + 1"
+    return format_formula("5n(n-1)/2+1")
 
 def complexity(_):
     return 2

@@ -1,3 +1,6 @@
+from analyzers.core.utilities import integer_nth_root
+from analyzers.core.formatter import format_formula
+
 NAME = "Cubes"
 DESCRIPTION = "Perfect cube numbers."
 REPRESENTATION = "Explicit"
@@ -10,7 +13,7 @@ def recognize(sequence):
         return None
 
     for term in sequence:
-        root = round(term ** (1/3))
+        root = integer_nth_root(term,3)
 
         if root**3 != term:
             return False
@@ -26,7 +29,8 @@ def evaluate(_, n):
     return n**3
 
 def formula(_):
-    return "a(n)=n³"
+    expression = "n^3"
+    return format_formula(expression)
 
 def complexity(_):
     return 3

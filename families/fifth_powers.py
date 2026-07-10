@@ -1,3 +1,6 @@
+from analyzers.core.utilities import integer_nth_root
+from analyzers.core.formatter import format_formula
+
 NAME = "Fifth Powers"
 DESCRIPTION = "Fifth powers."
 REPRESENTATION = "Explicit"
@@ -10,7 +13,7 @@ def recognize(sequence):
         return None
 
     for term in sequence:
-        root = round(term ** 0.2)
+        root = integer_nth_root(term,5)
 
         if root**5 != term:
             return False
@@ -26,7 +29,8 @@ def evaluate(_, n):
     return n**5
 
 def formula(_):
-    return "a(n)=n⁵"
+    expression = "n^5"
+    return format_formula(expression)
 
 def complexity(_):
     return 5
