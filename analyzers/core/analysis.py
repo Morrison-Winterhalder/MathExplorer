@@ -14,7 +14,7 @@ class SequenceAnalysis:
 
         self.predictions = {}
 
-        self.confidence = {}
+        self.confidence_data = {}
 
         self.explanation = {}
 
@@ -39,7 +39,7 @@ class SequenceAnalysis:
             "Transformations": self.transformations,
             "Explanation": self.explanation,
             "Developer Mind-Model": self.developer_model,
-            "Confidence": self.confidence,
+            "Confidence": self.confidence_data,
         }
 
         return mapping[key]
@@ -100,3 +100,104 @@ class SequenceAnalysis:
             "Developer Mind-Model",
             "Confidence",
         }
+    
+    @property
+    def family(self):
+        return self.classification.get("Family")
+
+
+    @property
+    def family_name(self):
+        family = self.family
+        return family.NAME if family else "Unknown"
+
+
+    @property
+    def formula(self):
+        return self.classification.get("Formula")
+
+    @property
+    def confidence(self):
+        return self.classification.get("Confidence")
+
+
+    @property
+    def predictions_next(self):
+        return self.predictions.get("Next Terms")
+
+
+    @property
+    def ranking(self):
+        return self.recognition_scores.get("Ranking", [])
+
+
+    @property
+    def best_fit(self):
+        return self.recognition_scores.get("Best Fit")
+
+
+    @property
+    def parameters(self):
+        return self.classification.get("Parameters", {})
+
+
+    @property
+    def hierarchy(self):
+        return self.classification.get("Hierarchy", "Unknown")
+
+    @property
+    def confidence_score(self):
+        confidence = self.classification.get("Confidence")
+        
+        if confidence is None:
+            return None
+            
+        return confidence["Score"]
+
+    @property
+    def confidence_label(self):
+        confidence = self.confidence
+
+        if confidence is None:
+            return None
+
+        if confidence.get("Tied"):
+            return "Ambiguous"
+
+        return confidence["Label"]
+
+    @property
+    def confidence_factors(self):
+        return self.confidence
+    
+    @property
+    def ranking(self):
+        return self.recognition_scores.get("Ranking", [])
+
+    @property
+    def best_fit(self):
+        return self.recognition_scores.get("Best Fit")
+    
+    @property
+    def next_terms(self):
+        return self.predictions.get("Next Terms")
+    
+    @property
+    def verified(self):
+        return self.verification.get("Verified")
+    
+    @property
+    def monotonic(self):
+        return self.properties.get("Monotonic", "-")
+    
+    @property
+    def bounded(self):
+        return self.properties.get("Bounded", "-")
+    
+    @property
+    def oscillating(self):
+        return self.properties.get("Oscillating", "-")
+    
+    @property
+    def periodic(self):
+        return self.properties.get("Periodic", "-")

@@ -1,19 +1,15 @@
 from analyzers.core.formatter import yes_no, pretty
-from analyzers.core.properties import determine_monotonic
 from analyzers.core.confidence_formatter import explain_confidence
 
 def print_sequence_classification(report):
-    classification = report["Sequence Classification"]
 
     print("Sequence Classification")
     print("-----------------------")
 
-    family = classification.get("Family")
-    tied_families = classification.get("Tied Families", [])
-
-    family = classification.get("Family")
-
-    family_name = family.NAME if family else "Unknown"
+    family_name = report.family_name
+    formula = report.formula
+    confidence = report.confidence
+    parameters = report.parameters
 
     print()
     print("Family")
@@ -23,58 +19,45 @@ def print_sequence_classification(report):
     print()
     print("Hierarchy")
     print("---------")
-    print(classification["Hierarchy"])
-
-    # if tree is None:
-    #     print("Unknown")
-    # else:
-    #     print(tree)
+    print(report.hierarchy)
 
     print()
 
-    formula = classification.get("Formula")
     if formula is not None:
         print(f"Formula{'':<9}: {formula}")
 
-    confidence = classification.get("Confidence")
     if confidence is not None:
-        score = confidence["Score"]
-        if confidence.get("Tied"):
-            label = "Ambiguous"
-        else:
-            label = confidence["Label"]
-        print(f"{'Confidence':<16}: {score:.1f}% ({label})")
+        print(
+            f"{'Confidence':<16}: "
+            f"{report.confidence_score:.1f}% "
+            f"({report.confidence_label})"
+        )
     print()
 
-    print()
-
-    explanation = explain_confidence(report["Sequence Classification"]["Confidence"])
+    explanation = explain_confidence(confidence)
 
     print("Confidence Factors")
     print("------------------")
 
     for reason in explanation:
         print(reason)
-    
-    parameters = classification.get("Parameters")
+
     if parameters:
         print()
         print("Parameters")
         print("----------")
 
-        if isinstance(parameters, dict):
-            for key, value in parameters.items():
-                print(f"{key:<16}: {pretty(value)}")
-        else:
-            print(pretty(parameters))
+        for key, value in parameters.items():
+            print(f"{key:<16}: {pretty(value)}")
+
 
     print()
 
 def print_explanation(report):
 
-    explanation = report.get("Explanation")
+    explanation = report.explanation
 
-    if explanation is None:
+    if not explanation:
         return
 
     print("Explanation")
@@ -89,11 +72,9 @@ def print_explanation(report):
     print()
 
 def print_recognition_scores(report):
-    recognition = report["Recognition Scores"]
-    ranking = recognition.get("Ranking") or []
-    best_fit = recognition.get("Best Fit")
-    classification = report["Sequence Classification"]
-    parameters = classification.get("Parameters")
+    ranking = report.ranking
+    best_fit = report.best_fit
+    parameters = report.parameters
 
     print("Recognition Scores")
     print("------------------")
@@ -123,20 +104,23 @@ def print_recognition_scores(report):
         )
 
     print()
-    print()
-    winner_names = ", ".join(
-        winner["Family"].NAME
-        for winner in best_fit["Winners"]
-    )
+    if best_fit is not None:
+        winner_names = ", ".join(
+            winner["Family"].NAME
+            for winner in best_fit["Winners"]
+        )
 
-    print(f"{'Winner(s)':<12}: {winner_names}")
+        print(f"{'Winner(s)':<12}: {winner_names}")
 
-    runner_up = best_fit.get("Runner Up")
+        runner_up = best_fit.get("Runner Up")
 
-    if runner_up is None:
-        print(f"{'Runner-Up':<12}: None")
+        if runner_up is None:
+            print(f"{'Runner-Up':<12}: None")
+        else:
+            print(f"{'Runner-Up':<12}: {runner_up.NAME}")
     else:
-        print(f"{'Runner-Up':<12}: {runner_up.NAME}")
+        print(f"{'Winner(s)':<12}: None")
+        print(f"{'Runner-Up':<12}: None")
 
     print()
 
@@ -145,7 +129,7 @@ def print_predictions(report):
     print("Predictions")
     print("-----------")
 
-    predictions = report["Predictions"]["Next Terms"]
+    predictions = report.next_terms
 
     if predictions is None:
         print("Next Terms      : None")
@@ -158,7 +142,7 @@ def print_verification(report):
     print("Verification")
     print("------------")
 
-    verified = report["Verification"]["Verified"]
+    verified = report.verified
 
     if verified is None:
         print("Verified       : Unknown")
@@ -171,7 +155,7 @@ def print_basic_information(report):
     print("Basic Information")
     print("-----------------")
 
-    info = report["Basic Information"]
+    info = report.basic_information
 
     for key, value in info.items():
         print(f"{key:<16}: {pretty(value)}")
@@ -179,8 +163,7 @@ def print_basic_information(report):
     print()
 
 def print_properties(report):
-    family = report["Sequence Classification"]["Family"]
-    properties = report["Properties"]
+    family = report.family
 
     if family is None:
         return
@@ -199,21 +182,10 @@ def print_properties(report):
 
     print()
 
-    print(
-        f"Monotonic           : {properties.get('Monotonic', '-')}"
-    )
-
-    print(
-        f"Bounded             : {properties.get('Bounded', '-')}"
-    )
-
-    print(
-        f"Oscillating         : {properties.get('Oscillating', '-')}"
-    )
-
-    print(
-        f"Periodic            : {properties.get('Periodic', '-')}"
-    )
+    print(f"Monotonic           : {report.monotonic}")
+    print(f"Bounded             : {report.bounded}")
+    print(f"Oscillating         : {report.oscillating}")
+    print(f"Periodic            : {report.periodic}")
 
     print()
 
@@ -231,7 +203,7 @@ def print_transformations(report):
     print("Transformations")
     print("---------------")
 
-    transformations = report["Transformations"]
+    transformations = report.transformations
 
     for key, value in transformations.items():
         if value is None:
@@ -259,4 +231,4 @@ def print_report(report, developer=False):
     print_transformations(report)
     if developer:
         print()
-        print(report["Developer Mind-Model"])
+        print(report.developer_model)
