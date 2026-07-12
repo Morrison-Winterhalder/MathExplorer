@@ -2,11 +2,43 @@ from families.recurrence import evaluate_linear_recurrence
 from analyzers.core.formatter import format_recurrence
 
 NAME = "Fibonacci"
-DESCRIPTION = "Each term is the sum of the previous two."
-REPRESENTATION = "Recurrence"
-CATEGORY = "Recurrence"
+DESCRIPTION = "Each term is the sum of the two preceding terms."
+REPRESENTATION = "Recursive"
+CATEGORY = "Recursive"
 SPECIFICITY = 50
 PARENT = "Linear Recurrence"
+
+# Mathematical Metadata
+OEIS = "A000045"
+ALIASES = [
+    "Fibonacci Numbers",
+    "Fibonacci Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Recurrence"
+
+TAGS = (
+    "Recursive",
+    "Linear Recurrence",
+    "Fibonacci",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Exponential"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 5
+RECOGNITION_METHOD = "Recursive Relation"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) < 3:

@@ -1,4 +1,6 @@
 from analyzers.core.formatter import yes_no, pretty
+from analyzers.core.properties import determine_monotonic
+from analyzers.core.confidence_formatter import explain_confidence
 
 def print_sequence_classification(report):
     classification = report["Sequence Classification"]
@@ -13,16 +15,20 @@ def print_sequence_classification(report):
 
     family_name = family.NAME if family else "Unknown"
 
-    tree = classification.get("Hierarchy")
-
     print()
     print("Family")
     print("------")
+    print(family_name)
 
-    if tree is None:
-        print("Unknown")
-    else:
-        print(tree)
+    print()
+    print("Hierarchy")
+    print("---------")
+    print(classification["Hierarchy"])
+
+    # if tree is None:
+    #     print("Unknown")
+    # else:
+    #     print(tree)
 
     print()
 
@@ -39,6 +45,16 @@ def print_sequence_classification(report):
             label = confidence["Label"]
         print(f"{'Confidence':<16}: {score:.1f}% ({label})")
     print()
+
+    print()
+
+    explanation = explain_confidence(report["Sequence Classification"]["Confidence"])
+
+    print("Confidence Factors")
+    print("------------------")
+
+    for reason in explanation:
+        print(reason)
     
     parameters = classification.get("Parameters")
     if parameters:
@@ -76,6 +92,8 @@ def print_recognition_scores(report):
     recognition = report["Recognition Scores"]
     ranking = recognition.get("Ranking") or []
     best_fit = recognition.get("Best Fit")
+    classification = report["Sequence Classification"]
+    parameters = classification.get("Parameters")
 
     print("Recognition Scores")
     print("------------------")
@@ -84,10 +102,10 @@ def print_recognition_scores(report):
         print("No recognized families.\n")
         return
 
-    row = "{:<5}{:<18}{:>10}{:>10}{:>10}"
+    row = "{:<5}{:<35}{:<10}{:<10}{:<10}{:<4}{:<4}"
 
-    print(row.format("Rank", "Family", "RRN", "NRMSE", "R²"))
-    print("-" * len(row.format("Rank", "Family", "RRN", "NRMSE", "R²")))
+    print(row.format("Rank", "Family", "RRN", "NRMSE", "R²", "Cx", "Sp"))
+    print("-" * len(row.format("Rank", "Family", "RRN", "NRMSE", "R²", "Cx", "Sp")))
 
     for rank, score in enumerate(ranking, start=1):
         family = score["Family"]
@@ -99,6 +117,8 @@ def print_recognition_scores(report):
                 f"{score['RRN']:.4f}",
                 f"{score['NRMSE']:.4f}",
                 f"{score['R2']:.4f}",
+                family.complexity(parameters),
+                family.SPECIFICITY
             )
         )
 
@@ -159,43 +179,51 @@ def print_basic_information(report):
     print()
 
 def print_properties(report):
+    family = report["Sequence Classification"]["Family"]
     properties = report["Properties"]
 
-    print("Properties")
-    print("----------")
+    if family is None:
+        return
 
-    rows = [
-        ("Constant",        properties["Is Constant?"]),
-        ("Arithmetic",      properties["Is Arithmetic?"]),
-        ("Geometric",       properties["Is Geometric?"]),
-        ("Polynomial Deg.", properties["Polynomial Degree"]),
-        ("", None),
+    print()
+    print("Mathematical Properties")
+    print("-----------------------")
 
-        ("Triangular",      properties["Is Triangular?"]),
-        ("Pentagonal",      properties["Is Pentagonal?"]),
-        ("Factorial",       properties["Is Factorial?"]),
-        ("", None),
+    print(f"Representation      : {family.REPRESENTATION}")
+    print(f"Parent Family       : {family.PARENT}")
 
-        ("Fibonacci",       properties["Is Fibonacci?"]),
-        ("Lucas",           properties["Is Lucas?"]),
-        ("Pell",            properties["Is Pell?"]),
-        ("Jacobsthal",      properties["Is Jacobsthal?"]),
-        ("", None),
+    print()
 
-        ("Increasing",      properties["Is Increasing?"]),
-        ("Decreasing",      properties["Is Decreasing?"]),
-        ("Unique",          properties["Is Each Term Unique?"]),
-    ]
+    print(f"Domain              : {family.DOMAIN}")
+    print(f"Growth              : {family.GROWTH}")
 
-    for label, value in rows:
-        if label == "":
-            print()
-            continue
+    print()
 
-        if isinstance(value, bool):
-            value = yes_no(value)
+    print(
+        f"Monotonic           : {properties.get('Monotonic', '-')}"
+    )
 
-        print(f"{label:<16}: {pretty(value)}")
+    print(
+        f"Bounded             : {properties.get('Bounded', '-')}"
+    )
+
+    print(
+        f"Oscillating         : {properties.get('Oscillating', '-')}"
+    )
+
+    print(
+        f"Periodic            : {properties.get('Periodic', '-')}"
+    )
+
+    print()
+
+    print(f"Recognition Method  : {family.RECOGNITION_METHOD}")
+    print(f"Reliability         : {family.RELIABILITY}")
+    print(f"Minimum Terms       : {family.MIN_TERMS}")
+
+    print()
+
+    print(f"OEIS                : {family.OEIS if family.OEIS is not None else "-"}")
 
     print()
 

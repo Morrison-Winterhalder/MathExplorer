@@ -9,7 +9,15 @@ from families import (
     lucas,
     pell,
     jacobsthal,
-    factorial
+    factorial,
+    tribonacci,
+    tetranacci,
+    padovan,
+    perrin,
+    centered_triangular,
+    centered_square,
+    centered_pentagonal,
+    centered_hexagonal,
 )
 
 # ==========================================================
@@ -114,12 +122,109 @@ def test_pentagonal_complexity():
     assert pentagonal.complexity(params) >= 1
 
 # ==========================================================
+# Centered Triangular
+# ==========================================================
+
+def test_centered_triangular_fit():
+    params = centered_triangular.fit([1,4,10,19,31])
+    assert params is not None
+
+
+def test_centered_triangular_evaluate():
+    params = centered_triangular.fit([1,4,10,19,31])
+
+    generated = [
+        centered_triangular.evaluate(params,n)
+        for n in range(1,6)
+    ]
+
+    assert generated == [1,4,10,19,31]
+
+
+def test_centered_triangular_complexity():
+    params = centered_triangular.fit([1,4,10,19,31])
+    assert centered_triangular.complexity(params) >= 1
+
+# ==========================================================
+# Centered Square
+# ==========================================================
+
+def test_centered_square_fit():
+    params = centered_square.fit([1,5,13,25,41])
+    assert params is not None
+
+
+def test_centered_square_evaluate():
+    params = centered_square.fit([1,5,13,25,41])
+
+    generated = [
+        centered_square.evaluate(params,n)
+        for n in range(1,6)
+    ]
+
+    assert generated == [1,5,13,25,41]
+
+
+def test_centered_square_complexity():
+    params = centered_square.fit([1,5,13,25,41])
+    assert centered_square.complexity(params) >= 1
+
+# ==========================================================
+# Centered Pentagonal
+# ==========================================================
+
+def test_centered_pentagonal_fit():
+    params = centered_pentagonal.fit([1,6,16,31,51])
+    assert params is not None
+
+
+def test_centered_pentagonal_evaluate():
+    params = centered_pentagonal.fit([1,6,16,31,51])
+
+    generated = [
+        centered_pentagonal.evaluate(params,n)
+        for n in range(1,6)
+    ]
+
+    assert generated == [1,6,16,31,51]
+
+
+def test_centered_pentagonal_complexity():
+    params = centered_pentagonal.fit([1,6,16,31,51])
+    assert centered_pentagonal.complexity(params) >= 1
+
+# ==========================================================
+# Centered Hexagonal
+# ==========================================================
+
+def test_centered_hexagonal_fit():
+    params = centered_hexagonal.fit([1,7,19,37,61])
+    assert params is not None
+
+
+def test_centered_hexagonal_evaluate():
+    params = centered_hexagonal.fit([1,7,19,37,61])
+
+    generated = [
+        centered_hexagonal.evaluate(params,n)
+        for n in range(1,6)
+    ]
+
+    assert generated == [1,7,19,37,61]
+
+
+def test_centered_hexagonal_complexity():
+    params = centered_hexagonal.fit([1,7,19,37,61])
+    assert centered_hexagonal.complexity(params) >= 1
+
+# ==========================================================
 # Fibonacci
 # ==========================================================
 
 def test_fibonacci_fit():
     params = fibonacci.fit([1, 1, 2, 3, 5])
     assert params["Seeds"] == [1, 1]
+    assert params["RecurrenceCoefficients"] == [1,1]
 
 def test_fibonacci_evaluate():
     params = fibonacci.fit([1, 1, 2, 3, 5])
@@ -137,6 +242,7 @@ def test_fibonacci_complexity():
 def test_lucas_fit():
     params = lucas.fit([2, 1, 3, 4, 7])
     assert params["Seeds"] == [2, 1]
+    assert params["RecurrenceCoefficients"] == [1,1]
 
 def test_lucas_evaluate():
     params = lucas.fit([2, 1, 3, 4, 7])
@@ -154,6 +260,7 @@ def test_lucas_complexity():
 def test_pell_fit():
     params = pell.fit([0, 1, 2, 5, 12])
     assert params["Seeds"] == [0, 1]
+    assert params["RecurrenceCoefficients"] == [2,1]
 
 def test_pell_evaluate():
     params = pell.fit([0, 1, 2, 5, 12])
@@ -171,6 +278,7 @@ def test_pell_complexity():
 def test_jacobsthal_fit():
     params = jacobsthal.fit([0, 1, 1, 3, 5])
     assert params["Seeds"] == [0, 1]
+    assert params["RecurrenceCoefficients"] == [1,2]
 
 def test_jacobsthal_evaluate():
     params = jacobsthal.fit([0, 1, 1, 3, 5])
@@ -180,6 +288,104 @@ def test_jacobsthal_evaluate():
 def test_jacobsthal_complexity():
     params = jacobsthal.fit([0, 1, 1, 3, 5])
     assert jacobsthal.complexity(params) >= 1
+
+# ==========================================================
+# Tribonacci
+# ==========================================================
+
+def test_tribonacci_fit():
+    params = tribonacci.fit([0,0,1,1,2,4,7])
+    assert params["Seeds"] == [0,0,1]
+
+
+def test_tribonacci_evaluate():
+    params = tribonacci.fit([0,0,1,1,2,4,7])
+    generated = [
+        tribonacci.evaluate(params,n)
+        for n in range(1,8)
+    ]
+    assert generated == [0,0,1,1,2,4,7]
+
+
+def test_tribonacci_complexity():
+    params = tribonacci.fit([0,0,1,1,2,4,7])
+    assert tribonacci.complexity(params) >= 1
+
+# ==========================================================
+# Tetranacci
+# ==========================================================
+
+def test_tetranacci_fit():
+    params = tetranacci.fit([0,0,0,1,1,2,4,8])
+    assert params["Seeds"] == [0,0,0,1]
+    assert params["RecurrenceCoefficients"] == [1,1,1,1]
+
+
+def test_tetranacci_evaluate():
+    params = tetranacci.fit([0,0,0,1,1,2,4,8])
+
+    generated = [
+        tetranacci.evaluate(params,n)
+        for n in range(1,9)
+    ]
+
+    assert generated == [0,0,0,1,1,2,4,8]
+
+
+def test_tetranacci_complexity():
+    params = tetranacci.fit([0,0,0,1,1,2,4,8])
+    assert tetranacci.complexity(params) >= 1
+
+# ==========================================================
+# Padovan
+# ==========================================================
+
+def test_padovan_fit():
+    params = padovan.fit([1,1,1,2,2,3,4])
+    assert params["Seeds"] == [1,1,1]
+    assert params["RecurrenceCoefficients"] == [0,1,1]
+
+
+def test_padovan_evaluate():
+    params = padovan.fit([1,1,1,2,2,3,4])
+
+    generated = [
+        padovan.evaluate(params,n)
+        for n in range(1,7)
+    ]
+
+    assert generated == [1,1,1,2,2,3]
+
+
+def test_padovan_complexity():
+    params = padovan.fit([1,1,1,2,2,3,4])
+    assert padovan.complexity(params) >= 1
+
+# ==========================================================
+# Perrin
+# ==========================================================
+
+def test_perrin_fit():
+    params = perrin.fit([3,0,2,3,2,5,5])
+
+    assert params["Seeds"] == [3,0,2]
+    assert params["RecurrenceCoefficients"] == [0,1,1]
+
+
+def test_perrin_evaluate():
+    params = perrin.fit([3,0,2,3,2,5,5])
+
+    generated = [
+        perrin.evaluate(params,n)
+        for n in range(1,8)
+    ]
+
+    assert generated == [3,0,2,3,2,5,5]
+
+
+def test_perrin_complexity():
+    params = perrin.fit([3,0,2,3,2,5,5])
+    assert perrin.complexity(params) >= 1
 
 # ==========================================================
 # Factorial

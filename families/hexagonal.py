@@ -1,11 +1,43 @@
 from analyzers.core.formatter import format_formula
 
-NAME = "Hexagonal"
-DESCRIPTION = "Hexagonal numbers."
+NAME = "Hexagonal Numbers"
+DESCRIPTION = "Numbers that can be arranged into regular hexagonal patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+
+# Mathematical Metadata
+OEIS = "A000384"
+ALIASES = [
+    "Hexagon Numbers",
+    "Hexagonal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Figurate",
+    "Polygonal",
+    "Hexagonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):

@@ -4,11 +4,44 @@ from analyzers.core.utilities import pretty
 from analyzers.core.formatter import format_formula
 
 NAME = "Geometric"
-DESCRIPTION = "Constant ratios between consecutive terms."
+DESCRIPTION = "Constant ratios."
 REPRESENTATION = "Explicit"
 CATEGORY = "Geometric"
 SPECIFICITY = 20
-PARENT = None
+PARENT = "Explicit"
+
+# Mathematical Metadata
+OEIS = None
+ALIASES = [
+    "Geometric Progression",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Geometric",
+    "Exponential",
+)
+
+DOMAIN = "Real Numbers"
+GROWTH = "Exponential"
+
+MONOTONIC = None
+BOUNDED = None
+OSCILLATING = None
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = True
+PARAMETER_NAMES = (
+    "First Term",
+    "Ratio",
+)
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Constant Ratio"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):

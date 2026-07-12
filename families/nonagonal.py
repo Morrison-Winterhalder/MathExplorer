@@ -1,12 +1,45 @@
 from math import sqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Nonagonal"
-DESCRIPTION = "Nonagonal figurate numbers."
+NAME = "Nonagonal Numbers"
+DESCRIPTION = "Numbers that can be arranged into regular nonagonal patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+
+# Mathematical Metadata
+OEIS = "A001106"
+ALIASES = [
+    "Nonagon Numbers",
+    "Enneagonal Numbers",
+    "Nonagonal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Figurate",
+    "Polygonal",
+    "Nonagonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

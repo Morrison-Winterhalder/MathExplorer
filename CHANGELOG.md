@@ -145,3 +145,27 @@ MathExplorer v1.5 now supports **11 mathematical sequence families** through a m
 * 112 automated tests passing.
 * Full Developer Mind-Model rendering verified.
 * End-to-end pipeline validation completed.
+
+------------------------
+
+## v2.5
+
+### Added
+
+- Metadata system for sequence families
+- Family hierarchy support
+- Improved mathematical formatting
+- Expanded power and figurate sequence support
+- Metadata integration into classification reports
+
+### Changed
+
+- Sequence families now contain richer self-describing information
+- Formula output uses normalized mathematical notation
+- Family recognition pipeline carries metadata
+
+### Fixed
+
+- Negative root recognition errors
+- Recursive formula recovery issues
+- Family registry collisions

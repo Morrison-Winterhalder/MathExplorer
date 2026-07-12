@@ -219,3 +219,16 @@ def normalize_operator_spacing(expression):
     )
 
     return expression
+
+def format_monotonic(family):
+
+    if not family.MONOTONIC:
+        return "No"
+
+    if getattr(family, "INCREASING", False):
+        return "Increasing"
+
+    if getattr(family, "DECREASING", False):
+        return "Decreasing"
+
+    return "Yes"

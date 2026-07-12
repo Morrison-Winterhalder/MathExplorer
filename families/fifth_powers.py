@@ -2,11 +2,42 @@ from analyzers.core.utilities import integer_nth_root
 from analyzers.core.formatter import format_formula
 
 NAME = "Fifth Powers"
-DESCRIPTION = "Fifth powers."
+DESCRIPTION = "Perfect fifth powers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
-SPECIFICITY = 40
+SPECIFICITY = 30
 PARENT = "Polynomial"
+
+# Mathematical Metadata
+OEIS = "A000359"
+ALIASES = [
+    "Perfect Fifth Powers",
+    "Fifth Powers",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Fifth Power",
+    "Polynomial",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quintic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

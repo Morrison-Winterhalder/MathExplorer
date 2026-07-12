@@ -7,10 +7,12 @@ from families import (
     constant,
     triangular,
     pentagonal,
+    centered_square,
     fibonacci,
     lucas,
     pell,
     jacobsthal,
+    tribonacci,
     factorial
 )
 
@@ -109,6 +111,24 @@ def test_pentagonal_verification():
 
     assert verify_sequence([1,5,12,22,35], report)
 
+# ==========================================================
+# Centered Square
+# ==========================================================
+
+def test_centered_square_verification():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": centered_square,
+            "Parameters": {}
+        }
+    }
+
+    assert verify_sequence(
+        [1,5,13,25,41],
+        report
+    )
 
 # ==========================================================
 # Fibonacci
@@ -185,6 +205,27 @@ def test_jacobsthal_verification():
 
     assert verify_sequence([0,1,1,3,5], report)
 
+# ==========================================================
+# Tribonacci
+# ==========================================================
+
+def test_tribonacci_verification():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": tribonacci,
+            "Parameters": {
+                "Seeds": [0,0,1],
+                "RecurrenceCoefficients": [1,1,1]
+            }
+        }
+    }
+
+    assert verify_sequence(
+        [0,0,1,1,2,4,7],
+        report
+    )
 
 # ==========================================================
 # Factorial

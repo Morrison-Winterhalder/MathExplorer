@@ -2,11 +2,44 @@ from analyzers.core.utilities import integer_nth_root
 from analyzers.core.formatter import format_formula
 
 NAME = "Squares"
-DESCRIPTION = "Perfect square numbers."
+DESCRIPTION = "Perfect squares."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
-SPECIFICITY = 40
+SPECIFICITY = 30
 PARENT = "Polynomial"
+
+# Mathematical Metadata
+OEIS = "A000290"
+ALIASES = [
+    "Square Numbers",
+    "Perfect Squares",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Square",
+    "Quadratic",
+    "Figurate",
+    "Polygonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

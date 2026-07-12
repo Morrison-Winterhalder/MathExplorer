@@ -8,7 +8,39 @@ DESCRIPTION = "Finite constant differences."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 10
-PARENT = None
+PARENT = "Explicit"
+
+# Mathematical Metadata
+OEIS = None
+ALIASES = [
+    "Finite Difference Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Polynomial",
+    "Finite Differences",
+)
+
+DOMAIN = "Real Numbers"
+GROWTH = "Polynomial"
+
+MONOTONIC = None
+BOUNDED = False
+OSCILLATING = None
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = True
+PARAMETER_NAMES = (
+    "Coefficients",
+)
+
+MIN_TERMS = 2
+RECOGNITION_METHOD = "Finite Differences"
+RELIABILITY = "Exact"
 
 def compute_degree(sequence):
     if len(sequence) < 2:

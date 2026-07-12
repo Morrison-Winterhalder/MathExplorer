@@ -1,12 +1,44 @@
 from math import isqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Triangular"
-DESCRIPTION = "Terms are triangular numbers."
+NAME = "Triangular Numbers"
+DESCRIPTION = "Numbers formed by adding consecutive positive integers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+
+# Mathematical Metadata
+OEIS = "A000217"
+ALIASES = [
+    "Triangle Numbers",
+    "Triangular Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Figurate",
+    "Polygonal",
+    "Triangular",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):

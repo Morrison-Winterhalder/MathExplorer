@@ -11,6 +11,7 @@ from families import constant
 from families import arithmetic
 from families import geometric
 from families import polynomial
+from analyzers.core.properties import determine_monotonic
 
 def initialize_report(sequence):
     return {
@@ -43,7 +44,8 @@ def initialize_report(sequence):
             "Is Lucas?": lucas.recognize(sequence),
             "Is Pell?": pell.recognize(sequence),
             "Is Jacobsthal?": jacobsthal.recognize(sequence),
-            "Is Factorial?": factorial.recognize(sequence)
+            "Is Factorial?": factorial.recognize(sequence),
+            "Monotonic": determine_monotonic(sequence),
         },
         "Transformations": {
             "First Differences": first_differences(sequence),

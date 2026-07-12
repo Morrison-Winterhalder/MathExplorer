@@ -83,7 +83,12 @@ def calculate_confidence(
         "Complexity Penalty": complexity_penalty,
         "Separation": separation,
         "Score": confidence,
-        "Label": label
+        "Label": label,
+        "Factors": {
+            "Perfect Fit": winner_error == 0,
+            "Has Competition": runner_up_error != float("inf"),
+            "Evidence Length": sequence_length   
+        }
     }
 
 def update_confidence(sequence, report):

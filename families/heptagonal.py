@@ -1,12 +1,44 @@
 from math import sqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Heptagonal"
-DESCRIPTION = "Heptagonal figurate numbers."
+NAME = "Heptagonal Numbers"
+DESCRIPTION = "Numbers that can be arranged into regular heptagonal patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+
+# Mathematical Metadata
+OEIS = "A000566"
+ALIASES = [
+    "Heptagon Numbers",
+    "Heptagonal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Figurate",
+    "Polygonal",
+    "Heptagonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

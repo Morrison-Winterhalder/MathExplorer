@@ -44,7 +44,8 @@ def update_classification(sequence, report):
         ),
         "Tied Families": [winner["Family"] for winner in winners],
         "Parameters": primary["Parameters"],
-        "Confidence": None
+        "Confidence": None,
+        "Metadata": primary["Metadata"],
     }
 
     report["Analysis Trace"].append({

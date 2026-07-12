@@ -1,3 +1,5 @@
+from analyzers.core.metadata import get_family_metadata
+
 def residuals(sequence, predicted):
     return [
         actual - predicted
@@ -16,7 +18,9 @@ def best_fit(sequence, family):
     ]
 
     return {
+        "Family": family.NAME,
+        "Metadata": get_family_metadata(family),
         "Parameters": parameters,
         "Predicted": predicted,
-        "Residuals": residuals(sequence,predicted)
+        "Residuals": residuals(sequence, predicted)
     }

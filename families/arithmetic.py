@@ -10,6 +10,40 @@ CATEGORY = "Arithmetic"
 SPECIFICITY = 20
 PARENT = "Polynomial"
 
+# Mathematical Metadata
+OEIS = None
+ALIASES = [
+    "Linear Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Polynomial",
+    "Linear",
+    "Arithmetic",
+)
+
+DOMAIN = "Real Numbers"
+GROWTH = "Linear"
+
+MONOTONIC = None
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = True
+PARAMETER_NAMES = (
+    "Difference",
+    "Intercept",
+)
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Constant First Differences"
+RELIABILITY = "Exact"
+
 def recognize(sequence):
     if len(sequence) < 2:
         return None

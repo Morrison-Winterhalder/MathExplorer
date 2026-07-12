@@ -2,11 +2,42 @@ from analyzers.core.utilities import integer_nth_root
 from analyzers.core.formatter import format_formula
 
 NAME = "Fourth Powers"
-DESCRIPTION = "Fourth powers."
+DESCRIPTION = "Perfect fourth powers."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
-SPECIFICITY = 40
+SPECIFICITY = 30
 PARENT = "Polynomial"
+
+# Mathematical Metadata
+OEIS = "A003828"
+ALIASES = [
+    "Bi-Squares",
+    "Fourth Powers",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Fourth Power",
+    "Polynomial",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quartic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

@@ -6,6 +6,15 @@ def test_every_family_has_metadata():
         assert hasattr(family, "DESCRIPTION")
         assert hasattr(family, "REPRESENTATION")
         assert hasattr(family, "CATEGORY")
+        assert hasattr(family, "SPECIFICITY")
+        assert hasattr(family, "PARENT")
+
+def test_every_parent_exists():
+
+    for family in FAMILIES:
+
+        if family.PARENT is not None:
+            assert get_family(family.PARENT) is not None
 
 def test_every_family_has_required_functions():
     for family in FAMILIES:
@@ -19,3 +28,17 @@ def test_plugins():
     assert len(FAMILIES) == len(FAMILY_MAP)
     for family in FAMILIES:
         assert get_family(family.NAME) is family
+
+def test_family_hierarchy():
+
+    family = get_family(
+        "Centered Square Numbers"
+    )
+
+    assert family.PARENT == "Centered Polygonal"
+
+    parent = get_family(
+        family.PARENT
+    )
+
+    assert parent.PARENT == "Polygonal"

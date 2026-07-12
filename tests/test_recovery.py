@@ -6,11 +6,16 @@ from families import (
     constant,
     triangular,
     pentagonal,
+    centered_square,
     fibonacci,
     lucas,
     pell,
     jacobsthal,
-    factorial
+    factorial,
+    tribonacci,
+    tetranacci,
+    padovan,
+    perrin,
 )
 
 # ==========================================================
@@ -52,7 +57,7 @@ def test_geometric_recovery():
 
     recover_formula([2,6,18,54,162], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 2 · 3^(n-1)"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = 2·3⁽ⁿ⁻¹⁾"
 
 
 # ==========================================================
@@ -70,7 +75,7 @@ def test_polynomial_recovery():
 
     recover_formula([1,4,9,16,25], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n^2"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = n²"
 
 
 # ==========================================================
@@ -128,6 +133,30 @@ def test_pentagonal_recovery():
 
     assert report["Sequence Classification"]["Formula"] == "a(n) = n(3n - 1)/2"
 
+# ==========================================================
+# Centered Square
+# ==========================================================
+
+def test_centered_square_recovery():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": centered_square,
+            "Parameters": {}
+        }
+    }
+
+    recover_formula(
+        [1,5,13,25,41],
+        report
+    )
+
+    assert (
+        report["Sequence Classification"]["Formula"]
+        ==
+        "a(n) = n² + (n - 1)²"
+    )
 
 # ==========================================================
 # Fibonacci
@@ -144,7 +173,7 @@ def test_fibonacci_recovery():
 
     recover_formula([1,1,2,3,5], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n-1) + a(n-2)"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + a(n - 2)"
 
 
 # ==========================================================
@@ -162,7 +191,7 @@ def test_lucas_recovery():
 
     recover_formula([2,1,3,4,7], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n-1) + a(n-2)"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + a(n - 2)"
 
 
 # ==========================================================
@@ -180,7 +209,7 @@ def test_pell_recovery():
 
     recover_formula([0,1,2,5,12], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 2a(n-1) + a(n-2)"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = 2a(n - 1) + a(n - 2)"
 
 
 # ==========================================================
@@ -198,8 +227,107 @@ def test_jacobsthal_recovery():
 
     recover_formula([0,1,1,3,5], report)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n-1) + 2a(n-2)"
+    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + 2a(n - 2)"
 
+# ==========================================================
+# Tribonacci
+# ==========================================================
+
+def test_tribonacci_recovery():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": tribonacci,
+            "Parameters": {}
+        }
+    }
+
+    recover_formula(
+        [0,0,1,1,2,4,7],
+        report
+    )
+
+    assert (
+        report["Sequence Classification"]["Formula"]
+        ==
+        "a(n) = a(n - 1) + a(n - 2) + a(n - 3)"
+    )
+
+# ==========================================================
+# Tetranacci
+# ==========================================================
+
+def test_tetranacci_recovery():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": tetranacci,
+            "Parameters": {}
+        }
+    }
+
+    recover_formula(
+        [0,0,0,1,1,2,4,8],
+        report
+    )
+
+    assert (
+        report["Sequence Classification"]["Formula"]
+        ==
+        "a(n) = a(n - 1) + a(n - 2) + a(n - 3) + a(n - 4)"
+    )
+
+# ==========================================================
+# Padovan
+# ==========================================================
+
+def test_padovan_recovery():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": padovan,
+            "Parameters": {}
+        }
+    }
+
+    recover_formula(
+        [1,1,1,2,2,3,4],
+        report
+    )
+
+    assert (
+        report["Sequence Classification"]["Formula"]
+        ==
+        "a(n) = a(n - 2) + a(n - 3)"
+    )
+
+# ==========================================================
+# Perrin
+# ==========================================================
+
+def test_perrin_recovery():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": perrin,
+            "Parameters": {}
+        }
+    }
+
+    recover_formula(
+        [3,0,2,3,2,5,5],
+        report
+    )
+
+    assert (
+        report["Sequence Classification"]["Formula"]
+        ==
+        "a(n) = a(n - 2) + a(n - 3)"
+    )
 
 # ==========================================================
 # Factorial
@@ -235,3 +363,23 @@ def test_unknown_family_recovery():
     recover_formula([1,2,3], report)
 
     assert "Formula" not in report["Sequence Classification"]
+
+# ==========================================================
+# Missing Parameters
+# ==========================================================
+
+def test_recovery_handles_missing_parameters():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": arithmetic,
+        }
+    }
+
+    recover_formula(
+        [1,3,5,7],
+        report
+    )
+
+    assert "Formula" in report["Sequence Classification"]

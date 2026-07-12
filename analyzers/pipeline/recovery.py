@@ -3,7 +3,7 @@ def recover_formula(sequence, report):
     classification = report["Sequence Classification"]
 
     family = classification["Family"]
-    parameters = classification["Parameters"]
+    parameters = classification.get("Parameters", {})
 
     if family is None:
         return
@@ -14,12 +14,16 @@ def recover_formula(sequence, report):
         "family": family.NAME,
     })
 
-    report["Sequence Classification"]["Formula"] = (
-        family.formula(parameters)
-    )
+    try:
+        formula = family.formula(parameters)
+
+    except (KeyError, TypeError):
+        formula = None
+
+    report["Sequence Classification"]["Formula"] = formula
 
     report["Analysis Trace"].append({
         "stage": "recovery",
         "event": "formula_recovered",
-        "formula": report["Sequence Classification"]["Formula"],
+        "formula": formula,
     })

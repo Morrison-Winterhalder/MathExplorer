@@ -1,12 +1,45 @@
 from math import isqrt
 from analyzers.core.formatter import format_recurrence
 
-NAME = "Pronic"
-DESCRIPTION = "Pronic (oblong) numbers."
+NAME = "Pronic Numbers"
+DESCRIPTION = "Numbers formed by multiplying two consecutive integers."
 REPRESENTATION = "Explicit"
-CATEGORY = "Figurate"
+CATEGORY = "Polynomial"
 SPECIFICITY = 50
-PARENT = "Polygonal"
+PARENT = "Polynomial"
+
+# Mathematical Metadata
+OEIS = "A002378"
+ALIASES = [
+    "Oblong Numbers",
+    "Heteromecic Numbers",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Polynomial",
+    "Quadratic",
+    "Product",
+    "Pronic",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

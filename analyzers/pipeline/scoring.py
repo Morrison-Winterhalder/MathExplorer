@@ -3,7 +3,7 @@ from analyzers.core.statistics import (
     relative_residual_norm,
     normalized_rmse,
 )
-from families.registry import FAMILIES
+from families.registry import FAMILIES, get_metadata
 from analyzers.core.best_fit import best_fit
 
 COMPLEXITY_WEIGHT = 1e-3
@@ -27,6 +27,7 @@ def score_family(sequence, family):
         "NRMSE": normalized_rmse(sequence, predicted),
         "RRN": relative_residual_norm(sequence, predicted),
         "R2": r_squared(sequence, predicted),
+        "Metadata": get_metadata(family),
     }
 
 
@@ -55,7 +56,6 @@ def update_scores(sequence, report):
                 "rrn": result["RRN"],
                 "nrmse": result["NRMSE"],
             })
-
 
             scores.append(result)
 

@@ -1,31 +1,56 @@
 from math import isqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Centered Square"
-DESCRIPTION = "Centered square numbers."
+NAME = "Centered Square Numbers"
+DESCRIPTION = "Numbers that form centered square patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 45
 PARENT = "Centered Polygonal"
 
+# Mathematical Metadata
+OEIS = "A001844"
+ALIASES = [
+    "Centered Squares",
+    "Centered Square Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Centered",
+    "Figurate",
+    "Polygonal",
+    "Quadratic",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
+
 def recognize(sequence):
-    if len(sequence) == 0:
+
+    if len(sequence) < MIN_TERMS:
         return None
 
-    for term in sequence:
-        if term < 0:
-            return False
+    for n, term in enumerate(sequence, start=1):
 
-        found = False
+        expected = n*n + (n-1)*(n-1)
 
-        root = isqrt(term)
-
-        for n in (root, root + 1):
-            if n * n + (n - 1) * (n - 1) == term:
-                found = True
-                break
-
-        if not found:
+        if term != expected:
             return False
 
     return True

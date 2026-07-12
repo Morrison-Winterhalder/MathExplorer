@@ -22,3 +22,15 @@ def test_explanation_has_reasons():
 
     assert len(report["Explanation"]["Reasons"]) > 0
     
+# ==========================================================
+# Recursive Explanation
+# ==========================================================
+
+def test_recursive_explanation_exists():
+
+    report = analyze_sequence(
+        [0,0,1,1,2,4,7]
+    )
+
+    assert report["Explanation"] is not None
+    assert len(report["Explanation"]["Reasons"]) >= 2

@@ -2,7 +2,7 @@
 from analyzers.sequence_analysis import analyze_sequence
 from analyzers.core.display import print_report
 
-sequence = [2,6,18,54,162]
+sequence = [1, 6, 16, 31, 51, 76]
 
 report = analyze_sequence(sequence)
 

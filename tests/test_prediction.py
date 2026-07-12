@@ -7,10 +7,15 @@ from families import (
     constant,
     triangular,
     pentagonal,
+    centered_square,
     fibonacci,
     lucas,
     pell,
     jacobsthal,
+    tribonacci,
+    tetranacci,
+    padovan,
+    perrin,
     factorial
 )
 
@@ -117,6 +122,24 @@ def test_pentagonal_prediction():
 
     assert predict_terms([1,5,12,22,35], report) == [51,70,92,117,145]
 
+# ==========================================================
+# Centered Square
+# ==========================================================
+
+def test_centered_square_prediction():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": centered_square,
+            "Parameters": {}
+        }
+    }
+
+    assert predict_terms(
+        [1,5,13,25,41],
+        report
+    ) == [61,85,113,145,181]
 
 # ==========================================================
 # Fibonacci
@@ -193,6 +216,96 @@ def test_jacobsthal_prediction():
 
     assert predict_terms([0,1,1,3,5], report) == [11,21,43,85,171]
 
+# ==========================================================
+# Tribonacci
+# ==========================================================
+
+def test_tribonacci_prediction():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": tribonacci,
+            "Parameters": {
+                "Seeds": [0,0,1],
+                "RecurrenceCoefficients": [1,1,1],
+            }
+        }
+    }
+
+    assert predict_terms(
+        [0,0,1,1,2,4,7],
+        report
+    ) == [13,24,44,81,149]
+
+
+# ==========================================================
+# Tetranacci
+# ==========================================================
+
+def test_tetranacci_prediction():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": tetranacci,
+            "Parameters": {
+                "Seeds": [0,0,0,1],
+                "RecurrenceCoefficients": [1,1,1,1],
+            }
+        }
+    }
+
+    assert predict_terms(
+        [0,0,0,1,1,2,4,8],
+        report
+    ) == [15,29,56,108,208]
+
+
+# ==========================================================
+# Padovan
+# ==========================================================
+
+def test_padovan_prediction():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": padovan,
+            "Parameters": {
+                "Seeds": [1,1,1],
+                "RecurrenceCoefficients": [0,1,1],
+            }
+        }
+    }
+
+    assert predict_terms(
+        [1,1,1,2,2,3,4],
+        report
+    ) == [5,7,9,12,16]
+
+
+# ==========================================================
+# Perrin
+# ==========================================================
+
+def test_perrin_prediction():
+
+    report = {
+        "Analysis Trace": [],
+        "Sequence Classification": {
+            "Family": perrin,
+            "Parameters": {
+                "Seeds": [3,0,2],
+                "RecurrenceCoefficients": [0,1,1],
+            }
+        }
+    }
+
+    assert predict_terms(
+        [3,0,2,3,2,5,5],
+        report
+    ) == [7,10,12,17,22]
 
 # ==========================================================
 # Factorial

@@ -1,27 +1,56 @@
 from math import isqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Centered Hexagonal"
-DESCRIPTION = "Centered hexagonal numbers."
+NAME = "Centered Hexagonal Numbers"
+DESCRIPTION = "Numbers that form centered hexagonal patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
-SPECIFICITY = 45
+SPECIFICITY = 40
 PARENT = "Centered Polygonal"
 
+# Mathematical Metadata
+OEIS = "A003215"
+ALIASES = [
+    "Centered Hexagon Numbers",
+    "Centered Hexagonal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Centered",
+    "Figurate",
+    "Polygonal",
+    "Hexagonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
+
 def recognize(sequence):
-    if len(sequence) == 0:
+
+    if len(sequence) < MIN_TERMS:
         return None
 
-    for term in sequence:
-        d = 12 * (term - 1) + 1
-        if d < 0:
-            return False
-        root = isqrt(d)
+    for n, term in enumerate(sequence, start=1):
 
-        if root * root != d:
-            return False
+        expected = 3 * n * (n - 1) + 1
 
-        if (1 + root) % 6 != 0:
+        if term != expected:
             return False
 
     return True

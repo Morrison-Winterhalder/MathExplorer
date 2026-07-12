@@ -1,12 +1,44 @@
 from math import isqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Decagonal"
-DESCRIPTION = "Decagonal figurate numbers."
+NAME = "Decagonal Numbers"
+DESCRIPTION = "Numbers that can be arranged into regular decagonal patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+
+# Mathematical Metadata
+OEIS = "A001107"
+ALIASES = [
+    "Decagon Numbers",
+    "Decagonal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Figurate",
+    "Polygonal",
+    "Decagonal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

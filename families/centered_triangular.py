@@ -1,12 +1,45 @@
 from math import sqrt
 from analyzers.core.formatter import format_formula
 
-NAME = "Centered Triangular"
-DESCRIPTION = "Centered triangular numbers."
+NAME = "Centered Triangular Numbers"
+DESCRIPTION = "Numbers that form centered triangular patterns."
 REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 45
 PARENT = "Centered Polygonal"
+
+# Mathematical Metadata
+OEIS = "A005448"
+ALIASES = [
+    "Centered Triangle Numbers",
+    "Centered Triangular Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Explicit"
+
+TAGS = (
+    "Centered",
+    "Figurate",
+    "Polygonal",
+    "Triangular",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Quadratic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

@@ -56,6 +56,26 @@ def test_polynomial_scoring():
     assert len(best["Winners"]) == 1
     assert best["Winners"][0]["Family"].NAME == "Squares"
 
+# ==========================================================
+# Centered Square
+# ==========================================================
+
+def test_centered_square_scoring():
+
+    sequence = [1,5,13,25,41]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    assert len(best["Winners"]) == 1
+
+    assert (
+        best["Winners"][0]["Family"].NAME
+        ==
+        "Centered Square Numbers"
+    )
 
 # ==========================================================
 # Fibonacci
@@ -75,6 +95,85 @@ def test_fibonacci_scoring():
 
     assert "Fibonacci" in winner_names
 
+# ==========================================================
+# Tribonacci
+# ==========================================================
+
+def test_tribonacci_scoring():
+
+    sequence = [0,0,1,1,2,4,7]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    winner_names = {
+        winner["Family"].NAME
+        for winner in best["Winners"]
+    }
+
+    assert "Tribonacci Numbers" in winner_names
+
+# ==========================================================
+# Tetranacci
+# ==========================================================
+
+def test_tetranacci_scoring():
+
+    sequence = [0,0,0,1,1,2,4,8]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    winner_names = {
+        winner["Family"].NAME
+        for winner in best["Winners"]
+    }
+
+    assert "Tetranacci Numbers" in winner_names
+
+# ==========================================================
+# Padovan
+# ==========================================================
+
+def test_padovan_scoring():
+
+    sequence = [1,1,1,2,2,3,4]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    winner_names = {
+        winner["Family"].NAME
+        for winner in best["Winners"]
+    }
+
+    assert "Padovan Numbers" in winner_names
+
+# ==========================================================
+# Perrin
+# ==========================================================
+
+def test_perrin_scoring():
+
+    sequence = [3,0,2,3,2,5,5]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    winner_names = {
+        winner["Family"].NAME
+        for winner in best["Winners"]
+    }
+
+    assert "Perrin Numbers" in winner_names
 
 # ==========================================================
 # Ranking Exists
@@ -142,6 +241,24 @@ def test_specificity_breaks_polynomial_tie():
 
     assert best["Runner Up"].NAME == "Polynomial"
 
+# ==========================================================
+# Parent Families Do Not Win
+# ==========================================================
+
+def test_parent_family_not_selected():
+
+    sequence = [0,0,1,1,2,4,7]
+
+    report = initialize_report(sequence)
+    update_scores(sequence, report)
+
+    best = report["Recognition Scores"]["Best Fit"]
+
+    assert (
+        best["Winners"][0]["Family"].NAME
+        !=
+        "Linear Recurrence"
+    )
 
 # ==========================================================
 # Unknown Sequence
@@ -154,4 +271,7 @@ def test_unknown_sequence():
     report = initialize_report(sequence)
     update_scores(sequence, report)
 
-    assert "Recognition Scores" in report
+    best = report["Recognition Scores"]["Best Fit"]
+
+    assert best is not None
+    assert best["Winners"][0]["Family"].NAME == "Polynomial"

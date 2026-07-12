@@ -7,6 +7,38 @@ CATEGORY = "Constant"
 SPECIFICITY = 20
 PARENT = "Arithmetic"
 
+# Mathematical Metadata
+OEIS = "A010701"
+ALIASES = [
+    "Constant Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Constant"
+
+TAGS = (
+    "Constant",
+    "Polynomial",
+)
+
+DOMAIN = "Real Numbers"
+GROWTH = "Constant"
+
+MONOTONIC = True
+BOUNDED = True
+OSCILLATING = False
+PERIODIC = True
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = True
+PARAMETER_NAMES = (
+    "Value",
+)
+
+MIN_TERMS = 1
+RECOGNITION_METHOD = "Constant Values"
+RELIABILITY = "Exact"
+
 def recognize(sequence):
     if len(sequence) == 0:
         return None

@@ -1,12 +1,43 @@
 from families.recurrence import evaluate_linear_recurrence
 from analyzers.core.formatter import format_formula
 
-NAME = "Pell"
-DESCRIPTION = "Each term equals twice the previous term plus the one before."
-REPRESENTATION = "Recurrence"
-CATEGORY = "Recurrence"
+NAME = "Pell Numbers"
+DESCRIPTION = "A sequence where each term is twice the previous term plus the term before it."
+REPRESENTATION = "Recursive"
+CATEGORY = "Recursive"
 SPECIFICITY = 50
 PARENT = "Linear Recurrence"
+
+# Mathematical Metadata
+OEIS = "A000129"
+ALIASES = [
+    "Pell Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Recurrence"
+
+TAGS = (
+    "Recursive",
+    "Linear Recurrence",
+    "Pell",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Exponential"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 5
+RECOGNITION_METHOD = "Recursive Relation"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):
@@ -38,7 +69,7 @@ def evaluate(parameters, n):
 
 
 def formula(_):
-    return format_formula("n(n+1)")
+    return format_formula("2a(n-1) + a(n-2)")
 
 
 def complexity(_):

@@ -1,12 +1,43 @@
 from families.recurrence import evaluate_linear_recurrence
 from analyzers.core.formatter import format_recurrence
 
-NAME = "Jacobsthal"
-DESCRIPTION = "Each term equals the previous term plus twice the term before."
-REPRESENTATION = "Recurrence"
-CATEGORY = "Recurrence"
+NAME = "Jacobsthal Numbers"
+DESCRIPTION = "A sequence defined by a linear recurrence relation."
+REPRESENTATION = "Recursive"
+CATEGORY = "Recursive"
 SPECIFICITY = 50
 PARENT = "Linear Recurrence"
+
+# Mathematical Metadata
+OEIS = "A001045"
+ALIASES = [
+    "Jacobsthal Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Recurrence"
+
+TAGS = (
+    "Recursive",
+    "Linear Recurrence",
+    "Jacobsthal",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Exponential"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 5
+RECOGNITION_METHOD = "Recursive Relation"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):

@@ -116,3 +116,55 @@ def test_fit_penalty():
     )
 
     assert noisy["Score"] < perfect["Score"]
+
+# ==========================================================
+# Keeping Scores In Bounds
+# ==========================================================
+
+def test_confidence_bounds():
+
+    result = calculate_confidence(
+        winner_error=0,
+        runner_up_error=100,
+        sequence_length=1000,
+        complexity=0
+    )
+
+    assert 0 <= result["Score"] <= 100
+
+# ==========================================================
+# Negative / Impossible Inputs
+# ==========================================================
+
+def test_high_complexity_does_not_break_confidence():
+
+    result = calculate_confidence(
+        winner_error=0,
+        runner_up_error=1,
+        sequence_length=20,
+        complexity=100
+    )
+
+    assert 0 <= result["Score"] <= 100
+
+# ==========================================================
+# Complexity
+# ==========================================================
+
+def test_complexity_breaks_equal_fit():
+
+    simple = calculate_confidence(
+        winner_error=0,
+        runner_up_error=0,
+        sequence_length=20,
+        complexity=2
+    )
+
+    complex = calculate_confidence(
+        winner_error=0,
+        runner_up_error=0,
+        sequence_length=20,
+        complexity=8
+    )
+
+    assert complex["Score"] < simple["Score"]

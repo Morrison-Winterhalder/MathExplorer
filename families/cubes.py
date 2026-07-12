@@ -2,11 +2,42 @@ from analyzers.core.utilities import integer_nth_root
 from analyzers.core.formatter import format_formula
 
 NAME = "Cubes"
-DESCRIPTION = "Perfect cube numbers."
+DESCRIPTION = "Perfect cubes."
 REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
-SPECIFICITY = 40
+SPECIFICITY = 30
 PARENT = "Polynomial"
+
+# Mathematical Metadata
+OEIS = "A000578"
+ALIASES = [
+    "Cube Numbers",
+    "Perfect Cubes",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Polynomial"
+
+TAGS = (
+    "Cube",
+    "Polynomial",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Cubic"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 3
+RECOGNITION_METHOD = "Direct Formula"
+RELIABILITY = "Exact"
 
 def recognize(sequence):
     if len(sequence) == 0:

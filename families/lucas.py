@@ -1,12 +1,43 @@
 from families.recurrence import evaluate_linear_recurrence
 from analyzers.core.formatter import format_recurrence
 
-NAME = "Lucas"
-DESCRIPTION = "Each term is the sum of the previous two, beginning with 2 and 1."
-REPRESENTATION = "Recurrence"
-CATEGORY = "Recurrence"
+NAME = "Lucas Numbers"
+DESCRIPTION = "A sequence where each term is the sum of the two preceding terms with different initial values."
+REPRESENTATION = "Recursive"
+CATEGORY = "Recursive"
 SPECIFICITY = 50
 PARENT = "Linear Recurrence"
+
+# Mathematical Metadata
+OEIS = "A000032"
+ALIASES = [
+    "Lucas Sequence",
+]
+
+CLOSED_FORM = True
+EVALUATION_METHOD = "Recurrence"
+
+TAGS = (
+    "Recursive",
+    "Linear Recurrence",
+    "Lucas",
+)
+
+DOMAIN = "Integers"
+GROWTH = "Exponential"
+
+MONOTONIC = True
+BOUNDED = False
+OSCILLATING = False
+PERIODIC = False
+
+FORMULA_TYPE = REPRESENTATION
+REQUIRES_PARAMETERS = False
+PARAMETER_NAMES = ()
+
+MIN_TERMS = 5
+RECOGNITION_METHOD = "Recursive Relation"
+RELIABILITY = "Exact"
 
 
 def recognize(sequence):
