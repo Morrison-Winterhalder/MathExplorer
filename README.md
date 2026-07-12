@@ -300,6 +300,21 @@ Planned future work includes:
 
 ---
 
+## Goals for v3.0:
+
+Theme:
+Making mathematics explorable.
+
+Goals:
+
+1. Improve the user experience.
+2. Explain every decision transparently.
+3. Visualize mathematical relationships.
+4. Make the project easy to discover.
+5. Build an experience people want to share.
+
+---
+
 ## About the Author
 
 MathExplorer was created by **Morrison Winterhalder** as an independent software and mathematics project.
