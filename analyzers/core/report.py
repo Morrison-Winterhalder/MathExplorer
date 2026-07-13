@@ -14,17 +14,17 @@ from families import polynomial
 from analyzers.core.properties import determine_monotonic
 from analyzers.core.analysis import SequenceAnalysis
 
-def initialize_report(sequence):
+def initialize_analysis(sequence):
 
-    report = SequenceAnalysis(sequence)
+    analysis = SequenceAnalysis(sequence)
 
-    report.basic_information = {
+    analysis.basic_information = {
         "Length": len(sequence),
         "Minimum": min(sequence),
         "Maximum": max(sequence)
     }
 
-    report.properties = {
+    analysis.properties = {
         "Is Constant?": constant.recognize(sequence),
         "Is Increasing?": is_increasing(sequence),
         "Is Decreasing?": is_decreasing(sequence),
@@ -42,9 +42,9 @@ def initialize_report(sequence):
         "Monotonic": determine_monotonic(sequence),
     }
 
-    report.transformations = {
+    analysis.transformations = {
         "First Differences": first_differences(sequence),
         "First Ratios": first_ratios(sequence)
     }
 
-    return report
+    return analysis

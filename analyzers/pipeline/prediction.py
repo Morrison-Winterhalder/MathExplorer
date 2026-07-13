@@ -1,20 +1,19 @@
-def predict_terms(sequence, report, number_of_terms=5):
-    classification = report["Sequence Classification"]
+def predict_terms(sequence, analysis, number_of_terms=5):
 
-    family = classification["Family"]
-    parameters = classification["Parameters"]
+    family = analysis.family
+    parameters = analysis.parameters
 
     if family is None or parameters is None:
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "prediction",
             "event": "prediction_skipped",
             "reason": "no_classification",
         })
 
         return []
-    
-    report["Analysis Trace"].append({
+
+    analysis.analysis_trace.append({
         "stage": "prediction",
         "event": "prediction_started",
         "family": family.NAME,
@@ -22,7 +21,7 @@ def predict_terms(sequence, report, number_of_terms=5):
         "starting_index": len(sequence) + 1,
     })
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "prediction",
         "event": "formula_available",
         "family": family.NAME,
@@ -37,7 +36,7 @@ def predict_terms(sequence, report, number_of_terms=5):
         )
     ]
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "prediction",
         "event": "predictions_generated",
         "count": len(predictions),
@@ -45,7 +44,7 @@ def predict_terms(sequence, report, number_of_terms=5):
         "first_prediction": predictions[0] if predictions else None,
     })
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "prediction",
         "event": "prediction_finalized",
     })

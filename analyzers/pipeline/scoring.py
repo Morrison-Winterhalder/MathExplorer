@@ -32,7 +32,7 @@ def score_family(sequence, family):
 
 
 
-def update_scores(sequence, report):
+def update_scores(sequence, analysis):
 
     scores = []
 
@@ -41,14 +41,14 @@ def update_scores(sequence, report):
         result = score_family(sequence, family)
 
         if result is None:
-            report["Analysis Trace"].append({
+            analysis.analysis_trace.append({
                 "stage": "recognition",
                 "event": "family_tested",
                 "family": family.NAME,
                 "recognized": False,
             })
         else:
-            report["Analysis Trace"].append({
+            analysis.analysis_trace.append({
                 "stage": "recognition",
                 "event": "family_tested",
                 "family": family.NAME,
@@ -59,24 +59,24 @@ def update_scores(sequence, report):
 
             scores.append(result)
 
-    selection = choose_best_fit(scores, report)
+    selection = choose_best_fit(scores, analysis)
 
     if selection is None:
-        report["Recognition Scores"] = {
+        analysis.recognition_scores = {
             "Scores": scores,
             "Ranking": [],
             "Best Fit": None,
         }
         return
 
-    report["Recognition Scores"] = {
+    analysis.recognition_scores = {
         "Scores": scores,
         "Ranking": selection["Ranking"],
         "Best Fit": selection["Best Fit"],
     }
 
 
-def choose_best_fit(scores, report):
+def choose_best_fit(scores, analysis):
 
     for score in scores:
         complexity = score["Family"].complexity(score["Parameters"])
@@ -85,7 +85,7 @@ def choose_best_fit(scores, report):
             score["RRN"] + COMPLEXITY_WEIGHT * complexity
         )
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "ranking",
             "event": "ranking_calculated",
             "family": score["Family"].NAME,
@@ -102,7 +102,7 @@ def choose_best_fit(scores, report):
     for rank, score in enumerate(ordered, start=1):
         score["Rank"] = rank
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "ranking",
             "event": "family_ranked",
             "family": score["Family"].NAME,
@@ -126,7 +126,7 @@ def choose_best_fit(scores, report):
     initial_winner_count = len(winners)
 
     if initial_winner_count > 1:
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "ranking",
             "event": "tie_detected",
             "families": [
@@ -147,7 +147,7 @@ def choose_best_fit(scores, report):
     ]
 
     if initial_winner_count != len(winners):
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "ranking",
             "event": "tie_resolved",
             "method": "specificity",
@@ -155,7 +155,7 @@ def choose_best_fit(scores, report):
         })
 
     if initial_winner_count == len(ordered):
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "classification",
             "event": "winner_selected",
             "winners": [winner["Family"].NAME for winner in winners],
@@ -179,7 +179,7 @@ def choose_best_fit(scores, report):
     else:
         runner = ordered[runner_index]
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "classification",
             "event": "runner_up",
             "family": runner["Family"].NAME,
@@ -191,7 +191,7 @@ def choose_best_fit(scores, report):
             runner["Ranking Score"] + ordered[0]["Ranking Score"] + 1e-12
         )
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "classification",
         "event": "winner_selected",
         "winners": [winner["Family"].NAME for winner in winners],

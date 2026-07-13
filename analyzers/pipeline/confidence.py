@@ -1,5 +1,17 @@
 import math
 
+def confidence_label(score):
+    if score >= 90:
+        return "Very High"
+    elif score >= 75:
+        return "High"
+    elif score >= 60:
+        return "Moderate"
+    elif score >= 40:
+        return "Low"
+    else:
+        return "Very Low"
+
 def calculate_confidence(
     winner_error,
     runner_up_error,
@@ -65,17 +77,6 @@ def calculate_confidence(
 
     confidence = max(0, min(100, confidence))
 
-    if confidence >= 90:
-        label = "Very High"
-    elif confidence >= 75:
-        label = "High"
-    elif confidence >= 60:
-        label = "Moderate"
-    elif confidence >= 40:
-        label = "Low"
-    else:
-        label = "Very Low"
-
     return {
         "Fit Penalty": fit_penalty,
         "Competition Penalty": competition_penalty,
@@ -83,25 +84,25 @@ def calculate_confidence(
         "Complexity Penalty": complexity_penalty,
         "Separation": separation,
         "Score": confidence,
-        "Label": label,
+        "Label": confidence_label(confidence),
         "Factors": {
             "Perfect Fit": winner_error == 0,
-            "Has Competition": runner_up_error != float("inf"),
+            "Has Competition": not math.isinf(runner_up_error),
             "Evidence Length": sequence_length   
         }
     }
 
-def update_confidence(sequence, report):
+def update_confidence(sequence, analysis):
 
-    best_fit = report["Recognition Scores"]["Best Fit"]
+    best_fit = analysis.best_fit
 
     if best_fit is None:
-        report["Sequence Classification"]["Confidence"] = None
+        analysis.confidence = None
         return
     
     winner = best_fit["Winners"][0]
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "confidence_started",
         "family": winner["Family"].NAME,
@@ -113,7 +114,7 @@ def update_confidence(sequence, report):
 
     winner_error = winner["RRN"]
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "winner_assessed",
         "family": winner["Family"].NAME,
@@ -125,7 +126,7 @@ def update_confidence(sequence, report):
     else:
         runner_error = runner["RRN"]
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "competition_assessed",
         "runner_up": (
@@ -141,13 +142,13 @@ def update_confidence(sequence, report):
         winner["Parameters"]
     )
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "complexity_assessed",
         "complexity": family_complexity,
     })
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "sample_size_assessed",
         "sample_size": len(sequence),
@@ -160,7 +161,7 @@ def update_confidence(sequence, report):
         family_complexity
     )
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "confidence_calculated",
         "score": confidence["Score"],
@@ -175,33 +176,20 @@ def update_confidence(sequence, report):
     if tied:
         confidence["Score"] = max(0, confidence["Score"] - 15)
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "confidence",
             "event": "tie_adjustment",
             "adjustment": -15,
         })
 
-    score = confidence["Score"]
-
-    if score >= 90:
-        confidence["Label"] = "Very High"
-    elif score >= 75:
-        confidence["Label"] = "High"
-    elif score >= 60:
-        confidence["Label"] = "Moderate"
-    elif score >= 40:
-        confidence["Label"] = "Low"
-    else:
-        confidence["Label"] = "Very Low"
-
     confidence["Tied"] = tied
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "confidence",
         "event": "confidence_finalized",
         "score": confidence["Score"],
-        "label": confidence["Label"],
+        "label": confidence_label(confidence["Score"]),
         "tied": tied,
     })
 
-    report["Sequence Classification"]["Confidence"] = confidence
+    analysis.confidence = confidence

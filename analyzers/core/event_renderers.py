@@ -2,7 +2,7 @@ from __future__ import annotations
 from analyzers.core.trace import first_event, events, has_event
 
 
-def render_family_tested(lines, event, report):
+def render_family_tested(lines, event, analysis):
     symbol = "✓" if event.get("recognized") else "✗"
     family = event.get("family", "Unknown")
 
@@ -13,7 +13,7 @@ def render_family_tested(lines, event, report):
         lines.append(f"    RRN = {rrn:.6f}")
 
 
-def render_family_ranked(lines, event, report):
+def render_family_ranked(lines, event, analysis):
 
     rank = event["rank"]
     family = event["family"]
@@ -28,7 +28,7 @@ def render_family_ranked(lines, event, report):
         f"{rank}. {family:<20} {score:.6f}"
     )
 
-def render_ranking_calculated(lines, event, report):
+def render_ranking_calculated(lines, event, analysis):
 
     lines.append(f"✓ {event['family']}")
     lines.append(f"    RRN = {event['rrn']:.6f}")
@@ -37,7 +37,7 @@ def render_ranking_calculated(lines, event, report):
         f"    Ranking Score = {event['ranking_score']:.6f}"
     )
 
-def render_tie_detected(lines, event, report):
+def render_tie_detected(lines, event, analysis):
     families = event.get("families", [])
 
     lines.append("")
@@ -46,7 +46,7 @@ def render_tie_detected(lines, event, report):
         lines.append(f"    {family}")
 
 
-def render_tie_resolved(lines, event, report):
+def render_tie_resolved(lines, event, analysis):
     method = event.get("method", "unknown method")
     winners = event.get("winners", [])
 
@@ -57,7 +57,7 @@ def render_tie_resolved(lines, event, report):
         lines.append(f"    {family}")
 
 
-def render_winner_selected(lines, event, report):
+def render_winner_selected(lines, event, analysis):
     winners = event.get("winners", [])
 
     lines.append("Best Candidate")
@@ -66,7 +66,7 @@ def render_winner_selected(lines, event, report):
         lines.append(f"{family}")
 
 
-def render_classification_completed(lines, event, report):
+def render_classification_completed(lines, event, analysis):
 
     family = event["family"]
 
@@ -78,7 +78,7 @@ def render_classification_completed(lines, event, report):
     lines.append("Reason")
     lines.append("------")
 
-    resolution = first_event(report, "tie_resolved")
+    resolution = first_event(analysis, "tie_resolved")
 
     if resolution is None:
         lines.append("Lowest ranking score.")
@@ -87,7 +87,7 @@ def render_classification_completed(lines, event, report):
             f"Tie resolved using {resolution['method']}."
         )
 
-    hierarchy = report["Sequence Classification"]["Hierarchy"]
+    hierarchy = analysis.hierarchy
 
     if hierarchy:
         lines.append("")
@@ -96,7 +96,7 @@ def render_classification_completed(lines, event, report):
         lines.append(hierarchy)
 
 
-def render_winner_assessed(lines, event, report):
+def render_winner_assessed(lines, event, analysis):
 
     lines.append("Confidence Inputs")
     lines.append("-----------------")
@@ -110,7 +110,7 @@ def render_winner_assessed(lines, event, report):
     )
 
 
-def render_competition_assessed(lines, event, report):
+def render_competition_assessed(lines, event, analysis):
 
     if event["runner_up"] is None:
 
@@ -129,7 +129,7 @@ def render_competition_assessed(lines, event, report):
         f"Separation     : {event['separation']:.6f}"
     )
 
-def render_complexity_assessed(lines, event, report):
+def render_complexity_assessed(lines, event, analysis):
     complexity = event.get("complexity")
     if complexity is not None:
         lines.append(
@@ -137,7 +137,7 @@ def render_complexity_assessed(lines, event, report):
         )
 
 
-def render_sample_size_assessed(lines, event, report):
+def render_sample_size_assessed(lines, event, analysis):
     sample_size = event.get("sample_size")
     if sample_size is not None:
         lines.append(
@@ -145,7 +145,7 @@ def render_sample_size_assessed(lines, event, report):
         )
 
 
-def render_confidence_calculated(lines, event, report):
+def render_confidence_calculated(lines, event, analysis):
 
     lines.append("")
     lines.append("Confidence Score")
@@ -177,13 +177,13 @@ def render_confidence_calculated(lines, event, report):
     )
 
 
-def render_tie_adjustment(lines, event, report):
+def render_tie_adjustment(lines, event, analysis):
     adjustment = event.get("adjustment")
     if adjustment is not None:
         lines.append(f"Tie adjustment: {adjustment}")
 
 
-def render_confidence_finalized(lines, event, report):
+def render_confidence_finalized(lines, event, analysis):
 
     lines.append("")
     lines.append("Final Confidence")
@@ -194,7 +194,7 @@ def render_confidence_finalized(lines, event, report):
     )
 
 
-def render_formula_recovered(lines, event, report):
+def render_formula_recovered(lines, event, analysis):
 
     formula = event.get("formula")
 
@@ -208,14 +208,17 @@ def render_formula_recovered(lines, event, report):
     lines.append(formula)
 
 
-def render_prediction_started(lines, event, report):
+def render_prediction_started(lines, event, analysis):
 
-    formula = report["Sequence Classification"]["Formula"]
+    formula = analysis.formula
 
     lines.append("Using Formula")
     lines.append("-------------")
 
-    lines.append(formula)
+    if formula is None:
+        lines.append("Unavailable.")
+    else:
+        lines.append(formula)
 
     lines.append("")
 
@@ -227,9 +230,12 @@ def render_prediction_started(lines, event, report):
     )
 
 
-def render_predictions_generated(lines, event, report):
+def render_predictions_generated(lines, event, analysis):
 
-    predictions = report["Predictions"]["Next Terms"]
+    predictions = analysis.next_terms
+
+    if predictions is None:
+        return
 
     start = event["starting_index"]
 
@@ -243,7 +249,7 @@ def render_predictions_generated(lines, event, report):
             f"a({start+i}) = {value}"
         )
 
-def render_verification_completed(lines, event, report):
+def render_verification_completed(lines, event, analysis):
 
     if event["verified"]:
 
@@ -260,22 +266,21 @@ def render_verification_completed(lines, event, report):
         lines.append("")
         lines.append("Verification Failed")
 
-def render_reasoning_summary(lines, report):
+def render_reasoning_summary(lines, analysis):
 
     lines.append("Reasoning Summary")
     lines.append("-" * 60)
     lines.append("")
 
-    tested = len(events(report, event="family_tested"))
+    tested = len(events(analysis, event="family_tested"))
 
     accepted = len([
         event
-        for event in events(report, event="family_tested")
+        for event in events(analysis, event="family_tested")
         if event.get("recognized")
     ])
 
-    classification = report["Sequence Classification"]
-    confidence = classification["Confidence"]
+    confidence = analysis.confidence
 
     lines.append(
         f"• Tested {tested} candidate families."
@@ -286,9 +291,9 @@ def render_reasoning_summary(lines, report):
     else:
         lines.append(f"• {accepted} families matched the sequence.")
 
-    if classification["Family"] is not None:
+    if analysis.family is not None:
         lines.append(
-            f"• Selected {classification['Family'].NAME}."
+            f"• Selected {analysis.family.NAME}."
         )
 
     if confidence is not None:
@@ -298,12 +303,12 @@ def render_reasoning_summary(lines, report):
             f"({confidence['Label']})."
         )
 
-    if classification.get("Formula") is not None:
+    if analysis.formula is not None:
         lines.append(
             "• Symbolic formula recovered."
         )
 
-    verified = report["Verification"]["Verified"]
+    verified = analysis.verified
 
     if verified:
         lines.append(
@@ -316,7 +321,7 @@ def render_reasoning_summary(lines, report):
 
     lines.append("")
 
-def render_analysis_complete(lines, report):
+def render_analysis_complete(lines, analysis):
 
     lines.append("Analysis Complete")
     lines.append("-" * 60)

@@ -47,8 +47,11 @@ def print_sequence_classification(report):
         print("Parameters")
         print("----------")
 
-        for key, value in parameters.items():
-            print(f"{key:<16}: {pretty(value)}")
+        if isinstance(parameters, dict):
+            for key, value in parameters.items():
+                print(f"{key:<16}: {pretty(value)}")
+        else:
+            print(pretty(parameters))
 
 
     print()

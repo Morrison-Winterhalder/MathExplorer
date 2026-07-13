@@ -1,3 +1,5 @@
+from analyzers.core.event_renderers import first_event as trace_first_event
+
 class SequenceAnalysis:
 
     def __init__(self, sequence):
@@ -116,10 +118,10 @@ class SequenceAnalysis:
     def formula(self):
         return self.classification.get("Formula")
 
-    @property
-    def confidence(self):
-        return self.classification.get("Confidence")
 
+    @formula.setter
+    def formula(self, value):
+        self.classification["Formula"] = value
 
     @property
     def predictions_next(self):
@@ -147,12 +149,20 @@ class SequenceAnalysis:
 
     @property
     def confidence_score(self):
-        confidence = self.classification.get("Confidence")
-        
-        if confidence is None:
+        if self.confidence is None:
             return None
-            
-        return confidence["Score"]
+
+        return self.confidence["Score"]
+    
+    @property
+    def confidence_label(self):
+        if self.confidence is None:
+            return None
+
+        if self.confidence.get("Tied"):
+            return "Ambiguous"
+
+        return self.confidence["Label"]
 
     @property
     def confidence_label(self):
@@ -201,3 +211,27 @@ class SequenceAnalysis:
     @property
     def periodic(self):
         return self.properties.get("Periodic", "-")
+    
+    @property
+    def confidence_factors(self):
+        if self.confidence is None:
+            return None
+        return self.confidence["Factors"]
+    
+    @property
+    def confidence_separation(self):
+        if self.confidence is None:
+            return None
+        return self.confidence["Separation"]
+    
+    @property
+    def trace(self):
+        return self.analysis_trace
+
+    @property
+    def first_event(self, event):
+        return trace_first_event(self, event)
+    
+    @property
+    def verified(self):
+        return self.verification.get("Verified")

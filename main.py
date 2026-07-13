@@ -4,9 +4,11 @@ from analyzers.core.display import print_report
 
 sequence = [1, 6, 16, 31, 51, 76]
 
+# 1, 6, 16, 31, 51, 76
+
 report = analyze_sequence(sequence)
 
-print_report(report, developer=False)
+print_report(report, developer=True)
 
 
 # sequence = [0.5*(n)**2 + 0.5*n for n in range(1, 8)]

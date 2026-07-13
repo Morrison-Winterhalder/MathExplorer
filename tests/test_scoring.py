@@ -1,4 +1,4 @@
-from analyzers.core.report import initialize_report
+from analyzers.core.report import initialize_analysis
 from analyzers.pipeline.scoring import update_scores
 
 
@@ -10,7 +10,7 @@ def test_arithmetic_scoring():
 
     sequence = [1,3,5,7,9]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -30,7 +30,7 @@ def test_geometric_scoring():
 
     sequence = [2,6,18,54,162]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -48,7 +48,7 @@ def test_polynomial_scoring():
 
     sequence = [1,4,9,16,25]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -64,7 +64,7 @@ def test_centered_square_scoring():
 
     sequence = [1,5,13,25,41]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -85,7 +85,7 @@ def test_fibonacci_scoring():
 
     sequence = [1,1,2,3,5]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -103,7 +103,7 @@ def test_tribonacci_scoring():
 
     sequence = [0,0,1,1,2,4,7]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -123,7 +123,7 @@ def test_tetranacci_scoring():
 
     sequence = [0,0,0,1,1,2,4,8]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -143,7 +143,7 @@ def test_padovan_scoring():
 
     sequence = [1,1,1,2,2,3,4]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -163,7 +163,7 @@ def test_perrin_scoring():
 
     sequence = [3,0,2,3,2,5,5]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -183,7 +183,7 @@ def test_ranking_exists():
 
     sequence = [1,3,5,7,9]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     ranking = report["Recognition Scores"]["Ranking"]
@@ -199,7 +199,7 @@ def test_specific_family_beats_polynomial():
 
     sequence = [2,6,18,54,162]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -216,7 +216,7 @@ def test_separation():
 
     sequence = [2,6,18,54,162]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     separation = report["Recognition Scores"]["Best Fit"]["Separation"]
@@ -231,7 +231,7 @@ def test_separation():
 def test_specificity_breaks_polynomial_tie():
     sequence = [1, 4, 9, 16, 25]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -249,7 +249,7 @@ def test_parent_family_not_selected():
 
     sequence = [0,0,1,1,2,4,7]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]
@@ -268,7 +268,7 @@ def test_unknown_sequence():
 
     sequence = [7,2,19,-4,81]
 
-    report = initialize_report(sequence)
+    report = initialize_analysis(sequence)
     update_scores(sequence, report)
 
     best = report["Recognition Scores"]["Best Fit"]

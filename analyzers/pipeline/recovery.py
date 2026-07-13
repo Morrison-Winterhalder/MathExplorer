@@ -1,14 +1,20 @@
-def recover_formula(sequence, report):
+from analyzers.core.analysis import SequenceAnalysis
 
-    classification = report["Sequence Classification"]
 
-    family = classification["Family"]
-    parameters = classification.get("Parameters", {})
+def recover_formula(sequence, analysis):
+
+    family = analysis.family
+    parameters = analysis.parameters or {}
 
     if family is None:
+        analysis.analysis_trace.append({
+            "stage": "recovery",
+            "event": "recovery_skipped",
+            "reason": "no_classification",
+        })
         return
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "recovery",
         "event": "recovery_started",
         "family": family.NAME,
@@ -20,9 +26,9 @@ def recover_formula(sequence, report):
     except (KeyError, TypeError):
         formula = None
 
-    report["Sequence Classification"]["Formula"] = formula
+    analysis.formula = formula
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "recovery",
         "event": "formula_recovered",
         "formula": formula,

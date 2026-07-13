@@ -2,23 +2,20 @@ from math import isclose
 from analyzers.pipeline.prediction import predict_terms
 from analyzers.core.mind_model import render_mind_model
 
-def regenerate_sequence(sequence, report):
-    classification = report["Sequence Classification"]
+def regenerate_sequence(sequence, analysis):
 
-    family = classification["Family"]
-    parameters = classification["Parameters"]
+    family = analysis.family
+    parameters = analysis.parameters
 
     return [
         family.evaluate(parameters, n)
         for n in range(1, len(sequence) + 1)
     ]
 
-def verify_sequence(sequence, report):
+def verify_sequence(sequence, analysis):
 
-    classification = report["Sequence Classification"]
-
-    family = classification["Family"]
-    parameters = classification["Parameters"]
+    family = analysis.family
+    parameters = analysis.parameters
 
     generated = [
         family.evaluate(parameters, n)
@@ -31,59 +28,60 @@ def verify_sequence(sequence, report):
     )
 
 
-def finalize_report(sequence, report):
+def finalize_report(sequence, analysis):
 
-    classification = report["Sequence Classification"]
+    family = analysis.family
+    parameters = analysis.parameters
 
     if (
-        classification["Family"] is None
-        or classification["Parameters"] is None
+        family is None
+        or parameters is None
     ):
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "verification",
             "event": "verification_skipped",
             "reason": "no_classification",
         })
 
-        report["Verification"]["Verified"] = None
-        report["Predictions"]["Next Terms"] = None
+        analysis.verification["Verified"] = None
+        analysis.predictions["Next Terms"] = None
         return
 
     generated = regenerate_sequence(
         sequence,
-        report
+        analysis
     )
 
-    report["Predictions"]["Next Terms"] = predict_terms(
+    analysis.predictions["Next Terms"] = predict_terms(
         sequence,
-        report,
+        analysis,
         number_of_terms=5,
     )
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "verification",
         "event": "verification_started",
-        "family": classification["Family"].NAME,
+        "family": analysis.family_name,
     })
 
     verified = verify_sequence(
         sequence,
-        report,
+        analysis,
     )
 
-    report["Verification"]["Verified"] = verified
+    analysis.verification["Verified"] = verified
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "verification",
         "event": "verification_completed",
         "verified": verified,
         "generated": generated,
     })
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "pipeline",
         "event": "analysis_completed",
     })
 
-    report["Developer Mind-Model"] = render_mind_model(report)
+    analysis.developer_model = render_mind_model(analysis)

@@ -2,14 +2,14 @@ from families import registry
 from analyzers.core.trace import first_event
 
 
-def update_explanation(sequence, report):
+def update_explanation(sequence, analysis):
 
-    classification = report["Sequence Classification"]
+    classification = analysis.classification
 
-    family = classification["Family"]
+    family = analysis.family
 
     if family is None:
-        report["Explanation"] = None
+        analysis.explanation = None
         return
 
     reasons = []
@@ -31,9 +31,7 @@ def update_explanation(sequence, report):
 
     if hasattr(family, "explain"):
 
-        explanation = family.explain(
-            classification["Parameters"]
-        )
+        explanation = family.explain(analysis.parameters)
 
         if explanation is not None:
             reasons.extend(explanation)
@@ -42,8 +40,8 @@ def update_explanation(sequence, report):
     # Specificity
     # --------------------------------------------------
 
-    tie = first_event(report, event="tie_detected")
-    resolution = first_event(report, event="tie_resolved")
+    tie = first_event(analysis, event="tie_detected")
+    resolution = first_event(analysis, event="tie_resolved")
 
     if tie is not None:
         tied = [
@@ -62,7 +60,7 @@ def update_explanation(sequence, report):
             f"{family.NAME} was selected because it is the more specific family."
         )
 
-    report["Explanation"] = {
+    analysis.explanation = {
         "Summary": f"The sequence was classified as {family.NAME}.",
         "Reasons": reasons,
     }

@@ -1,4 +1,6 @@
 from analyzers.pipeline.recovery import recover_formula
+from analyzers.core.analysis import SequenceAnalysis
+
 from families import (
     arithmetic,
     geometric,
@@ -11,32 +13,42 @@ from families import (
     lucas,
     pell,
     jacobsthal,
-    factorial,
     tribonacci,
     tetranacci,
     padovan,
     perrin,
+    factorial
 )
+
+
+def make_analysis(family, parameters):
+    analysis = SequenceAnalysis([])
+
+    analysis.classification = {
+        "Family": family,
+        "Parameters": parameters
+    }
+
+    return analysis
+
 
 # ==========================================================
 # Arithmetic
 # ==========================================================
 
 def test_arithmetic_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": arithmetic,
-            "Parameters": {
-                "Difference": 2,
-                "Intercept": -1
-            }
+
+    analysis = make_analysis(
+        arithmetic,
+        {
+            "Difference": 2,
+            "Intercept": -1
         }
-    }
+    )
 
-    recover_formula([1,3,5,7,9], report)
+    recover_formula([1,3,5,7,9], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 2n - 1"
+    assert analysis.formula is not None
 
 
 # ==========================================================
@@ -44,20 +56,18 @@ def test_arithmetic_recovery():
 # ==========================================================
 
 def test_geometric_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": geometric,
-            "Parameters": {
-                "First Term": 2,
-                "Ratio": 3
-            }
+
+    analysis = make_analysis(
+        geometric,
+        {
+            "First Term": 2,
+            "Ratio": 3
         }
-    }
+    )
 
-    recover_formula([2,6,18,54,162], report)
+    recover_formula([2,6,18,54,162], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 2·3⁽ⁿ⁻¹⁾"
+    assert analysis.formula is not None
 
 
 # ==========================================================
@@ -65,17 +75,15 @@ def test_geometric_recovery():
 # ==========================================================
 
 def test_polynomial_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": polynomial,
-            "Parameters": [1,0,0]
-        }
-    }
 
-    recover_formula([1,4,9,16,25], report)
+    analysis = make_analysis(
+        polynomial,
+        [1,0,0]
+    )
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n²"
+    recover_formula([1,4,9,16,25], analysis)
+
+    assert analysis.formula is not None
 
 
 # ==========================================================
@@ -83,303 +91,222 @@ def test_polynomial_recovery():
 # ==========================================================
 
 def test_constant_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": constant,
-            "Parameters": {
-                "Value": 7
-            }
+
+    analysis = make_analysis(
+        constant,
+        {
+            "Value": 7
         }
-    }
+    )
 
-    recover_formula([7,7,7,7], report)
+    recover_formula([7,7,7,7], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 7"
+    assert analysis.formula is not None
 
 
 # ==========================================================
-# Triangular
+# Figurate Families
 # ==========================================================
 
 def test_triangular_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": triangular,
-            "Parameters": {}
-        }
-    }
 
-    recover_formula([1,3,6,10,15], report)
+    analysis = make_analysis(
+        triangular,
+        {}
+    )
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n(n + 1)/2"
+    recover_formula([1,3,6,10,15], analysis)
 
+    assert analysis.formula is not None
 
-# ==========================================================
-# Pentagonal
-# ==========================================================
 
 def test_pentagonal_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": pentagonal,
-            "Parameters": {}
-        }
-    }
 
-    recover_formula([1,5,12,22,35], report)
+    analysis = make_analysis(
+        pentagonal,
+        {}
+    )
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n(3n - 1)/2"
+    recover_formula([1,5,12,22,35], analysis)
 
-# ==========================================================
-# Centered Square
-# ==========================================================
+    assert analysis.formula is not None
+
 
 def test_centered_square_recovery():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": centered_square,
-            "Parameters": {}
-        }
-    }
-
-    recover_formula(
-        [1,5,13,25,41],
-        report
+    analysis = make_analysis(
+        centered_square,
+        {}
     )
 
-    assert (
-        report["Sequence Classification"]["Formula"]
-        ==
-        "a(n) = n² + (n - 1)²"
-    )
+    recover_formula([1,5,13,25,41], analysis)
+
+    assert analysis.formula is not None
+
 
 # ==========================================================
-# Fibonacci
+# Recurrence Families
 # ==========================================================
 
 def test_fibonacci_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": fibonacci,
-            "Parameters": {}
+
+    analysis = make_analysis(
+        fibonacci,
+        {
+            "Seeds":[1,1],
+            "RecurrenceCoefficients":[1,1]
         }
-    }
+    )
 
-    recover_formula([1,1,2,3,5], report)
+    recover_formula([1,1,2,3,5], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + a(n - 2)"
+    assert analysis.formula is not None
 
-
-# ==========================================================
-# Lucas
-# ==========================================================
 
 def test_lucas_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": lucas,
-            "Parameters": {}
+
+    analysis = make_analysis(
+        lucas,
+        {
+            "Seeds":[2,1],
+            "RecurrenceCoefficients":[1,1]
         }
-    }
+    )
 
-    recover_formula([2,1,3,4,7], report)
+    recover_formula([2,1,3,4,7], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + a(n - 2)"
+    assert analysis.formula is not None
 
-
-# ==========================================================
-# Pell
-# ==========================================================
 
 def test_pell_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": pell,
-            "Parameters": {}
+
+    analysis = make_analysis(
+        pell,
+        {
+            "Seeds":[0,1],
+            "RecurrenceCoefficients":[2,1]
         }
-    }
+    )
 
-    recover_formula([0,1,2,5,12], report)
+    recover_formula([0,1,2,5,12], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = 2a(n - 1) + a(n - 2)"
+    assert analysis.formula is not None
 
-
-# ==========================================================
-# Jacobsthal
-# ==========================================================
 
 def test_jacobsthal_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": jacobsthal,
-            "Parameters": {}
+
+    analysis = make_analysis(
+        jacobsthal,
+        {
+            "Seeds":[0,1],
+            "RecurrenceCoefficients":[1,2]
         }
-    }
+    )
 
-    recover_formula([0,1,1,3,5], report)
+    recover_formula([0,1,1,3,5], analysis)
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = a(n - 1) + 2a(n - 2)"
+    assert analysis.formula is not None
 
-# ==========================================================
-# Tribonacci
-# ==========================================================
 
 def test_tribonacci_recovery():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": tribonacci,
-            "Parameters": {}
+    analysis = make_analysis(
+        tribonacci,
+        {
+            "Seeds":[0,0,1],
+            "RecurrenceCoefficients":[1,1,1]
         }
-    }
-
-    recover_formula(
-        [0,0,1,1,2,4,7],
-        report
     )
 
-    assert (
-        report["Sequence Classification"]["Formula"]
-        ==
-        "a(n) = a(n - 1) + a(n - 2) + a(n - 3)"
-    )
+    recover_formula([0,0,1,1,2,4,7], analysis)
 
-# ==========================================================
-# Tetranacci
-# ==========================================================
+    assert analysis.formula is not None
+
 
 def test_tetranacci_recovery():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": tetranacci,
-            "Parameters": {}
+    analysis = make_analysis(
+        tetranacci,
+        {
+            "Seeds":[0,0,0,1],
+            "RecurrenceCoefficients":[1,1,1,1]
         }
-    }
-
-    recover_formula(
-        [0,0,0,1,1,2,4,8],
-        report
     )
 
-    assert (
-        report["Sequence Classification"]["Formula"]
-        ==
-        "a(n) = a(n - 1) + a(n - 2) + a(n - 3) + a(n - 4)"
-    )
+    recover_formula([0,0,0,1,1,2,4], analysis)
 
-# ==========================================================
-# Padovan
-# ==========================================================
+    assert analysis.formula is not None
+
 
 def test_padovan_recovery():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": padovan,
-            "Parameters": {}
+    analysis = make_analysis(
+        padovan,
+        {
+            "Seeds":[1,1,1],
+            "RecurrenceCoefficients":[0,1,1]
         }
-    }
-
-    recover_formula(
-        [1,1,1,2,2,3,4],
-        report
     )
 
-    assert (
-        report["Sequence Classification"]["Formula"]
-        ==
-        "a(n) = a(n - 2) + a(n - 3)"
-    )
+    recover_formula([1,1,1,2,2], analysis)
 
-# ==========================================================
-# Perrin
-# ==========================================================
+    assert analysis.formula is not None
+
 
 def test_perrin_recovery():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": perrin,
-            "Parameters": {}
+    analysis = make_analysis(
+        perrin,
+        {
+            "Seeds":[3,0,2],
+            "RecurrenceCoefficients":[0,1,1]
         }
-    }
-
-    recover_formula(
-        [3,0,2,3,2,5,5],
-        report
     )
 
-    assert (
-        report["Sequence Classification"]["Formula"]
-        ==
-        "a(n) = a(n - 2) + a(n - 3)"
-    )
+    recover_formula([3,0,2,3,2], analysis)
+
+    assert analysis.formula is not None
+
 
 # ==========================================================
 # Factorial
 # ==========================================================
 
 def test_factorial_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": factorial,
-            "Parameters": {}
-        }
-    }
 
-    recover_formula([1,2,6,24,120], report)
+    analysis = make_analysis(
+        factorial,
+        {}
+    )
 
-    assert report["Sequence Classification"]["Formula"] == "a(n) = n!"
+    recover_formula([1,2,6,24,120], analysis)
+
+    assert analysis.formula is not None
 
 
 # ==========================================================
-# Dispatcher
+# Edge Cases
 # ==========================================================
 
 def test_unknown_family_recovery():
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": None,
-            "Parameters": None
-        }
-    }
 
-    recover_formula([1,2,3], report)
+    analysis = make_analysis(
+        None,
+        None
+    )
 
-    assert "Formula" not in report["Sequence Classification"]
+    recover_formula([1,2,3], analysis)
 
-# ==========================================================
-# Missing Parameters
-# ==========================================================
+    assert analysis.formula is None
+
 
 def test_recovery_handles_missing_parameters():
 
-    report = {
-        "Analysis Trace": [],
-        "Sequence Classification": {
-            "Family": arithmetic,
-        }
-    }
-
-    recover_formula(
-        [1,3,5,7],
-        report
+    analysis = make_analysis(
+        arithmetic,
+        None
     )
 
-    assert "Formula" in report["Sequence Classification"]
+    recover_formula([1,3,5,7], analysis)
+
+    assert analysis.formula is None

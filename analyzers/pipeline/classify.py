@@ -1,16 +1,16 @@
 from families import registry
 
-def update_classification(sequence, report):
+def update_classification(sequence, analysis):
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "classification",
         "event": "classification_started",
     })
 
-    best_fit = report["Recognition Scores"]["Best Fit"]
+    best_fit = analysis.recognition_scores["Best Fit"]
 
     if best_fit is None:
-        report["Sequence Classification"] = {
+        analysis.classification = {
             "Type": "Unknown",
             "Family": None,
             "Hierarchy": None,
@@ -20,7 +20,7 @@ def update_classification(sequence, report):
             "Reason": "No family successfully recognized the sequence."
         }
 
-        report["Analysis Trace"].append({
+        analysis.analysis_trace.append({
             "stage": "classification",
             "event": "classification_completed",
             "family": None,
@@ -36,7 +36,7 @@ def update_classification(sequence, report):
         )
     )
 
-    report["Sequence Classification"] = {
+    analysis.classification = {
         "Type": primary["Family"].NAME,
         "Family": primary["Family"],
         "Hierarchy": registry.build_family_tree(
@@ -48,7 +48,7 @@ def update_classification(sequence, report):
         "Metadata": primary["Metadata"],
     }
 
-    report["Analysis Trace"].append({
+    analysis.analysis_trace.append({
         "stage": "classification",
         "event": "classification_completed",
         "family": primary["Family"].NAME,
