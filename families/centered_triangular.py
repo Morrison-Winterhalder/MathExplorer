@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 45
 PARENT = "Centered Polygonal"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A005448"
@@ -18,12 +19,26 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Explicit"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
     "Centered",
-    "Figurate",
-    "Polygonal",
     "Triangular",
+    "Polygonal",
+    "Figurate",
 )
+
+TRAITS = {
+    "construction": "centered_polygonal",
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Centered Square Numbers",
+    "Centered Pentagonal Numbers",
+    "Centered Hexagonal Numbers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quadratic"
@@ -78,5 +93,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is a centered triangular number.",
-        "The sequence matches the centered triangular number formula exactly."
     ]

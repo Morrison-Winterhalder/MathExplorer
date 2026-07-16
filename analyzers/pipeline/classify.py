@@ -49,6 +49,23 @@ def update_classification(sequence, analysis):
     }
 
     analysis.analysis_trace.append({
+
+        "stage": "classification",
+
+        "event": "family_selected",
+
+        "family": primary["Family"].NAME,
+
+        "reason": [
+            "Recognized mathematical family",
+            "Lower complexity explanation",
+            "Correct hierarchy placement",
+            "Generalizes beyond observed terms",
+        ]
+
+    })
+
+    analysis.analysis_trace.append({
         "stage": "classification",
         "event": "classification_completed",
         "family": primary["Family"].NAME,

@@ -1,10 +1,32 @@
 NAME = "Figurate"
-DESCRIPTION = "Families of numbers generated from geometric patterns."
-REPRESENTATION = "Explicit"
-
-CATEGORY = "Figurate"
-SPECIFICITY = 10
+DESCRIPTION = "Sequences representing geometric arrangements of points."
+REPRESENTATION = "Category"
+CATEGORY = "Structural"
+SPECIFICITY = 20
 PARENT = "Explicit"
+
+FAMILY_TYPE = "Category"
+
+CHILDREN = [
+    "Polygonal",
+    "Centered Polygonal",
+]
+
+TAGS = (
+    "Figurate",
+    "Geometric",
+    "Visual",
+)
+
+TRAITS = {
+    "construction": "geometric",
+    "growth": "polynomial",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Polynomial",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Polynomial"

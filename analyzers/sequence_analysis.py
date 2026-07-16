@@ -13,7 +13,7 @@ def analyze_sequence(sequence):
     update_scores(sequence, analysis)
     update_classification(sequence, analysis)
     update_explanation(sequence, analysis)
-    update_confidence(sequence, analysis)
     recover_formula(sequence, analysis)
+    update_confidence(sequence, analysis)
     finalize_report(sequence, analysis)
     return analysis

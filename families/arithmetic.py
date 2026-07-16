@@ -8,7 +8,8 @@ DESCRIPTION = "Constant first differences."
 REPRESENTATION = "Explicit"
 CATEGORY = "Arithmetic"
 SPECIFICITY = 20
-PARENT = "Polynomial"
+PARENT = "Explicit"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = None
@@ -19,11 +20,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Polynomial",
-    "Linear",
-    "Arithmetic",
+    "Constant",
+    "Simple",
 )
+
+TRAITS = {
+    "growth": "constant",
+    "construction": "explicit",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Arithmetic",
+]
 
 DOMAIN = "Real Numbers"
 GROWTH = "Linear"

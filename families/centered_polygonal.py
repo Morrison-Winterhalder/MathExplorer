@@ -1,10 +1,34 @@
 NAME = "Centered Polygonal"
-DESCRIPTION = "Centered polygonal numbers."
-REPRESENTATION = "Explicit"
+DESCRIPTION = "Sequences formed by placing polygonal layers around a central point."
+REPRESENTATION = "Category"
 CATEGORY = "Figurate"
-SPECIFICITY = 30
-PARENT = "Polygonal"
+SPECIFICITY = 35
+PARENT = "Figurate"
 
+FAMILY_TYPE = "Category"
+
+CHILDREN = [
+    "Centered Triangular Numbers",
+    "Centered Square Numbers",
+    "Centered Pentagonal Numbers",
+    "Centered Hexagonal Numbers",
+]
+
+TAGS = (
+    "Centered",
+    "Polygonal",
+    "Figurate",
+)
+
+TRAITS = {
+    "construction": "centered_polygonal",
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Polygonal",
+]
 DOMAIN = "Integers"
 GROWTH = "Polynomial"
 

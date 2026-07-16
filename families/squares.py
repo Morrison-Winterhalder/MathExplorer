@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 30
 PARENT = "Polynomial"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000290"
@@ -18,13 +19,24 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
     "Square",
-    "Quadratic",
-    "Figurate",
     "Polygonal",
+    "Figurate",
 )
 
+TRAITS = {
+    "construction": "polygonal",
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Triangular Numbers",
+    "Cubes",
+]
 DOMAIN = "Integers"
 GROWTH = "Quadratic"
 
@@ -75,5 +87,4 @@ def explain(_):
 
     return [
         "Every term is a perfect square.",
-        "The sequence matches the formula n² exactly."
     ]

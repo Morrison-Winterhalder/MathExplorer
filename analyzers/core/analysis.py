@@ -1,4 +1,7 @@
-from analyzers.core.event_renderers import first_event as trace_first_event
+from analyzers.core.event_renderers import (
+    first_event as trace_first_event,
+)
+
 
 class SequenceAnalysis:
 
@@ -28,6 +31,10 @@ class SequenceAnalysis:
 
         self.developer_model = {}
 
+    # ---------------------------------------------------------
+    # Dictionary Interface
+    # ---------------------------------------------------------
+
     def __getitem__(self, key):
 
         mapping = {
@@ -45,7 +52,7 @@ class SequenceAnalysis:
         }
 
         return mapping[key]
-    
+
     def __setitem__(self, key, value):
 
         mapping = {
@@ -59,11 +66,11 @@ class SequenceAnalysis:
             "Transformations": "transformations",
             "Explanation": "explanation",
             "Developer Mind-Model": "developer_model",
-            "Confidence": "confidence",
+            "Confidence": "confidence_data",
         }
 
         setattr(self, mapping[key], value)
-    
+
     def get(self, key, default=None):
 
         mapping = {
@@ -77,7 +84,7 @@ class SequenceAnalysis:
             "Transformations": "transformations",
             "Explanation": "explanation",
             "Developer Mind-Model": "developer_model",
-            "Confidence": "confidence",
+            "Confidence": "confidence_data",
         }
 
         attribute = mapping.get(key)
@@ -86,7 +93,7 @@ class SequenceAnalysis:
             return default
 
         return getattr(self, attribute, default)
-    
+
     def __contains__(self, key):
 
         return key in {
@@ -102,136 +109,146 @@ class SequenceAnalysis:
             "Developer Mind-Model",
             "Confidence",
         }
-    
+
+    # ---------------------------------------------------------
+    # Classification
+    # ---------------------------------------------------------
+
     @property
     def family(self):
         return self.classification.get("Family")
-
 
     @property
     def family_name(self):
         family = self.family
         return family.NAME if family else "Unknown"
 
+    @property
+    def parameters(self):
+        return self.classification.get("Parameters", {})
 
     @property
     def formula(self):
         return self.classification.get("Formula")
-
 
     @formula.setter
     def formula(self, value):
         self.classification["Formula"] = value
 
     @property
-    def predictions_next(self):
-        return self.predictions.get("Next Terms")
+    def hierarchy(self):
+        return self.classification.get("Hierarchy", "Unknown")
 
+    # ---------------------------------------------------------
+    # Recognition
+    # ---------------------------------------------------------
 
     @property
     def ranking(self):
         return self.recognition_scores.get("Ranking", [])
 
-
     @property
     def best_fit(self):
         return self.recognition_scores.get("Best Fit")
 
+    @property
+    def runner_up(self):
+
+        if self.best_fit is None:
+            return None
+
+        return self.best_fit.get("Runner Up Score")
+
+    # ---------------------------------------------------------
+    # Confidence
+    # ---------------------------------------------------------
 
     @property
-    def parameters(self):
-        return self.classification.get("Parameters", {})
+    def confidence(self):
+        return self.confidence_data
 
-
-    @property
-    def hierarchy(self):
-        return self.classification.get("Hierarchy", "Unknown")
+    @confidence.setter
+    def confidence(self, value):
+        self.confidence_data = value
 
     @property
     def confidence_score(self):
+
         if self.confidence is None:
             return None
 
-        return self.confidence["Score"]
-    
+        return self.confidence.get("Score")
+
     @property
     def confidence_label(self):
+
         if self.confidence is None:
             return None
 
         if self.confidence.get("Tied"):
             return "Ambiguous"
 
-        return self.confidence["Label"]
-
-    @property
-    def confidence_label(self):
-        confidence = self.confidence
-
-        if confidence is None:
-            return None
-
-        if confidence.get("Tied"):
-            return "Ambiguous"
-
-        return confidence["Label"]
+        return self.confidence.get("Label")
 
     @property
     def confidence_factors(self):
-        return self.confidence
-    
-    @property
-    def ranking(self):
-        return self.recognition_scores.get("Ranking", [])
+
+        if self.confidence is None:
+            return None
+
+        return self.confidence.get("Factors")
 
     @property
-    def best_fit(self):
-        return self.recognition_scores.get("Best Fit")
-    
+    def confidence_separation(self):
+
+        if self.confidence is None:
+            return None
+
+        return self.confidence.get("Separation")
+
+    # ---------------------------------------------------------
+    # Predictions / Verification
+    # ---------------------------------------------------------
+
+    @property
+    def predictions_next(self):
+        return self.predictions.get("Next Terms")
+
     @property
     def next_terms(self):
         return self.predictions.get("Next Terms")
-    
+
     @property
     def verified(self):
         return self.verification.get("Verified")
-    
+
+    # ---------------------------------------------------------
+    # Mathematical Properties
+    # ---------------------------------------------------------
+
     @property
     def monotonic(self):
         return self.properties.get("Monotonic", "-")
-    
+
     @property
     def bounded(self):
         return self.properties.get("Bounded", "-")
-    
+
     @property
     def oscillating(self):
         return self.properties.get("Oscillating", "-")
-    
+
     @property
     def periodic(self):
         return self.properties.get("Periodic", "-")
-    
-    @property
-    def confidence_factors(self):
-        if self.confidence is None:
-            return None
-        return self.confidence["Factors"]
-    
-    @property
-    def confidence_separation(self):
-        if self.confidence is None:
-            return None
-        return self.confidence["Separation"]
-    
+
+    # ---------------------------------------------------------
+    # Trace
+    # ---------------------------------------------------------
+
     @property
     def trace(self):
         return self.analysis_trace
 
-    @property
     def first_event(self, event):
         return trace_first_event(self, event)
-    
-    @property
-    def verified(self):
-        return self.verification.get("Verified")

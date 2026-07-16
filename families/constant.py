@@ -5,7 +5,8 @@ DESCRIPTION = "All terms are equal."
 REPRESENTATION = "Explicit"
 CATEGORY = "Constant"
 SPECIFICITY = 20
-PARENT = "Arithmetic"
+PARENT = "Explicit"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A010701"
@@ -16,10 +17,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Constant"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
     "Constant",
-    "Polynomial",
+    "Simple",
 )
+
+TRAITS = {
+    "growth": "constant",
+    "construction": "explicit",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Arithmetic",
+]
 
 DOMAIN = "Real Numbers"
 GROWTH = "Constant"

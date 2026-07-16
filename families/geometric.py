@@ -9,6 +9,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Geometric"
 SPECIFICITY = 20
 PARENT = "Explicit"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = None
@@ -19,10 +20,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Explicit"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Geometric",
     "Exponential",
+    "Geometric",
 )
+
+TRAITS = {
+    "growth": "exponential",
+    "construction": "explicit",
+    "domain": "numbers",
+}
+
+RELATED = [
+    "Arithmetic",
+]
 
 DOMAIN = "Real Numbers"
 GROWTH = "Exponential"

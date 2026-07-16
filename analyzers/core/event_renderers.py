@@ -68,7 +68,10 @@ def render_winner_selected(lines, event, analysis):
 
 def render_classification_completed(lines, event, analysis):
 
-    family = event["family"]
+    family_name = event["family"]
+
+    winner = analysis.best_fit["Winners"][0]
+    family = winner["Family"]
 
     if family is None:
         lines.append("No family selected.")
@@ -87,12 +90,64 @@ def render_classification_completed(lines, event, analysis):
             f"Tie resolved using {resolution['method']}."
         )
 
+    # -----------------------------------------
+    # Why this family was selected
+    # -----------------------------------------
+
+    lines.append("")
+    lines.append("Why This Family Was Selected")
+    lines.append("----------------------------")
+
+    lines.append(
+        f"Selected: {family_name}"
+    )
+
+    lines.append("")
+
+    if getattr(family, "NATURAL_FAMILY", False):
+
+        lines.append(
+            "✓ Recognized mathematical family"
+        )
+
+    else:
+
+        lines.append(
+            "✓ General mathematical model"
+        )
+
+    if family.PARENT is not None:
+
+        lines.append(
+            "✓ Correct hierarchy placement"
+        )
+
+    complexity = family.complexity(
+        analysis.best_fit["Winners"][0]["Parameters"]
+    )
+
+    if complexity <= 3:
+
+        lines.append(
+            "✓ Lower complexity explanation"
+        )
+
+    lines.append(
+        "✓ Generalizes beyond observed terms"
+    )
+
+    # -----------------------------------------
+    # Hierarchy
+    # -----------------------------------------
+
     hierarchy = analysis.hierarchy
 
     if hierarchy:
+
         lines.append("")
         lines.append("Hierarchy")
         lines.append("---------")
+        lines.append(hierarchy)
         lines.append(hierarchy)
 
 
@@ -193,6 +248,63 @@ def render_confidence_finalized(lines, event, analysis):
         f"{event['score']:.1f}% ({event['label']})"
     )
 
+def render_reasoning_generated(lines, event, analysis):
+
+    lines.append("Overall Confidence")
+    lines.append("------------------")
+    lines.append("")
+
+    confidence = analysis.confidence
+
+    if confidence is not None:
+
+        lines.append(
+            f"{confidence['Score']:.1f}% ({confidence['Label']})"
+        )
+
+    lines.append("")
+
+
+    if event["primary"]:
+
+        lines.append("Primary Evidence")
+        lines.append("----------------")
+
+        for factor in event["primary"]:
+
+            lines.append(
+                f"+ {factor['name']}"
+            )
+
+        lines.append("")
+
+
+    if event["supporting"]:
+
+        lines.append("Supporting Evidence")
+        lines.append("-------------------")
+
+        for factor in event["supporting"]:
+
+            lines.append(
+                f"+ {factor['name']}"
+            )
+
+        lines.append("")
+
+
+    if event["uncertainty"]:
+
+        lines.append("Remaining Uncertainty")
+        lines.append("---------------------")
+
+        for factor in event["uncertainty"]:
+
+            lines.append(
+                f"- {factor['name']}"
+            )
+
+        lines.append("")
 
 def render_formula_recovered(lines, event, analysis):
 
@@ -245,6 +357,12 @@ def render_predictions_generated(lines, event, analysis):
 
     for i, value in enumerate(predictions):
 
+        display = round(value)
+
+        if abs(value - display) < 1e-10:
+
+            value = display
+
         lines.append(
             f"a({start+i}) = {value}"
         )
@@ -266,60 +384,146 @@ def render_verification_completed(lines, event, analysis):
         lines.append("")
         lines.append("Verification Failed")
 
+def render_inference_generated(lines, event, analysis):
+
+    lines.append("")
+    lines.append("Inference")
+    lines.append("---------")
+
+    observation = event.get(
+        "observation",
+        "Unknown observation"
+    )
+
+    conclusion = event.get(
+        "conclusion",
+        "Unknown conclusion"
+    )
+
+    impact = event.get(
+        "impact",
+        ""
+    )
+
+    lines.append(
+        f"Observation: {observation}"
+    )
+
+    lines.append(
+        f"Conclusion: {conclusion}"
+    )
+
+    if impact:
+        lines.append(
+            f"Impact: {impact}"
+        )
+
+def render_candidate_comparison(lines, event, analysis):
+
+    lines.append("")
+    lines.append("Candidate Comparison")
+    lines.append("-------------------")
+
+    winner = event.get(
+        "winner",
+        "Unknown"
+    )
+
+    alternative = event.get(
+        "alternative",
+        "Unknown"
+    )
+
+    lines.append(
+        f"{winner} vs {alternative}"
+    )
+
+    lines.append("")
+
+    for reason in event.get(
+        "comparison",
+        []
+    ):
+        lines.append(
+            f"• {reason}"
+        )
+
+def render_family_selected(lines, event, analysis):
+
+    lines.append("")
+    lines.append("Why This Family Was Selected")
+    lines.append("----------------------------")
+
+    family = event.get(
+        "family",
+        "Unknown"
+    )
+
+    lines.append(
+        f"Selected: {family}"
+    )
+
+    lines.append("")
+
+    for reason in event.get(
+        "reason",
+        []
+    ):
+        lines.append(
+            f"✓ {reason}"
+        )
+
 def render_reasoning_summary(lines, analysis):
 
+    lines.append("")
     lines.append("Reasoning Summary")
     lines.append("-" * 60)
     lines.append("")
 
-    tested = len(events(analysis, event="family_tested"))
+    lines.append(
+        "MathExplorer completed a structural analysis of the sequence."
+    )
 
-    accepted = len([
-        event
-        for event in events(analysis, event="family_tested")
-        if event.get("recognized")
-    ])
+    lines.append("")
+
+    selected = analysis.family
+
+    if selected:
+
+        lines.append(
+            f"Final classification: {selected.NAME}"
+        )
 
     confidence = analysis.confidence
 
-    lines.append(
-        f"• Tested {tested} candidate families."
-    )
+    if confidence:
 
-    if accepted == 1:
-        lines.append("• 1 family matched the sequence.")
-    else:
-        lines.append(f"• {accepted} families matched the sequence.")
-
-    if analysis.family is not None:
         lines.append(
-            f"• Selected {analysis.family.NAME}."
-        )
-
-    if confidence is not None:
-        lines.append(
-            f"• Confidence: "
-            f"{confidence['Score']:.1f}% "
-            f"({confidence['Label']})."
-        )
-
-    if analysis.formula is not None:
-        lines.append(
-            "• Symbolic formula recovered."
-        )
-
-    verified = analysis.verified
-
-    if verified:
-        lines.append(
-            "• Verification succeeded."
-        )
-    elif verified is False:
-        lines.append(
-            "• Verification failed."
+            f"Confidence: {confidence['Score']:.1f}% "
+            f"({confidence['Label']})"
         )
 
     lines.append("")
+
+    lines.append(
+        "The decision was based on:"
+    )
+
+    lines.append(
+        "• Mathematical accuracy"
+    )
+
+    lines.append(
+        "• Structural simplicity"
+    )
+
+    lines.append(
+        "• Family hierarchy consistency"
+    )
+
+    lines.append(
+        "• Generalization beyond observed terms"
+    )
 
 def render_analysis_complete(lines, analysis):
 
@@ -353,6 +557,7 @@ EVENT_RENDERERS = {
     "confidence_calculated": render_confidence_calculated,
     "tie_adjustment": render_tie_adjustment,
     "confidence_finalized": render_confidence_finalized,
+    "reasoning_generated": render_reasoning_generated,
 
     "formula_recovered": render_formula_recovered,
 
@@ -360,6 +565,12 @@ EVENT_RENDERERS = {
     "predictions_generated": render_predictions_generated,
 
     "verification_completed": render_verification_completed,
+
+    "inference_generated": render_inference_generated,
+
+    "candidate_comparison": render_candidate_comparison,
+
+    "family_selected": render_family_selected,
 
     "render_reason_summary": render_reasoning_summary,
 

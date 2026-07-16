@@ -1,10 +1,34 @@
 NAME = "Explicit"
-DESCRIPTION = "Families defined by direct formulas rather than previous terms."
-REPRESENTATION = "Explicit"
-
-CATEGORY = "Explicit"
+DESCRIPTION = "Sequence families defined directly by explicit formulas."
+REPRESENTATION = "Category"
+CATEGORY = "Structural"
 SPECIFICITY = 10
 PARENT = None
+
+
+FAMILY_TYPE = "Root"
+
+CHILDREN = [
+    "Basic",
+    "Figurate",
+    "Special",
+]
+
+TAGS = (
+    "Explicit",
+    "Closed Form",
+    "Formula Based",
+)
+
+TRAITS = {
+    "construction": "explicit_formula",
+    "representation": "closed_form",
+    "domain": "varied",
+}
+
+RELATED = [
+    "Recursive",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Variable"

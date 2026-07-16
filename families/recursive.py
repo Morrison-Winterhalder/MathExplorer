@@ -1,10 +1,30 @@
 NAME = "Recursive"
-DESCRIPTION = "Families generated from previous terms."
-REPRESENTATION = "Recursive"
-
-CATEGORY = "Recursive"
+DESCRIPTION = "Sequence families defined through recurrence relationships."
+REPRESENTATION = "Category"
+CATEGORY = "Structural"
 SPECIFICITY = 10
 PARENT = None
+
+FAMILY_TYPE = "Root"
+
+CHILDREN = [
+    "Linear Recurrence",
+]
+
+TAGS = (
+    "Recursive",
+    "Recurrence",
+)
+
+TRAITS = {
+    "construction": "recurrence",
+    "representation": "recursive",
+    "domain": "varied",
+}
+
+RELATED = [
+    "Explicit",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Variable"

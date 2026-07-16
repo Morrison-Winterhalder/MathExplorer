@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Special"
 SPECIFICITY = 50
 PARENT = None
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000142"
@@ -18,10 +19,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Factorial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
     "Factorial",
     "Combinatorics",
 )
+
+TRAITS = {
+    "growth": "super_exponential",
+    "construction": "factorial",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Powers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Factorial"

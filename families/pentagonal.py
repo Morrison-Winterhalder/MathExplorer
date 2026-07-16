@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000326"
@@ -18,11 +19,24 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Explicit"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Figurate",
-    "Polygonal",
     "Pentagonal",
+    "Polygonal",
+    "Figurate",
 )
+
+TRAITS = {
+    "construction": "polygonal",
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Triangular Numbers",
+    "Hexagonal Numbers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quadratic"
@@ -84,5 +98,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is a pentagonal number.",
-        "The sequence matches the pentagonal number formula exactly."
     ]

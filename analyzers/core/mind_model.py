@@ -2,6 +2,7 @@ from analyzers.core.trace import events_for_stage
 from analyzers.core.event_renderers import EVENT_RENDERERS, render_reasoning_summary, render_analysis_complete
 
 STAGES = [
+    "observation",
     "recognition",
     "classification",
     "confidence",
@@ -22,6 +23,7 @@ def render_stage(lines, report, stage):
         return
 
     titles = {
+        "observation": "Observations",
         "recognition": "Recognition",
         "classification": "Classification",
         "confidence": "Confidence",

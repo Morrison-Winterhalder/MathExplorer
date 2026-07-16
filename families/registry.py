@@ -23,6 +23,7 @@ Required Interface:
 import importlib
 import pkgutil
 from pathlib import Path
+from families.hierarchy import HIERARCHY
 
 
 class PluginError(Exception):
@@ -37,8 +38,11 @@ REQUIRED_METADATA = {
     "CATEGORY",
     "SPECIFICITY",
     "PARENT",
+    "FAMILY_TYPE",
+    "TAGS",
+    "TRAITS",
+    "RELATED",
 }
-
 REQUIRED_FUNCTIONS = {
     "recognize",
     "fit",
@@ -48,12 +52,26 @@ REQUIRED_FUNCTIONS = {
     "explain",
 }
 
+EXPECTED_METADATA_TYPES = {
+    "NAME": str,
+    "DESCRIPTION": str,
+    "REPRESENTATION": str,
+    "CATEGORY": str,
+    "SPECIFICITY": int,
+    "PARENT": (str, type(None)),
+    "FAMILY_TYPE": str,
+    "TAGS": tuple,
+    "TRAITS": dict,
+    "RELATED": list,
+}
+
 _PACKAGE = "families"
 
 EXCLUDED_MODULES = {
     "__init__",
     "registry",
     "recurrence",
+    "hierarchy"
 }
 
 
@@ -76,6 +94,16 @@ def validate_metadata(module):
                 for item in missing
             )
         )
+    
+    for field, expected_type in EXPECTED_METADATA_TYPES.items():
+
+        value = getattr(module, field)
+
+        if not isinstance(value, expected_type):
+
+            raise PluginError(
+                f'{module.NAME}: "{field}" must be {expected_type}'
+            )
 
 
 def validate_interface(module):
@@ -103,6 +131,27 @@ def validate_family(module):
 
     validate_metadata(module)
     validate_interface(module)
+
+def validate_related(families, family_map):
+
+    for family in families:
+
+        for related in family.RELATED:
+
+            if related == family.NAME:
+                raise PluginError(
+                    f"{family.NAME} cannot relate to itself."
+                )
+
+            if related not in family_map:
+                raise PluginError(
+                    f"{family.NAME}: unknown related family '{related}'."
+                )
+
+        if len(family.RELATED) != len(set(family.RELATED)):
+            raise PluginError(
+                f"{family.NAME} has duplicate RELATED entries."
+            )
 
 
 def discover_families():
@@ -182,6 +231,31 @@ validate_parents(
     FAMILY_MAP
 )
 
+def validate_hierarchy(families):
+
+    for family in families:
+
+        if family.NAME not in HIERARCHY:
+            continue
+
+        expected_parent = HIERARCHY[family.NAME]["parent"]
+
+        if expected_parent is None:
+            continue
+
+        if family.PARENT != expected_parent:
+
+            raise PluginError(
+                f'Hierarchy mismatch:\n'
+                f'Family: {family.NAME}\n'
+                f'Expected parent: {expected_parent}\n'
+                f'Actual parent: {family.PARENT}'
+            )
+
+validate_hierarchy(
+    FAMILIES
+)
+
 
 def get_family(name, required=False):
 
@@ -255,3 +329,54 @@ def build_family_tree(family):
         indent += "    "
 
     return "\n".join(lines)
+
+def get_children(name):
+
+    children = []
+
+    for family in FAMILIES:
+
+        if family.PARENT == name:
+
+            children.append(
+                family
+            )
+
+    return children
+
+def get_depth(family):
+
+    depth = 0
+
+    current = family
+
+    while current.PARENT is not None:
+
+        parent = get_parent(current)
+
+        if parent is None:
+            break
+
+        depth += 1
+        current = parent
+
+    return depth
+
+def get_siblings(family):
+
+    if family.PARENT is None:
+        return []
+
+    return [
+        candidate
+        for candidate in FAMILIES
+        if candidate.PARENT == family.PARENT
+        and candidate.NAME != family.NAME
+    ]
+
+def get_related(family):
+
+    return [
+        FAMILY_MAP[name]
+        for name in family.RELATED
+    ]

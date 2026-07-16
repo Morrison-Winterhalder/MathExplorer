@@ -1,5 +1,11 @@
 from analyzers.core.formatter import yes_no, pretty
 from analyzers.core.confidence_formatter import explain_confidence
+from analyzers.explanation_engine.explanation_renderer import (
+    render_explanation,
+)
+from analyzers.core.confidence_display import (
+    print_confidence_reasoning,
+)
 
 def print_sequence_classification(report):
 
@@ -34,43 +40,52 @@ def print_sequence_classification(report):
         )
     print()
 
-    explanation = explain_confidence(confidence)
-
-    print("Confidence Factors")
-    print("------------------")
-
-    for reason in explanation:
-        print(reason)
-
-    if parameters:
-        print()
-        print("Parameters")
-        print("----------")
-
-        if isinstance(parameters, dict):
-            for key, value in parameters.items():
-                print(f"{key:<16}: {pretty(value)}")
-        else:
-            print(pretty(parameters))
-
+    print_confidence_reasoning(report.confidence)
 
     print()
 
-def print_explanation(report):
+def print_explanation(analysis):
 
-    explanation = report.explanation
+    explanation = analysis.explanation
 
-    if not explanation:
+    if explanation is None:
         return
 
+    print()
     print("Explanation")
-    print("-----------")
+    print("-" * 24)
 
-    print(explanation["Summary"])
     print()
 
-    for reason in explanation["Reasons"]:
-        print(f"• {reason}")
+    print("Summary")
+    print("-------")
+    print(explanation["Summary"])
+
+    print()
+
+    print("Reasons")
+    print("-------")
+
+    for observation in explanation["Reasons"]:
+        print(
+            f"• {observation.text}"
+        )
+
+    print()
+
+    print("Evidence")
+    print("--------")
+
+    for item in explanation["Evidence"]:
+        print(f"• {item}")
+
+    print()
+
+    print("Warnings")
+    print("--------")
+
+    for warning in explanation["Warnings"]:
+        print(f"• {warning}")
 
     print()
 

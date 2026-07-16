@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 30
 PARENT = "Polynomial"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000359"
@@ -18,10 +19,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
+    "Powers",
     "Fifth Power",
-    "Polynomial",
 )
+
+TRAITS = {
+    "construction": "power",
+    "degree": 5,
+    "growth": "polynomial",
+}
+
+RELATED = [
+    "Fourth Powers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quintic"
@@ -69,5 +82,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is a perfect fifth power.",
-        "The sequence matches the formula n⁵ exactly."
     ]

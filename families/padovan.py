@@ -7,10 +7,28 @@ REPRESENTATION = "Recursive"
 CATEGORY = "Recursive"
 SPECIFICITY = 55
 PARENT = "Linear Recurrence"
+NATURAL_FAMILY = True
 
 OEIS = "A000931"
 ALIASES = [
     "Padovan Sequence",
+]
+
+FAMILY_TYPE = "Sequence"
+
+TAGS = (
+    "Padovan",
+    "Recurrence",
+)
+
+TRAITS = {
+    "construction": "linear_recurrence",
+    "order": 3,
+    "growth": "exponential",
+}
+
+RELATED = [
+    "Perrin Numbers",
 ]
 
 DOMAIN = "Integers"

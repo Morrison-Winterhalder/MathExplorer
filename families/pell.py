@@ -7,6 +7,7 @@ REPRESENTATION = "Recursive"
 CATEGORY = "Recursive"
 SPECIFICITY = 50
 PARENT = "Linear Recurrence"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000129"
@@ -17,11 +18,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Recurrence"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Recursive",
-    "Linear Recurrence",
     "Pell",
+    "Recurrence",
 )
+
+TRAITS = {
+    "construction": "linear_recurrence",
+    "order": 2,
+    "growth": "exponential",
+}
+
+RELATED = [
+    "Fibonacci Numbers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Exponential"

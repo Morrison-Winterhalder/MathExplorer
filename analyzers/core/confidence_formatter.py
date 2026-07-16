@@ -1,21 +1,45 @@
-def explain_confidence(details):
-    reasons = []
+def explain_confidence(confidence):
 
-    factors = details["Factors"]
+    if confidence is None:
+        return []
 
-    if factors["Perfect Fit"]:
-        reasons.append(
-            "✓ Exact fit to all provided terms"
+    explanation = []
+
+    strengths = confidence.get(
+        "Strengths",
+        []
+    )
+
+    limitations = confidence.get(
+        "Limitations",
+        []
+    )
+
+
+    if strengths:
+
+        explanation.append(
+            "Supporting evidence:"
         )
 
-    if factors["Has Competition"]:
-        reasons.append(
-            "• Another family provides an equally accurate fit"
+        for factor in strengths:
+
+            explanation.append(
+                f"• {factor['Reason']}"
+            )
+
+
+    if limitations:
+
+        explanation.append(
+            "Confidence limitations:"
         )
 
-    if factors["Evidence Length"] < 10:
-        reasons.append(
-            "• Confidence is limited by a short sequence"
-        )
+        for factor in limitations:
 
-    return reasons
+            explanation.append(
+                f"• {factor['Reason']}"
+            )
+
+
+    return explanation

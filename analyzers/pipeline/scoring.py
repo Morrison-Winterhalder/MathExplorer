@@ -135,14 +135,18 @@ def choose_best_fit(scores, analysis):
             ],
         })
 
+    tie_candidates = winners.copy()
+
+
     max_specificity = max(
         winner["Family"].SPECIFICITY
-        for winner in winners
+        for winner in tie_candidates
     )
+
 
     winners = [
         winner
-        for winner in winners
+        for winner in tie_candidates
         if winner["Family"].SPECIFICITY == max_specificity
     ]
 
@@ -171,7 +175,7 @@ def choose_best_fit(scores, analysis):
             },
         }
 
-    runner_index = initial_winner_count
+    runner_index = len(winners)
 
     if runner_index >= len(ordered):
         runner = None
@@ -190,6 +194,42 @@ def choose_best_fit(scores, analysis):
         ) / (
             runner["Ranking Score"] + ordered[0]["Ranking Score"] + 1e-12
         )
+
+
+    if runner is not None:
+
+        winner_family = winners[0]["Family"]
+
+        runner_family = runner["Family"]
+
+
+        analysis.analysis_trace.append({
+
+            "stage": "recognition",
+
+            "event": "candidate_comparison",
+
+            "winner": winner_family.NAME,
+
+            "alternative": runner_family.NAME,
+
+            "comparison": [
+
+                "Both candidates reproduce the observed sequence",
+
+                (
+                    f"{winner_family.NAME} provides a more "
+                    "specific mathematical explanation"
+                ),
+
+                (
+                    f"{runner_family.NAME} is a more "
+                    "general model"
+                ),
+
+            ]
+
+        })
 
     analysis.analysis_trace.append({
         "stage": "classification",

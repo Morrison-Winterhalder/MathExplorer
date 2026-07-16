@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 30
 PARENT = "Polynomial"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A003828"
@@ -18,10 +19,23 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
+    "Powers",
     "Fourth Power",
-    "Polynomial",
 )
+
+TRAITS = {
+    "construction": "power",
+    "degree": 4,
+    "growth": "polynomial",
+}
+
+RELATED = [
+    "Cubes",
+    "Fifth Powers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quartic"
@@ -72,5 +86,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is a perfect fourth power.",
-        "The sequence matches the formula n⁴ exactly."
     ]

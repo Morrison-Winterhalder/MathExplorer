@@ -9,6 +9,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 10
 PARENT = "Explicit"
+NATURAL_FAMILY = False
 
 # Mathematical Metadata
 OEIS = None
@@ -19,10 +20,23 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
     "Polynomial",
-    "Finite Differences",
+    "Explicit",
 )
+
+TRAITS = {
+    "growth": "polynomial",
+    "construction": "finite_difference",
+    "domain": "numbers",
+}
+
+RELATED = [
+    "Arithmetic",
+    "Figurate",
+]
 
 DOMAIN = "Real Numbers"
 GROWTH = "Polynomial"

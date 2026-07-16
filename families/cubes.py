@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 30
 PARENT = "Polynomial"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000578"
@@ -18,10 +19,23 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Cube",
-    "Polynomial",
+    "Powers",
+    "Cubes",
 )
+
+TRAITS = {
+    "construction": "power",
+    "degree": 3,
+    "growth": "polynomial",
+}
+
+RELATED = [
+    "Square Numbers",
+    "Fourth Powers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Cubic"
@@ -69,5 +83,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is a perfect cube.",
-        "The sequence matches the formula n³ exactly."
     ]

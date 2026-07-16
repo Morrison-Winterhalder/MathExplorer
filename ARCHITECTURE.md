@@ -132,7 +132,7 @@ Sequence Families
 │
 ├── Explicit
 │   │
-│   ├── Elementary
+│   ├── Basic
 │   │   ├── Constant Numbers
 │   │   ├── Arithmetic Numbers
 │   │   ├── Geometric Numbers

@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Polynomial"
 SPECIFICITY = 50
 PARENT = "Polynomial"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A002378"
@@ -18,12 +19,22 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Polynomial"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Polynomial",
-    "Quadratic",
-    "Product",
     "Pronic",
+    "Rectangular",
 )
+
+TRAITS = {
+    "growth": "quadratic",
+    "construction": "product",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Triangular Numbers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quadratic"

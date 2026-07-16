@@ -7,6 +7,7 @@ REPRESENTATION = "Explicit"
 CATEGORY = "Figurate"
 SPECIFICITY = 40
 PARENT = "Polygonal"
+NATURAL_FAMILY = True
 
 # Mathematical Metadata
 OEIS = "A000567"
@@ -18,11 +19,30 @@ ALIASES = [
 CLOSED_FORM = True
 EVALUATION_METHOD = "Explicit"
 
+FAMILY_TYPE = "Sequence"
+
 TAGS = (
-    "Figurate",
-    "Polygonal",
     "Octagonal",
+    "Polygonal",
+    "Figurate",
 )
+
+TRAITS = {
+    "construction": "polygonal",
+    "sides": 8,
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Triangular Numbers",
+    "Square Numbers",
+    "Pentagonal Numbers",
+    "Hexagonal Numbers",
+    "Heptagonal Numbers",
+    "Nonagonal Numbers",
+    "Decagonal Numbers",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Quadratic"
@@ -75,5 +95,4 @@ def complexity(_):
 def explain(_):
     return [
         "Every term is an octagonal number.",
-        "The sequence matches the octagonal number formula exactly."
     ]

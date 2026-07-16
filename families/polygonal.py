@@ -1,10 +1,34 @@
 NAME = "Polygonal"
-DESCRIPTION = "General polygonal number families."
-REPRESENTATION = "Explicit"
-
+DESCRIPTION = "Sequences formed from polygonal number constructions."
+REPRESENTATION = "Category"
 CATEGORY = "Figurate"
-SPECIFICITY = 20
+SPECIFICITY = 30
 PARENT = "Figurate"
+
+FAMILY_TYPE = "Category"
+
+CHILDREN = [
+    "Triangular Numbers",
+    "Square Numbers",
+    "Pentagonal Numbers",
+    "Hexagonal Numbers",
+]
+
+TAGS = (
+    "Polygonal",
+    "Figurate",
+    "Geometric",
+)
+
+TRAITS = {
+    "construction": "polygonal",
+    "growth": "quadratic",
+    "domain": "integers",
+}
+
+RELATED = [
+    "Centered Polygonal",
+]
 
 DOMAIN = "Integers"
 GROWTH = "Polynomial"

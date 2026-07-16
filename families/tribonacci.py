@@ -8,10 +8,28 @@ REPRESENTATION = "Recursive"
 CATEGORY = "Recursive"
 SPECIFICITY = 55
 PARENT = "Linear Recurrence"
+NATURAL_FAMILY = True
 
 OEIS = "A000073"
 ALIASES = [
     "Tribonacci Sequence",
+]
+
+FAMILY_TYPE = "Sequence"
+
+TAGS = (
+    "Tribonacci",
+    "Recurrence",
+)
+
+TRAITS = {
+    "construction": "linear_recurrence",
+    "order": 3,
+    "growth": "exponential",
+}
+
+RELATED = [
+    "Tetranacci Numbers",
 ]
 
 DOMAIN = "Integers"
