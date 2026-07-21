@@ -1,6 +1,8 @@
 # MathExplorer Development Guide
 
-This document describes how to set up, run, and contribute to MathExplorer.
+This document describes how to set up, run, test, and contribute to MathExplorer.
+
+MathExplorer is a modular, plugin-based mathematical sequence recognition system. Development is organized around independent sequence family modules, a validated family hierarchy, automated registry discovery, and a comprehensive test suite.
 
 ---
 
@@ -29,7 +31,9 @@ Run the main program:
 python main.py
 ```
 
-A sequence can then be analyzed through the sequence analysis pipeline.
+A sequence can then be analyzed through the MathExplorer analysis pipeline.
+
+The pipeline processes sequences through recognition, fitting, prediction, scoring, classification, explanation, verification, and reporting stages.
 
 ---
 
@@ -41,19 +45,42 @@ Run the complete test suite:
 pytest
 ```
 
-Tests should pass before making changes to the project.
+The full test suite currently contains over 2,000 automated tests covering the family system, analysis pipeline, registry, hierarchy, confidence system, prediction, verification, formatting, and regression behavior.
+
+The current verified test state is:
+
+```text
+2031 passed, 38 skipped
+```
+
+All tests should pass before changes are considered complete.
 
 ---
 
 # Development Workflow
 
-Typical development steps:
+The recommended development workflow is:
 
-1. Make changes.
-2. Add or update tests.
-3. Run the test suite.
-4. Verify output formatting.
-5. Commit changes.
+1. Understand the relevant architecture or family hierarchy.
+2. Make the required changes.
+3. Add or update automated tests.
+4. Run focused tests during development.
+5. Run the complete test suite.
+6. Verify mathematical behavior and output formatting.
+7. Review metadata and hierarchy relationships.
+8. Commit the changes.
+
+For example, during family development, focused tests may be run with:
+
+```bash
+pytest tests/families/test_<family_category>.py
+```
+
+The complete suite should be run before finalizing a change:
+
+```bash
+pytest
+```
 
 ---
 
@@ -61,21 +88,21 @@ Typical development steps:
 
 To add a new mathematical family:
 
-1. Create a new Python file inside:
+1. Determine where the family belongs in the hierarchy.
+2. Create a new Python module inside the appropriate directory under:
 
 ```text
 families/
 ```
 
-2. Implement the required family interface.
+3. Implement the required family interface.
+4. Add the required mathematical metadata.
+5. Define the appropriate parent family using `PARENT`.
+6. Add family-specific tests.
+7. Verify that the family is discovered and loaded by the registry.
+8. Run the complete test suite.
 
-3. Add required metadata.
-
-4. Add tests.
-
-5. Run the full test suite.
-
-For detailed family instructions, see:
+For detailed family creation instructions, see:
 
 ```text
 families/creating_families.md
@@ -83,105 +110,156 @@ families/creating_families.md
 
 ---
 
-# Code Organization
+# Family Plugin Architecture
 
-## analyzers/
+Sequence families are implemented as independent plugins.
 
-Contains the sequence recognition and analysis pipeline.
+A family module is responsible for its own mathematical behavior, including:
 
-Responsibilities include:
+* Sequence recognition
+* Parameter fitting
+* Term evaluation
+* Formula generation
+* Complexity reporting
+* Explanations
+* Mathematical metadata
 
-- Recognition
-- Scoring
-- Classification
-- Formula recovery
-- Reporting
+The standard family interface includes:
 
----
+```python
+recognize(sequence)
+fit(sequence)
+evaluate(parameters, n)
+formula(parameters)
+complexity(parameters)
+explain(parameters)
+```
 
-## families/
+Not every family requires parameters, but every family must follow the conventions required by the family registry and validation system.
 
-Contains all sequence family plugins.
-
-Each family defines its own:
-
-- Recognition rules
-- Evaluation logic
-- Formula generation
-- Metadata
-
----
-
-## tests/
-
-Contains automated verification.
-
-Tests are organized around:
-
-- Recognition
-- Recovery
-- Prediction
-- Scoring
-- Formatting
-- Registry behavior
+New family modules should not require modifications to the central recognition engine.
 
 ---
 
-# Development Principles
+# Family Metadata
 
-MathExplorer follows several design principles.
+Every family should define metadata consistently with existing family modules.
 
-## Modularity
+Typical metadata includes:
 
-Sequence families should remain independent from the core engine.
+```python
+NAME
+DESCRIPTION
+REPRESENTATION
+CATEGORY
+SPECIFICITY
+PARENT
+NATURAL_FAMILY
+```
 
-Each family should contain its own recognition logic, evaluation methods, and metadata.
+Mathematical metadata may include:
 
----
+```python
+OEIS
+ALIASES
+CLOSED_FORM
+EVALUATION_METHOD
+FAMILY_TYPE
+TAGS
+TRAITS
+RELATED
+DOMAIN
+GROWTH
+MONOTONIC
+BOUNDED
+OSCILLATING
+PERIODIC
+FORMULA_TYPE
+REQUIRES_PARAMETERS
+PARAMETER_NAMES
+MIN_TERMS
+RECOGNITION_METHOD
+RELIABILITY
+```
 
-## Extensibility
-
-Adding new mathematical patterns should require minimal changes to the core system.
-
-New families should be added through the existing plugin architecture.
-
----
-
-## Explainability
-
-The system should provide meaningful reasoning behind classifications.
-
-Family metadata and explanations are designed to support future explanation systems.
-
----
-
-## Reliability
-
-Changes should be validated through automated testing.
-
-All new functionality should include appropriate tests.
-
----
-
-# Style Guidelines
-
-When adding code:
-
-- Prefer clear mathematical naming.
-- Keep family logic inside family modules.
-- Avoid unnecessary changes to shared infrastructure.
-- Add tests for new functionality.
-- Use existing formatting utilities.
-- Maintain consistency with existing metadata conventions.
+Metadata is not merely descriptive. It is validated by the test suite and provides information used by classification, explanation, hierarchy, and future tooling.
 
 ---
 
-# Future Development
+# Family Hierarchy
 
-Major future development areas include:
+MathExplorer organizes families using a hierarchical taxonomy.
 
-- Expanded sequence families
-- Improved explanation systems
-- UI improvements
-- Visualization tools
-- Advanced metadata usage
+A family may declare its parent using:
+
+```python
+PARENT = "Parent Family"
+```
+
+For example:
+
+```python
+NAME = "Fibonacci"
+PARENT = "Linear Recurrence"
+```
+
+The parent must exist in the registry.
+
+The hierarchy allows related mathematical families to be organized structurally rather than treated as unrelated plugins.
+
+The registry validates:
+
+* Parent existence
+* Family name uniqueness
+* Hierarchy relationships
+* Valid family loading
+* Plugin integrity
+
+Invalid hierarchy relationships should cause validation failures rather than silently producing an incorrect taxonomy.
+
+---
+
+# Family Categories
+
+The current architecture includes hierarchical categories such as:
+
+* `Sequence Families`
+* `Explicit`
+* `Basic`
+* `Figurate`
+* `Polygonal`
+* `Centered Polygonal`
+* `Special`
+* `Combinatorial`
+* `Recursive`
+* `Linear Recurrence`
+
+Some hierarchy nodes are organizational categories rather than direct sequence recognizers.
+
+These categories provide structure for:
+
+* Family organization
+* Registry validation
+* Family browsing
+* Mathematical relationships
+* Classification context
+* Explanation systems
+* Future interface features
+
+---
+
+# Registry System
+
+The family registry automatically discovers family modules.
+
+The registry is responsible for:
+
+1. Discovering family modules.
+2. Loading available plugins.
+3. Validating required interfaces.
+4. Validating metadata.
+5. Validating hierarchy relationships.
+6. Rejecting invalid plugins.
+7. Making valid families available to the analysis pipeline.
+
+Manual registration should not be required

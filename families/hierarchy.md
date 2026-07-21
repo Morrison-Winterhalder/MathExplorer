@@ -1,15 +1,21 @@
 # Current Sequence Family Hierarchy
 
+
 ```
 Sequence Families
 │
 ├── Explicit
 │   │
 │   ├── Basic
-│   │   ├── Constant Numbers
-│   │   ├── Arithmetic Numbers
-│   │   ├── Geometric Numbers
-│   │   └── Polynomial Numbers
+│   │   ├── Constant
+│   │   ├── Arithmetic
+│   │   ├── Geometric
+│   │   └── Polynomial
+│   │       ├── Cubes
+│   │       ├── Squares
+│   │       ├── Fifth Powers
+│   │       ├── Fourth Powers
+│   │       └── Pronic Numbers
 │   │
 │   ├── Figurate
 │   │   │
@@ -17,7 +23,11 @@ Sequence Families
 │   │   │   ├── Triangular Numbers
 │   │   │   ├── Square Numbers
 │   │   │   ├── Pentagonal Numbers
-│   │   │   └── Hexagonal Numbers
+│   │   │   ├── Hexagonal Numbers
+│   │   │   ├── Heptagonal Numbers
+│   │   │   ├── Octagonal Numbers
+│   │   │   ├── Nonagonal Numbers
+│   │   │   └── Decagonal Numbers
 │   │   │
 │   │   └── Centered Polygonal
 │   │       ├── Centered Triangular Numbers
@@ -26,17 +36,23 @@ Sequence Families
 │   │       └── Centered Hexagonal Numbers
 │   │
 │   └── Special
-│       └── Factorial Numbers
+│       └── Factorials
 │
 └── Recursive
     │
-    └── Linear Recurrence
-        ├── Fibonacci Numbers
-        ├── Lucas Numbers
-        ├── Pell Numbers
-        ├── Jacobsthal Numbers
-        ├── Tribonacci Numbers
-        ├── Tetranacci Numbers
-        ├── Padovan Numbers
-        └── Perrin Numbers
+    ├── Linear Recurrence
+    │   ├── Fibonacci
+    │   ├── Lucas Numbers
+    │   ├── Pell Numbers
+    │   ├── Jacobsthal Numbers
+    │   ├── Tribonacci Numbers
+    │   ├── Tetranacci Numbers
+    │   ├── Padovan Numbers
+    │   └── Perrin Numbers
+    │
+    ├── Collatz Stopping Times
+    ├── Happy Numbers
+    ├── Look-and-Say Numbers
+    ├── Motzkin Numbers
+    └── Van Eck Numbers
 ```

@@ -23,13 +23,44 @@ Required Interface:
 import importlib
 import pkgutil
 from pathlib import Path
-from families.hierarchy import HIERARCHY
+from families.core.hierarchy import HIERARCHY
 
 
 class PluginError(Exception):
     """Raised when a family plugin does not implement the required interface."""
     pass
 
+class HierarchyNode:
+
+    def __init__(
+        self,
+        name,
+        parent,
+        children
+    ):
+
+        self.NAME = name
+        self.PARENT = parent
+        self.CHILDREN = children
+
+    def __repr__(self):
+
+        return (
+            f"HierarchyNode("
+            f"{self.NAME!r}"
+            f")"
+        )
+    
+HIERARCHY_NODES = {
+
+    name: HierarchyNode(
+        name=name,
+        parent=data["parent"],
+        children=data["children"],
+    )
+
+    for name, data in HIERARCHY.items()
+}
 
 REQUIRED_METADATA = {
     "NAME",
@@ -65,7 +96,19 @@ EXPECTED_METADATA_TYPES = {
     "RELATED": list,
 }
 
-_PACKAGE = "families"
+OPTIONAL_METADATA = {
+    "AUTHOR": "MathExplorer",
+    "VERSION": "1.0.0",
+    "SOURCE": "Core",
+    "PLUGIN": False,
+    "ID": None,
+}
+
+CORE_PACKAGE = "families.core"
+PLUGIN_PACKAGE = "families.plugins"
+
+CORE_DIRECTORY = Path(__file__).parent / "core"
+PLUGIN_DIRECTORY = Path(__file__).parent / "plugins"
 
 EXCLUDED_MODULES = {
     "__init__",
@@ -104,6 +147,21 @@ def validate_metadata(module):
             raise PluginError(
                 f'{module.NAME}: "{field}" must be {expected_type}'
             )
+        
+    for field, default in OPTIONAL_METADATA.items():
+
+        if not hasattr(module, field):
+
+            setattr(module, field, default)
+
+    # Default ID is derived from NAME if omitted
+    if module.ID is None:
+
+        module.ID = (
+            module.NAME
+            .lower()
+            .replace(" ", "_")
+        )
 
 
 def validate_interface(module):
@@ -154,13 +212,11 @@ def validate_related(families, family_map):
             )
 
 
-def discover_families():
+def discover_package(directory, package):
 
     families = []
 
-    for module_info in pkgutil.iter_modules(
-        [str(Path(__file__).parent)]
-    ):
+    for module_info in pkgutil.iter_modules([str(directory)]):
 
         module_name = module_info.name
 
@@ -168,12 +224,38 @@ def discover_families():
             continue
 
         module = importlib.import_module(
-            f"{_PACKAGE}.{module_name}"
+            f"{package}.{module_name}"
         )
 
         validate_family(module)
 
         families.append(module)
+
+    return families
+
+def discover_core():
+
+    return discover_package(
+        CORE_DIRECTORY,
+        CORE_PACKAGE,
+    )
+
+def discover_plugins():
+
+    if not PLUGIN_DIRECTORY.exists():
+        return []
+
+    return discover_package(
+        PLUGIN_DIRECTORY,
+        PLUGIN_PACKAGE,
+    )
+
+def discover_families():
+
+    families = (
+        discover_core()
+        + discover_plugins()
+    )
 
     families.sort(
         key=lambda family: family.NAME
@@ -181,6 +263,10 @@ def discover_families():
 
     return families
 
+CORE_NAMES = {
+    family.NAME
+    for family in discover_core()
+}
 
 def create_family_map(families):
 
@@ -206,6 +292,24 @@ def create_family_map(families):
         for family in families
     }
 
+def validate_ids(families):
+
+    ids = [
+        family.ID
+        for family in families
+    ]
+
+    duplicates = {
+        value
+        for value in ids
+        if ids.count(value) > 1
+    }
+
+    if duplicates:
+
+        raise PluginError(
+            f"Duplicate family IDs: {duplicates}"
+        )
 
 def validate_parents(families, family_map):
 
@@ -214,8 +318,10 @@ def validate_parents(families, family_map):
         if family.PARENT is None:
             continue
 
-        if family.PARENT not in family_map:
-
+        if (
+            family.PARENT not in family_map
+            and family.PARENT not in HIERARCHY
+        ):
             raise PluginError(
                 f'Family "{family.NAME}" has '
                 f'invalid parent "{family.PARENT}"'
@@ -225,6 +331,8 @@ def validate_parents(families, family_map):
 FAMILIES = discover_families()
 
 FAMILY_MAP = create_family_map(FAMILIES)
+
+validate_ids(FAMILIES)
 
 validate_parents(
     FAMILIES,
@@ -257,6 +365,47 @@ validate_hierarchy(
 )
 
 
+def validate_plugins(families):
+
+    for family in families:
+
+        if not family.PLUGIN:
+            continue
+
+        if family.NAME in CORE_NAMES:
+
+            raise PluginError(
+                f'Plugin "{family.NAME}" attempts to override a built-in family.'
+            )
+        
+validate_plugins(FAMILIES)  
+
+def print_registry_summary():
+
+    core = sum(
+        not family.PLUGIN
+        for family in FAMILIES
+    )
+
+    plugins = sum(
+        family.PLUGIN
+        for family in FAMILIES
+    )
+
+    print()
+
+    print("=" * 40)
+    print("MathExplorer v3.0")
+    print("=" * 40)
+
+    print(f"Core Families : {core}")
+    print(f"Plugins       : {plugins}")
+    print(f"Total Loaded  : {len(FAMILIES)}")
+
+    print("Registry initialized successfully.")
+
+    print()
+
 def get_family(name, required=False):
 
     family = FAMILY_MAP.get(name)
@@ -284,8 +433,13 @@ def get_parent(family):
     if family.PARENT is None:
         return None
 
-    return FAMILY_MAP.get(family.PARENT)
+    if family.PARENT == "Sequence Families":
+        return None
 
+    if family.PARENT in FAMILY_MAP:
+        return FAMILY_MAP[family.PARENT]
+
+    return HIERARCHY_NODES.get(family.PARENT)
 
 def get_lineage(family):
 
@@ -295,13 +449,15 @@ def get_lineage(family):
 
     while current.PARENT is not None:
 
+        if current.PARENT == "Sequence Families":
+            break
+
         parent = get_parent(current)
 
         if parent is None:
             break
 
         lineage.append(parent)
-
         current = parent
 
     return lineage
@@ -319,6 +475,26 @@ def build_family_tree(family):
     ]
 
     indent = ""
+
+    representation = getattr(
+        family,
+        "REPRESENTATION",
+        None
+    )
+
+    if (
+        representation
+        and representation not in [
+            parent.NAME
+            for parent in lineage
+        ]
+    ):
+
+        lines.append(
+            f"{indent}└── {representation}"
+        )
+
+        indent += "    "
 
     for parent in lineage:
 
@@ -346,25 +522,104 @@ def get_children(name):
 
 def get_depth(family):
 
-    depth = 0
+    # --------------------------------------------------
+    # Resolve the family name
+    # --------------------------------------------------
 
-    current = family
+    if hasattr(
+        family,
+        "NAME"
+    ):
 
-    while current.PARENT is not None:
+        name = family.NAME
 
-        parent = get_parent(current)
+        family_module = family
+
+    else:
+
+        name = family
+
+        family_module = None
+
+
+    # --------------------------------------------------
+    # Direct hierarchy node
+    # --------------------------------------------------
+
+    if name in HIERARCHY:
+
+        depth = 0
+
+        current = name
+
+        while (
+            HIERARCHY[current]["parent"]
+            is not None
+        ):
+
+            current = (
+                HIERARCHY[current]["parent"]
+            )
+
+            depth += 1
+
+        return depth
+
+
+    # --------------------------------------------------
+    # Loaded family not directly represented as a
+    # hierarchy node
+    # --------------------------------------------------
+
+    if family_module is None:
+
+        family_module = get_family(
+            name
+        )
+
+
+    parent = getattr(
+        family_module,
+        "PARENT",
+        None
+    )
+
+
+    # A loaded root family has depth zero.
+    if parent is None:
+
+        return 0
+
+
+    # The family itself is one level below its
+    # declared hierarchy parent.
+    depth = 1
+
+    current = parent
+
+
+    while current in HIERARCHY:
+
+        parent = (
+            HIERARCHY[current]["parent"]
+        )
+
 
         if parent is None:
+
             break
 
-        depth += 1
+
         current = parent
+
+        depth += 1
+
 
     return depth
 
 def get_siblings(family):
 
-    if family.PARENT is None:
+    if family.PARENT is None or family.PARENT == "Sequence Families":
         return []
 
     return [
@@ -380,3 +635,5 @@ def get_related(family):
         FAMILY_MAP[name]
         for name in family.RELATED
     ]
+
+print_registry_summary()

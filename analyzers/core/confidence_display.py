@@ -1,20 +1,41 @@
 def print_confidence_reasoning(confidence):
 
+    if confidence is None:
+        return
+
     print()
 
-    print("Reasoning")
-    print("------------------")
+    print("Confidence Analysis")
+    print("-------------------")
     print()
+
+
+    strengths = confidence.get(
+        "Strengths",
+        []
+    )
+
+    limitations = confidence.get(
+        "Limitations",
+        []
+    )
+
+    notes = confidence.get(
+        "Notes",
+        []
+    )
 
 
     primary = [
-        factor for factor in confidence["Factors"]
+        factor
+        for factor in strengths
         if factor["name"] == "Exact Formula Match"
     ]
 
 
     structural = [
-        factor for factor in confidence["Factors"]
+        factor
+        for factor in strengths
         if factor["name"] in {
             "Natural Family",
             "Strong Generalization",
@@ -25,24 +46,13 @@ def print_confidence_reasoning(confidence):
 
 
     evidence = [
-        factor for factor in confidence["Factors"]
+        factor
+        for factor in strengths
         if factor["name"] in {
             "Observed Evidence",
             "Adequate Evidence Sample",
             "Large Evidence Sample",
         }
-    ]
-
-
-    limitations = [
-        factor for factor in confidence["Factors"]
-        if factor["impact"] < 0
-    ]
-
-
-    notes = [
-        factor for factor in confidence["Factors"]
-        if factor["impact"] == 0
     ]
 
 
@@ -63,8 +73,15 @@ def print_confidence_reasoning(confidence):
         print("------------------")
 
         for factor in structural:
-            print(f"✓ {factor['name']}")
-            print(f"  {factor['reason']}")
+
+            print(
+                f"✓ {factor['name']}"
+            )
+
+            print(
+                f"  {factor['reason']}"
+            )
+
             print()
 
 
@@ -74,8 +91,15 @@ def print_confidence_reasoning(confidence):
         print("------------------")
 
         for factor in evidence:
-            print(f"✓ {factor['name']}")
-            print(f"  {factor['reason']}")
+
+            print(
+                f"✓ {factor['name']}"
+            )
+
+            print(
+                f"  {factor['reason']}"
+            )
+
             print()
 
 
@@ -85,7 +109,11 @@ def print_confidence_reasoning(confidence):
         print("------------------")
 
         for factor in limitations:
-            print(f"• {factor['reason']}")
+
+            print(
+                f"• {factor['reason']}"
+            )
+
             print()
 
 
@@ -95,5 +123,9 @@ def print_confidence_reasoning(confidence):
         print("------------------")
 
         for factor in notes:
-            print(f"• {factor['reason']}")
+
+            print(
+                f"• {factor['reason']}"
+            )
+
             print()

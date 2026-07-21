@@ -12,9 +12,13 @@ TIE_TOLERANCE = 1e-6
 
 def score_family(sequence, family):
 
-    fit = best_fit(sequence, family)
+    fit = best_fit(
+        sequence,
+        family
+    )
 
     if fit is None:
+
         return None
 
     predicted = fit["Predicted"]
@@ -24,10 +28,21 @@ def score_family(sequence, family):
         "Parameters": fit["Parameters"],
         "Predicted": predicted,
         "Residuals": fit["Residuals"],
-        "NRMSE": normalized_rmse(sequence, predicted),
-        "RRN": relative_residual_norm(sequence, predicted),
-        "R2": r_squared(sequence, predicted),
-        "Metadata": get_metadata(family),
+        "NRMSE": normalized_rmse(
+            sequence,
+            predicted
+        ),
+        "RRN": relative_residual_norm(
+            sequence,
+            predicted
+        ),
+        "R2": r_squared(
+            sequence,
+            predicted
+        ),
+        "Metadata": get_metadata(
+            family
+        ),
     }
 
 
@@ -81,8 +96,16 @@ def choose_best_fit(scores, analysis):
     for score in scores:
         complexity = score["Family"].complexity(score["Parameters"])
         score["Complexity"] = complexity
+        natural_bonus = (
+            -0.01
+            if getattr(score["Family"], "NATURAL_FAMILY", False)
+            else 0
+        )
+
         score["Ranking Score"] = (
-            score["RRN"] + COMPLEXITY_WEIGHT * complexity
+            score["RRN"]
+            + COMPLEXITY_WEIGHT * complexity
+            + natural_bonus
         )
 
         analysis.analysis_trace.append({
@@ -225,6 +248,60 @@ def choose_best_fit(scores, analysis):
                 (
                     f"{runner_family.NAME} is a more "
                     "general model"
+                ),
+
+            ]
+
+        })
+
+        analysis.analysis_trace.append({
+
+            "stage": "classification",
+
+            "event": "decision_reasoning",
+
+            "reasons": [
+
+                (
+                    f"{winner_family.NAME} and "
+                    f"{runner_family.NAME} both reproduce "
+                    "the sequence."
+                ),
+
+                (
+                    f"{runner_family.NAME} is rejected because "
+                    "it is a more general model rather than "
+                    "the underlying mathematical structure."
+                ),
+
+                (
+                    f"{winner_family.NAME} is preferred because "
+                    "it provides a more specific explanation."
+                ),
+
+            ]
+
+        })
+
+        analysis.analysis_trace.append({
+
+            "stage": "classification",
+
+            "event": "classification_reasoning",
+
+            "reasoning": [
+
+                f"{winner_family.NAME} and {runner_family.NAME} both reproduce the sequence.",
+
+                (
+                    f"{runner_family.NAME} is rejected because it is "
+                    "a more general model rather than the underlying "
+                    "mathematical structure."
+                ),
+
+                (
+                    f"{winner_family.NAME} is preferred because it "
+                    "provides a more specific explanation."
                 ),
 
             ]

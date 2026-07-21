@@ -1,35 +1,45 @@
 # MathExplorer
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![Version](https://img.shields.io/badge/version-v2.5-green)
-![Tests](https://img.shields.io/badge/tests-165_passed-brightgreen)
+![Version](https://img.shields.io/badge/version-v3.0-green)
+![Tests](https://img.shields.io/badge/tests-2031_passed-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 MathExplorer is a Python framework for recognizing, verifying, predicting, and explaining mathematical sequences.
 
 Given a sequence of numbers, MathExplorer identifies the most likely generating family, recovers its parameters, verifies the result, predicts future terms, and produces structured analysis reports containing mathematical and architectural metadata.
 
-Current Release: **v2.5**
+The system is built around a modular, plugin-based family architecture with automatic family discovery, hierarchical mathematical taxonomy, complexity-aware ranking, confidence analysis, prediction, verification, and structured explanations.
+
+**Current Release: v3.0**
 
 ---
 
-## What's New in v2.5
+## What's New in v3.0
 
-MathExplorer v2.5 expands the internal family architecture and introduces a metadata-driven sequence recognition system.
+MathExplorer v3.0 completes the transition to a hierarchical, metadata-driven sequence recognition architecture.
 
 Highlights include:
 
-* Expanded mathematical metadata for every sequence family.
-* Family hierarchy support through parent-child relationships.
-* Improved formula formatting and mathematical notation.
-* Enhanced exponent and operator normalization.
-* Improved modular family organization.
-* Metadata integration into sequence classification reports.
-* Expanded support for polynomial, figurate, power, and recursive families.
-* Improved internal consistency and family validation.
+* A complete hierarchical taxonomy for sequence families.
+* Parent-child relationships between mathematical families.
+* Automatic family discovery through the family registry.
+* Registry validation for family interfaces and hierarchy relationships.
+* Expanded mathematical metadata for sequence families.
+* A significantly expanded sequence family library.
+* Support for Basic, Combinatorial, Figurate, Special, Recursive, and Linear Recurrence family categories.
+* Expanded support for polygonal and centered polygonal numbers.
+* Expanded support for combinatorial sequences.
+* Expanded support for recursive and self-referential sequences.
+* Expanded support for linear recurrence families.
+* Improved family-specific testing.
+* Comprehensive integration and regression testing.
+* Improved mathematical property validation.
+* Expanded formula and recurrence formatting utilities.
+* Improved consistency between recognition, fitting, evaluation, prediction, and metadata.
+* Over 2,000 automated tests covering the complete system.
 
-This release establishes the foundation for future documentation, UI improvements, and explanation systems planned for the v3.x series.
-
+The v3.0 architecture establishes MathExplorer as a validated mathematical sequence recognition framework rather than a flat collection of independent pattern recognizers.
 
 ---
 
@@ -41,9 +51,23 @@ MathExplorer was created to explore a simple question:
 
 Rather than searching for *any* function that reproduces a sequence, MathExplorer attempts to identify the **simplest and most meaningful mathematical family** that explains it.
 
-To accomplish this, the library combines parameter recovery, verification, complexity-aware ranking, and confidence estimation into a single recognition pipeline. This allows well-known sequence families such as triangular numbers or the Fibonacci sequence to be preferred over more general interpolating functions when both fit perfectly.
+To accomplish this, the library combines:
 
-The long-term goal of MathExplorer is to become a modular framework for mathematical sequence analysis that is both educational and extensible, making it easy to add new sequence families while maintaining a consistent recognition engine.
+* Mathematical family recognition
+* Parameter recovery
+* Evaluation
+* Prediction
+* Verification
+* Residual analysis
+* Complexity-aware ranking
+* Family specificity
+* Confidence estimation
+* Hierarchical mathematical organization
+* Structured explanations
+
+This allows meaningful mathematical families such as triangular numbers, factorials, Fibonacci numbers, and polygonal numbers to be preferred over overly general solutions when multiple explanations are possible.
+
+The long-term goal of MathExplorer is to become a modular framework for mathematical sequence analysis that is both educational and extensible.
 
 ---
 
@@ -52,22 +76,100 @@ The long-term goal of MathExplorer is to become a modular framework for mathemat
 * Automatic sequence recognition
 * Parameter recovery
 * Formula generation
-* Verification against the original sequence
-* Prediction of future terms
+* Recursive relation support
+* Sequence evaluation
+* Future-term prediction
+* Prediction verification
+* Residual analysis
 * Confidence scoring
 * Complexity-aware family ranking
+* Family specificity scoring
 * Human-readable reports
+* Structured explanations
+* Mathematical family metadata
+* Hierarchical family organization
+* Parent-child family relationships
+* Automatic family discovery
+* Plugin validation
+* Registry integrity validation
 * Modular sequence family architecture
-* Family hierarchy organization
-* Metadata-driven sequence descriptions
-* Extensible plugin-style family system
+* Deterministic analysis behavior
 * Comprehensive automated test suite
+* Regression testing across the full architecture
+
+---
+
+## Sequence Family Hierarchy
+
+MathExplorer organizes mathematical sequence families into a hierarchical taxonomy.
+
+```text
+Sequence Families
+│
+├── Explicit
+│   │
+│   ├── Basic
+│   │   ├── Constant Numbers
+│   │   ├── Arithmetic Numbers
+│   │   ├── Geometric Numbers
+│   │   └── Polynomial Numbers
+│   │
+│   ├── Figurate
+│   │   │
+│   │   ├── Polygonal
+│   │   │   ├── Triangular Numbers
+│   │   │   ├── Square Numbers
+│   │   │   ├── Pentagonal Numbers
+│   │   │   ├── Hexagonal Numbers
+│   │   │   ├── Heptagonal Numbers
+│   │   │   ├── Octagonal Numbers
+│   │   │   ├── Nonagonal Numbers
+│   │   │   └── Decagonal Numbers
+│   │   │
+│   │   └── Centered Polygonal
+│   │       ├── Centered Triangular Numbers
+│   │       ├── Centered Square Numbers
+│   │       ├── Centered Pentagonal Numbers
+│   │       └── Centered Hexagonal Numbers
+│   │
+│   └── Special
+│       ├── Factorial Numbers
+│       └── Pronic Numbers
+│
+├── Combinatorial
+│   ├── Catalan Numbers
+│   ├── Bell Numbers
+│   ├── Derangement Numbers
+│   └── Partition Numbers
+│
+└── Recursive
+    │
+    └── Linear Recurrence
+        ├── Fibonacci Numbers
+        ├── Lucas Numbers
+        ├── Pell Numbers
+        ├── Jacobsthal Numbers
+        ├── Tribonacci Numbers
+        ├── Tetranacci Numbers
+        ├── Padovan Numbers
+        └── Perrin Numbers
+```
+
+Additional recursive and self-referential families are also supported, including:
+
+* Collatz Stopping Times
+* Happy Numbers
+* Look-and-Say Numbers
+* Motzkin Numbers
+* Van Eck Numbers
+
+The hierarchy is validated by the family registry.
 
 ---
 
 ## Supported Sequence Families
 
-### Elementary
+### Basic Families
 
 * Constant
 * Arithmetic
@@ -99,7 +201,22 @@ The long-term goal of MathExplorer is to become a modular framework for mathemat
 * Centered Pentagonal
 * Centered Hexagonal
 
+### Combinatorial Families
+
+* Catalan
+* Bell
+* Derangement
+* Partition
+
 ### Recursive Families
+
+* Collatz Stopping Times
+* Happy Numbers
+* Look-and-Say
+* Motzkin
+* Van Eck
+
+### Linear Recurrence Families
 
 * Fibonacci
 * Lucas
@@ -110,7 +227,7 @@ The long-term goal of MathExplorer is to become a modular framework for mathemat
 * Padovan
 * Perrin
 
-### Other
+### Special Families
 
 * Factorial
 * Pronic
@@ -126,7 +243,7 @@ git clone https://github.com/<username>/MathExplorer.git
 cd MathExplorer
 ```
 
-Install any required dependencies:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -149,7 +266,7 @@ print_report(report)
 
 Example output:
 
-```
+```text
 Sequence Classification
 -----------------------
 Family          : Arithmetic
@@ -165,61 +282,89 @@ Next Terms      : [11, 13, 15, 17, 19]
 
 ## Adding a New Sequence Family
 
-MathExplorer automatically discovers sequence families placed inside
-`families/`.
+MathExplorer automatically discovers sequence family modules placed inside the `families/` directory.
 
-Every family must define:
+A family should define the required interface and metadata.
+
+Example:
 
 ```python
-NAME
-DESCRIPTION
-REPRESENTATION
-CATEGORY
-SPECIFICITY
-PARENT
-
-# Mathematical Metadata
-
-DOMAIN
-GROWTH
-FORMULA_TYPE
-RELIABILITY
-
-# Family Interface
+NAME = "Example Family"
+DESCRIPTION = "Description of the mathematical family."
+REPRESENTATION = "Explicit"
+CATEGORY = "Basic"
+SPECIFICITY = 50
+PARENT = "Basic"
 
 recognize(sequence)
 fit(sequence)
 evaluate(parameters, n)
 formula(parameters)
 complexity(parameters)
+explain(parameters)
 ```
 
-Once the file is added, the registry will automatically:
+Additional metadata should be included where appropriate:
 
-- discover the family
-- validate its interface
-- include it in recognition
-- include it in scoring
-- include it in prediction
+```python
+OEIS
+ALIASES
+CLOSED_FORM
+EVALUATION_METHOD
+FAMILY_TYPE
+TAGS
+TRAITS
+RELATED
+DOMAIN
+GROWTH
+MONOTONIC
+BOUNDED
+OSCILLATING
+PERIODIC
+FORMULA_TYPE
+REQUIRES_PARAMETERS
+PARAMETER_NAMES
+MIN_TERMS
+RECOGNITION_METHOD
+RELIABILITY
+```
 
-Please read the `families/creating_families.md` file for more information.
+Once the file is added, the registry automatically:
 
-No additional registration is required.
+* Discovers the family.
+* Validates the plugin interface.
+* Validates its metadata.
+* Validates its hierarchy relationship.
+* Loads the family.
+* Makes it available to the recognition pipeline.
+* Includes it in scoring and prediction.
+
+No manual registration is required.
+
+For detailed instructions, see:
+
+```text
+families/creating_families.md
+```
 
 ---
 
 ## Creating Extensions
 
-MathExplorer uses automatic family discovery.
+MathExplorer uses automatic family discovery rather than manual family registration.
 
 To add a new sequence family:
 
-1. Create a new file inside `families/`
-2. Implement the required family interface
-3. Add the required metadata
-4. Run the test suite
+1. Determine the appropriate mathematical category.
+2. Identify the correct parent family.
+3. Create a new family module.
+4. Implement the required family interface.
+5. Add mathematical metadata.
+6. Add family-level tests.
+7. Run focused tests.
+8. Run the complete test suite.
 
-No manual registration is required.
+No additional registry configuration should be necessary.
 
 ---
 
@@ -227,23 +372,102 @@ No manual registration is required.
 
 MathExplorer analyzes sequences through several stages:
 
-1. Family recognition
-2. Parameter fitting
-3. Prediction generation
-4. Residual calculation
-5. Complexity-aware ranking
-6. Classification selection
-7. Formula recovery
-8. Report generation
+```text
+Input Sequence
+      |
+      v
+Family Recognition
+      |
+      v
+Parameter Fitting
+      |
+      v
+Prediction Generation
+      |
+      v
+Residual Analysis
+      |
+      v
+Complexity-Aware Ranking
+      |
+      v
+Confidence Analysis
+      |
+      v
+Classification
+      |
+      v
+Formula Recovery
+      |
+      v
+Verification
+      |
+      v
+Explanation
+      |
+      v
+Report Generation
+```
 
-Each supported family implements a common interface consisting of:
+Each sequence family implements a common interface allowing new mathematical families to be added without modifying the central recognition engine.
 
-* fit()
-* evaluate()
-* complexity()
-* formula()
+---
 
-allowing new sequence families to be added with minimal changes to the recognition engine.
+## Family Recognition
+
+Families determine whether they can explain a sequence.
+
+Recognition results follow the system's family recognition conventions and may distinguish between:
+
+* A recognized sequence.
+* A rejected sequence.
+* A sequence requiring more information.
+
+Recognized families may then attempt parameter fitting.
+
+---
+
+## Family Ranking
+
+Multiple families may successfully explain the same sequence.
+
+MathExplorer ranks candidate families using mathematical evidence including:
+
+* Prediction accuracy
+* Residual error
+* Complexity
+* Family specificity
+* Competition against alternative families
+* Available sequence length
+
+This allows a more meaningful mathematical family to beat an overly general explanation.
+
+For example, a square sequence should prefer:
+
+```text
+Square Numbers
+a(n) = n²
+```
+
+over a more general polynomial family when both perfectly reproduce the observed terms.
+
+---
+
+## Family Registry
+
+The family registry automatically discovers and validates family modules.
+
+The registry is responsible for:
+
+1. Discovering family modules.
+2. Loading valid plugins.
+3. Validating required interfaces.
+4. Validating family metadata.
+5. Validating parent-child hierarchy relationships.
+6. Rejecting invalid plugins.
+7. Making valid families available to the analysis pipeline.
+
+This allows the family system to grow without requiring central registration changes.
 
 ---
 
@@ -257,61 +481,142 @@ Run all tests with:
 pytest
 ```
 
-Current test suite:
+Current verified test suite:
 
-* Family tests
-* Recovery tests
-* Prediction tests
-* Confidence tests
-* Scoring tests
-* Verification tests
+```text
+2031 passed, 38 skipped
+```
+
+Tests cover:
+
+### Family Tests
+
+* Recognition
+* Rejection
+* Fitting
+* Evaluation
+* Fit/evaluation consistency
+* Predictions
+* Mathematical properties
+* Metadata
+
+### Registry Tests
+
+* Family discovery
+* Plugin loading
+* Plugin validation
+* Hierarchy validation
+* Family lookup
+* Metadata behavior
+
+### Pipeline Tests
+
+* Classification
+* Confidence
+* Explanation
+* Prediction
+* Verification
+* Formula recovery
+* Scoring
+
+### Regression Tests
+
+* Recognition behavior
+* Pipeline behavior
+* Hierarchy behavior
+* Explanation behavior
+* Confidence behavior
+* Prediction behavior
+
+### Unit Tests
+
+* Formatting
+* Scoring
+* Confidence factors
+* Statistics
+* Recovery
+* Transformations
+* Utilities
+* Analysis trace
 
 ---
 
 ## Project Structure
 
-```
+```text
 MathExplorer/
 │
 ├── analyzers/
+│   ├── sequence_analysis.py
+│   ├── confidence_engine/
+│   ├── core/
+│   └── ...
+│
 ├── families/
+│   ├── core/
+│   ├── basic/
+│   ├── combinatorial/
+│   ├── figurate/
+│   ├── special/
+│   ├── recursive/
+│   └── ...
+│
 ├── tests/
+│   ├── families/
+│   ├── integration/
+│   ├── pipeline/
+│   ├── registry/
+│   ├── regression/
+│   ├── unit/
+│   └── ...
+│
 ├── main.py
+├── requirements.txt
 └── README.md
+```
+
+---
+
+## Project Status
+
+MathExplorer v3.0 has completed its core family architecture and validation milestone.
+
+The project currently has:
+
+* A modular family plugin system.
+* Automatic family discovery.
+* A validated mathematical hierarchy.
+* Comprehensive family metadata.
+* Complexity-aware family ranking.
+* Confidence analysis.
+* Prediction and verification.
+* Structured explanations.
+* Analysis tracing.
+* Over 2,000 automated tests.
+
+Current verified test state:
+
+```text
+2031 passed, 38 skipped
 ```
 
 ---
 
 ## Roadmap
 
-Planned future work includes:
+Future development may include:
 
-* Documentation expansion
-* Registry cleanup
-* Additional sequence families
-* UI improvements
-* Explanation engine improvements
-* Closed-form detection
-* Symbolic simplification
-* Better confidence calibration
-* Expanded visualization tools
-* OEIS search integration
-* Export formats
+* Additional mathematical sequence families.
+* Expanded mathematical metadata.
+* More advanced family relationships.
+* Improved symbolic reasoning.
+* Expanded visualization tools.
+* User-facing mathematical exploration interfaces.
+* OEIS integration.
+* Export formats.
+* Mathematical discovery features.
 
----
-
-## Goals for v3.0:
-
-Theme:
-Making mathematics explorable.
-
-Goals:
-
-1. Improve the user experience.
-2. Explain every decision transparently.
-3. Visualize mathematical relationships.
-4. Make the project easy to discover.
-5. Build an experience people want to share.
+The core v3.0 architecture is now established, providing a stable foundation for future mathematical exploration and discovery.
 
 ---
 
@@ -319,13 +624,22 @@ Goals:
 
 MathExplorer was created by **Morrison Winterhalder** as an independent software and mathematics project.
 
-The project began as an exploration of mathematical pattern recognition and has grown into a modular framework for identifying, verifying, and predicting numerical sequences. It combines ideas from mathematics, software engineering, and algorithm design with an emphasis on clean architecture, extensibility, and reproducible testing.
+The project began as an exploration of mathematical pattern recognition and has grown into a modular framework for identifying, verifying, and predicting numerical sequences.
 
-Development continues with the goal of expanding the library's mathematical capabilities while maintaining a reliable, well-tested codebase.
+It combines ideas from:
+
+* Mathematics
+* Software engineering
+* Algorithm design
+* Mathematical classification
+* Pattern recognition
+
+with an emphasis on clean architecture, extensibility, explainability, and reproducible testing.
+
+Development continues with the goal of expanding MathExplorer's mathematical capabilities while maintaining a reliable and well-tested codebase.
 
 ---
 
 ## License
 
 This project is licensed under the MIT License.
-

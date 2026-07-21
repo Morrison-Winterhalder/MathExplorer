@@ -219,58 +219,6 @@ def complexity_factor(complexity):
     }
 
 
-
-# --------------------------------------------------
-# Prediction Evidence
-# --------------------------------------------------
-
-def prediction_factor(analysis):
-
-    verification = analysis.verification
-
-    predicted = verification.get(
-        "Predicted Terms",
-        []
-    )
-
-    verified = verification.get(
-        "Verified Terms",
-        []
-    )
-
-
-    if not predicted:
-
-        return {
-            "name": "No Prediction Evidence",
-            "impact": -5,
-            "reason":
-                "No unseen prediction test was performed.",
-        }
-
-
-    accuracy = len(verified) / len(predicted)
-
-
-    if accuracy == 1:
-
-        return {
-            "name": "Prediction Verification",
-            "impact": 10,
-            "reason":
-                "The family correctly predicted additional terms.",
-        }
-
-
-    return {
-        "name": "Prediction Failure",
-        "impact": -15,
-        "reason":
-            "Predicted terms failed verification.",
-    }
-
-
-
 # --------------------------------------------------
 # Generalization Strength
 # --------------------------------------------------
@@ -369,19 +317,35 @@ def prediction_verification_factor(report):
     )
 
 
-    if verification.get("Verified"):
+    predicted = verification.get(
+        "Predicted Terms",
+        []
+    )
+
+
+    if predicted:
+
+        if verification.get("Verified"):
+
+            return {
+                "name": "Prediction Verification",
+                "impact": 15,
+                "reason":
+                    "The family successfully predicted unseen terms.",
+            }
+
 
         return {
-            "name": "Prediction Verification",
-            "impact": 15,
+            "name": "Prediction Generated",
+            "impact": 5,
             "reason":
-                "The family successfully predicted unseen terms.",
+                "The family generated predictions for future terms.",
         }
 
 
     return {
-        "name": "No Prediction Evidence",
+        "name": "No Prediction Verification",
         "impact": 0,
         "reason":
-            "The classification has not yet been verified using unseen sequence terms.",
+            "The classification has not yet been verified using unseen sequence terms."
     }

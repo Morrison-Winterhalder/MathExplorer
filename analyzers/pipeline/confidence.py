@@ -107,43 +107,6 @@ def update_confidence(sequence, report):
         confidence
     )
 
-    report.analysis_trace.append({
-
-        "stage": "confidence",
-
-        "event": "reasoning_generated",
-
-        "primary": [
-
-            factor
-
-            for factor in confidence["Factors"]
-
-            if factor["impact"] >= 20
-
-        ],
-
-        "supporting": [
-
-            factor
-
-            for factor in confidence["Factors"]
-
-            if 0 < factor["impact"] < 20
-
-        ],
-
-        "uncertainty": [
-
-            factor
-
-            for factor in confidence["Factors"]
-
-            if factor["impact"] <= 0
-
-        ],
-
-    })
 
     confidence = build_confidence(
         confidence

@@ -1,4 +1,4 @@
-from analyzers.core.event_renderers import (
+from analyzers.core.trace import (
     first_event as trace_first_event,
 )
 

@@ -14,8 +14,6 @@ def print_sequence_classification(report):
 
     family_name = report.family_name
     formula = report.formula
-    confidence = report.confidence
-    parameters = report.parameters
 
     print()
     print("Family")
@@ -32,15 +30,24 @@ def print_sequence_classification(report):
     if formula is not None:
         print(f"Formula{'':<9}: {formula}")
 
-    if confidence is not None:
-        print(
-            f"{'Confidence':<16}: "
-            f"{report.confidence_score:.1f}% "
-            f"({report.confidence_label})"
-        )
     print()
 
-    print_confidence_reasoning(report.confidence)
+    if report.confidence is not None:
+
+        print("Confidence")
+        print("-" * 24)
+        print()
+
+        print(
+            f"Score: {report.confidence_score:.1f}% "
+            f"({report.confidence_label})"
+        )
+
+        print()
+
+        print_confidence_reasoning(
+            report.confidence
+        )
 
     print()
 
@@ -53,25 +60,36 @@ def print_explanation(analysis):
 
     print()
     print("Explanation")
-    print("-" * 24)
-
+    print("------------------------")
     print()
 
     print("Summary")
     print("-------")
     print(explanation["Summary"])
-
     print()
 
-    print("Reasons")
-    print("-------")
+    # Future-proof grouping support
+    if "Sections" in explanation:
 
-    for observation in explanation["Reasons"]:
-        print(
-            f"• {observation.text}"
-        )
+        for section in explanation["Sections"]:
 
-    print()
+            print(section["Title"])
+            print("-" * len(section["Title"]))
+
+            for item in section["Items"]:
+                print(f"• {item}")
+
+            print()
+
+    else:
+
+        print("Reasons")
+        print("-------")
+
+        for observation in explanation["Reasons"]:
+            print(f"• {observation.text}")
+
+        print()
 
     print("Evidence")
     print("--------")
@@ -81,21 +99,22 @@ def print_explanation(analysis):
 
     print()
 
-    print("Warnings")
-    print("--------")
+    if explanation["Warnings"]:
+        print("Notes")
+        print("-----")
 
-    for warning in explanation["Warnings"]:
-        print(f"• {warning}")
+        for warning in explanation["Warnings"]:
+            print(f"• {warning}")
 
-    print()
+        print()
 
 def print_recognition_scores(report):
     ranking = report.ranking
     best_fit = report.best_fit
     parameters = report.parameters
 
-    print("Recognition Scores")
-    print("------------------")
+    print("Candidate Comparison")
+    print("--------------------")
 
     if not ranking:
         print("No recognized families.\n")
@@ -128,44 +147,75 @@ def print_recognition_scores(report):
             for winner in best_fit["Winners"]
         )
 
-        print(f"{'Winner(s)':<12}: {winner_names}")
+        print()
+
+        print("Summary")
+        print("-------")
+
+        print()
+
+        print("Winner")
+        print("------")
+        print(winner_names)
+
+        print()
+
+        print("Runner-Up")
+        print("---------")
 
         runner_up = best_fit.get("Runner Up")
 
         if runner_up is None:
-            print(f"{'Runner-Up':<12}: None")
+            print("None")
         else:
-            print(f"{'Runner-Up':<12}: {runner_up.NAME}")
-    else:
-        print(f"{'Winner(s)':<12}: None")
-        print(f"{'Runner-Up':<12}: None")
+            print(runner_up.NAME)
 
-    print()
+        print()
 
 
 def print_predictions(report):
+
     print("Predictions")
     print("-----------")
 
     predictions = report.next_terms
 
     if predictions is None:
-        print("Next Terms      : None")
-    else:
-        print(f"{'Next Terms':<16}: {pretty(predictions)}")
+        print("No predictions available.")
+        print()
+        return
+
+    print()
+
+    print("Predicted Terms")
+    print("---------------")
+
+    start = len(report.sequence) + 1
+
+    for i, value in enumerate(predictions):
+        print(f"a({start+i}) = {pretty(value)}")
 
     print()
 
 def print_verification(report):
+
     print("Verification")
     print("------------")
+    print()
 
     verified = report.verified
 
     if verified is None:
-        print("Verified       : Unknown")
+
+        print("• Verification has not been performed.")
+
+    elif verified:
+
+        print("✓ Formula exactly reproduces every observed term.")
+
     else:
-        print(f"{'Verified':<16}: {yes_no(verified)}")
+
+        print("✗ Formula does not reproduce every observed term.")
 
     print()
 
@@ -218,35 +268,115 @@ def print_properties(report):
     print()
 
 def print_transformations(report):
-    print("Transformations")
-    print("---------------")
+
+    print("Structural Analysis")
+    print("-------------------")
 
     transformations = report.transformations
 
-    for key, value in transformations.items():
+    # Difference-based analysis
+    difference_keys = [
+        "First Differences",
+        "Second Differences",
+        "Third Differences",
+        "Fourth Differences",
+    ]
+
+    printed_difference_header = False
+
+    for key in difference_keys:
+
+        value = transformations.get(key)
+
         if value is None:
             continue
 
-        print(f"{key:<18}: {pretty(value)}")
+        if not printed_difference_header:
+            print()
+            print("Difference Tables")
+            print("-----------------")
+            printed_difference_header = True
+
+        print(f"{key:<20}: {pretty(value)}")
+
+    # Ratio-based analysis
+    ratio_keys = [
+        "First Ratios",
+        "Second Ratios",
+    ]
+
+    printed_ratio_header = False
+
+    for key in ratio_keys:
+
+        value = transformations.get(key)
+
+        if value is None:
+            continue
+
+        if not printed_ratio_header:
+            print()
+            print("Ratio Analysis")
+            print("--------------")
+            printed_ratio_header = True
+
+        print(f"{key:<20}: {pretty(value)}")
+
+    # Any future transformations automatically appear here
+    used = set(difference_keys + ratio_keys)
+
+    extras = [
+        (key, value)
+        for key, value in transformations.items()
+        if key not in used and value is not None
+    ]
+
+    if extras:
+        print()
+        print("Additional Analysis")
+        print("-------------------")
+
+        for key, value in extras:
+            print(f"{key:<20}: {pretty(value)}")
 
     print()
 
 def print_report(report, developer=False):
+
     print("""========================================
           MathExplorer Report
 ========================================""")
     print()
+
     if report is None:
         print("Error: Cannot analyze an empty sequence")
         return
+
+    # 1. Final answer
     print_sequence_classification(report)
+
+    # 2. Mathematical reasoning
     print_explanation(report)
+
+    # 3. Alternative candidates and why they lost
     print_recognition_scores(report)
+
+    # 4. Predictions produced from the recovered formula
     print_predictions(report)
+
+    # 5. Verification of those predictions
     print_verification(report)
-    print_basic_information(report)
+
+    # 6. Mathematical description of the recognized family
     print_properties(report)
+
+    # 7. Structural analysis that led to the classification
     print_transformations(report)
+
+    # 8. Raw metadata (least important)
+    print_basic_information(report)
+
+    # 9. Developer trace
     if developer:
         print()
         print(report.developer_model)

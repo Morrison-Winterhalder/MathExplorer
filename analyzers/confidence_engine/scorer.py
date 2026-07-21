@@ -72,8 +72,6 @@ def categorize_factor(factor):
 
         "Prediction Verification",
 
-        "Adequate Evidence Sample",
-
     }:
 
         return "Mathematical"
